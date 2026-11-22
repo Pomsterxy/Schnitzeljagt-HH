@@ -32,10 +32,17 @@ Auf dem Handy testen: `npm run dev -- --host` und die angezeigte Netzwerk-Adress
 **Testmodus am Schreibtisch**: In der App unter *Einstellungen → Testmodus* (oder URL mit `?test=1`). Dann setzt ein Tipp auf die
 Karte den Standort, und „Zum Ziel springen“ bringt euch direkt zur Station.
 
+## Spielen
+
+**👉 https://pomsterxy.github.io/Schnitzeljagt-HH/**
+
+Auf dem Handy öffnen, den Standortzugriff erlauben und am besten zum Home-Bildschirm hinzufügen.
+
 ## Veröffentlichen (GitHub Pages)
 
-Der Workflow `.github/workflows/pages.yml` baut die App bei jedem Push auf `main` und veröffentlicht sie unter
-`https://<benutzer>.github.io/Schnitzeljagt-HH/`. Einmalig nötig: *Settings → Pages → Source: GitHub Actions*.
+Der Workflow `.github/workflows/pages.yml` baut und testet die App bei jedem Push auf `main` und legt das Ergebnis in den
+Zweig `gh-pages`. GitHub Pages zeigt diesen Zweig an. Unter *Settings → Pages* muss als Quelle „Deploy from a branch“ mit
+`gh-pages` / `(root)` eingestellt sein.
 
 ## Tests
 

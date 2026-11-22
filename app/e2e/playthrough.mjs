@@ -16,7 +16,8 @@ mkdirSync(SHOTS, { recursive: true });
 
 const NAMES = { winterhude: 'Winterhude', 'barmbek-nord': 'Barmbek-Nord', alsterdorf: 'Alsterdorf' };
 const errors = [];
-const browser = await chromium.launch();
+// PW_PROXY: optionaler Proxy (z. B. in abgeschotteten Umgebungen)
+const browser = await chromium.launch(process.env.PW_PROXY ? { proxy: { server: process.env.PW_PROXY } } : {});
 const context = await browser.newContext({
   viewport: { width: 390, height: 844 },
   permissions: ['geolocation'],
