@@ -73,6 +73,9 @@ export function Finish({ onHome }: { onHome: () => void }) {
         <li>📍 {stations.length} Stationen gefunden</li>
         <li>👟 {formatDistance(game.meters)} gelaufen (geplant: {formatDistance(game.plannedMeters)})</li>
         <li>⏱️ {minutes} Minuten unterwegs</li>
+        {game.stops.some((s) => s.kind === 'final') && (
+          <li>💎 Schatz: {game.final?.found ? 'gefunden!' : 'diesmal nicht gefunden'}</li>
+        )}
         <li>
           🎖️ Euer Rang: <strong>{rank.title}</strong> ({career.points} Punkte insgesamt
           {rank.next ? `, noch ${rank.next.min - career.points} bis „${rank.next.title}“` : ''})

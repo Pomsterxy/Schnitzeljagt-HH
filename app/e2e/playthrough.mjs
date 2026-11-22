@@ -11,6 +11,7 @@ const URL = process.argv[2] ?? 'http://localhost:4173/';
 const NAV = process.argv[3] ?? 'map';
 const DISTRICTS = (process.argv[4] ?? 'winterhude').split(',');
 const SHOTS = process.env.SHOTS ?? 'e2e/shots';
+const THEME = process.env.THEME ?? 'mix';
 mkdirSync(SHOTS, { recursive: true });
 
 const NAMES = { winterhude: 'Winterhude', 'barmbek-nord': 'Barmbek-Nord', alsterdorf: 'Alsterdorf' };
@@ -49,7 +50,8 @@ for (const [id, name] of Object.entries(NAMES)) {
 }
 await page.locator('input[type=range]').fill('120');
 const START = { winterhude: 'u-borgweg', 'barmbek-nord': 'bf-barmbek', alsterdorf: 'u-alsterdorf' };
-await page.locator('select').first().selectOption(START[DISTRICTS[0]]);
+await page.getByLabel('Startpunkt', { exact: true }).selectOption(START[DISTRICTS[0]]);
+await page.getByLabel('Thema', { exact: true }).selectOption(THEME);
 await page.locator(`input[name=nav]`).nth(NAV === 'map' ? 0 : 1).check();
 await page.getByPlaceholder('z. B. 1234').fill('1234');
 await snap('tour');
@@ -67,6 +69,8 @@ const coordsOf = async () =>
 
 let stations = 0;
 let photoUploaded = false;
+let clues = 0;
+let treasure = false;
 let pauses = 0;
 let guard = 0;
 while (guard++ < 40) {
@@ -75,6 +79,35 @@ while (guard++ < 40) {
   if (!(await page.locator('.play').count())) { await page.waitForTimeout(1000); }
   if (!(await page.locator('.play').count())) { await snap('error'); throw new Error('Kein Spielbildschirm. Fehler: ' + errors.join(' / ')); }
   const coords = (await page.locator('.play').getAttribute('data-target')).split(',').map(Number);
+  if (state.stop.kind === 'final') {
+    // Koordinaten wie ein Geocacher berechnen (hier aus der Zielkoordinate abgeleitet)
+    const dm = (v) => {
+      const t = Math.round((v - Math.floor(v)) * 60000);
+      return String(t % 1000).padStart(3, '0');
+    };
+    await page.getByTestId('formula').waitFor();
+    const nb = await page.locator('[data-testid=notebook] li').count();
+    if (nb !== clues) errors.push(`Notizbuch hat ${nb} Einträge, erwartet ${clues}`);
+    await snap('final-formula');
+    await page.getByLabel('Nord-Ziffern').fill('000');
+    await page.getByLabel('Ost-Ziffern').fill('000');
+    await page.getByRole('button', { name: 'Koordinaten prüfen' }).click();
+    await page.getByText(/stimmt noch nicht/).first().waitFor();
+    await page.getByLabel('Nord-Ziffern').fill(dm(coords[0]));
+    await page.getByLabel('Ost-Ziffern').fill(dm(coords[1]));
+    await page.getByRole('button', { name: 'Koordinaten prüfen' }).click();
+    await page.getByTestId('final-coords').waitFor();
+    await context.setGeolocation({ latitude: coords[0] - 0.003, longitude: coords[1], accuracy: 10 });
+    await page.waitForTimeout(400);
+    if (await page.getByTestId('treasure-found').count()) throw new Error('Schatz aus der Ferne gefunden!');
+    await snap('final-search');
+    await context.setGeolocation({ latitude: coords[0], longitude: coords[1], accuracy: 6 });
+    await page.getByTestId('treasure-found').waitFor({ timeout: 8000 });
+    treasure = true;
+    await snap('final-found');
+    await page.getByRole('button', { name: /Tour abschließen/ }).click();
+    continue;
+  }
   if (state.stop.kind === 'pause') {
     pauses++;
     await context.setGeolocation({ latitude: coords[0], longitude: coords[1], accuracy: 10 });
@@ -130,6 +163,7 @@ while (guard++ < 40) {
     }
     await page.waitForTimeout(150);
   }
+  if (await page.getByTestId('cache-clue').count()) clues++;
   if (stations <= 2) await snap(`station-${state.stop.id}`);
   await page.getByRole('button', { name: /Weiter zum nächsten Ziel|Tour abschließen/ }).click();
 }
@@ -138,7 +172,15 @@ await page.waitForSelector('[data-testid=final-score]', { timeout: 8000 });
 await snap('finish');
 if (photoUploaded && !(await page.locator('.photo-grid img').count())) errors.push('Foto fehlt im Fotoalbum');
 const score = await page.getByTestId('final-score').innerText();
-console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}`);
+console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Schatz: ${treasure ? 'gefunden' : 'nein'}`);
+if (!treasure) errors.push('Schatz-Finale wurde nicht gespielt');
+if (THEME === 'architektur') {
+  const arch = await page.evaluate(() => {
+    const g = JSON.parse(localStorage.getItem('hh-hunt:game'));
+    return g.stops.filter((s) => s.kind === 'station').map((s) => s.id);
+  });
+  console.log('Architektur-Tour:', arch.join(', '));
+}
 
 // Reload-Test: Album zeigt gesammelte Karten
 await page.getByRole('button', { name: 'Zum Hauptmenü' }).click();

@@ -11,6 +11,7 @@ import {
   stopCoords,
   stopKey,
   trackPosition,
+  treasureFound,
   unlockStop,
   useGame,
   type Game,
@@ -20,6 +21,10 @@ import { Gallery } from '../components/Gallery';
 import { PinDialog } from '../components/PinDialog';
 import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
+import { NearbyCaches } from '../components/NearbyCaches';
+import { FinalView, Notebook } from './FinalView';
+import { CACHE_CLUES } from '../data/cache-clues';
+import { LETTERS } from '../lib/cache';
 
 function vibrate(p: number | number[]) {
   try {
@@ -55,6 +60,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
   const pos = usePosition();
   const [menu, setMenu] = useState(false);
   const [pinFor, setPinFor] = useState<null | 'unlock' | 'skip'>(null);
+  const [notebook, setNotebook] = useState(false);
   useWakeLock();
 
   useEffect(() => {
@@ -88,7 +94,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
           ⭐ {game.points}
         </span>
         <span className="progress">
-          {stop.kind === 'station' ? `Station ${stationNo}/${stationTotal}` : 'Pause'}
+          {stop.kind === 'station' ? `Station ${stationNo}/${stationTotal}` : stop.kind === 'final' ? '💎 Schatz' : 'Pause'}
         </span>
         <button type="button" className="btn small ghost" onClick={() => setMenu(true)} aria-label="Menü">
           ☰
@@ -100,7 +106,8 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
 
       {station && !ss?.unlockedBy && <Navigate game={game} station={station} onPin={() => setPinFor('unlock')} />}
       {station && ss?.unlockedBy && <StationView game={game} station={station} />}
-      {poi && <PauseView game={game} poi={poi} />}
+      {poi && stop.kind === 'pause' && <PauseView game={game} poi={poi} />}
+      {poi && stop.kind === 'final' && <FinalView game={game} poi={poi} onPin={() => setPinFor('unlock')} />}
 
       {pos.simulated && <SimPanel target={stopCoords(stop)} radius={station?.radius ?? 40} />}
 
@@ -112,6 +119,11 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
               Ziel: {game.stops.length} Stopps · gelaufen: {formatDistance(game.meters)} · GPS: {pos.status}
               {pos.coords ? ` (±${Math.round(pos.accuracy)} m)` : ''}
             </p>
+            {game.stops.some((x) => x.kind === 'final') && (
+              <button type="button" className="btn" onClick={() => { setMenu(false); setNotebook(true); }}>
+                📓 Cache-Notizbuch ({(game.cacheLetters ?? []).length})
+              </button>
+            )}
             {station && !ss?.unlockedBy && (
               <button type="button" className="btn" onClick={() => { setMenu(false); setPinFor('unlock'); }}>
                 🔓 Station mit Eltern-PIN freischalten
@@ -133,6 +145,19 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
         </div>
       )}
 
+      {notebook && (
+        <div className="overlay" role="dialog" aria-modal="true" onClick={() => setNotebook(false)}>
+          <div className="dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>📓 Cache-Notizbuch</h3>
+            <p className="muted">Diese Zahlen braucht ihr am Ende, um die Koordinaten des Schatzes zu berechnen.</p>
+            <Notebook game={game} />
+            <button type="button" className="btn" onClick={() => setNotebook(false)}>
+              Schließen
+            </button>
+          </div>
+        </div>
+      )}
+
       {pinFor && (
         <PinDialog
           title={pinFor === 'unlock' ? 'Station freischalten' : 'Stopp überspringen'}
@@ -144,7 +169,10 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
           pin={game.config.pin}
           onCancel={() => setPinFor(null)}
           onOk={() => {
-            if (pinFor === 'unlock') unlockStop('pin');
+            if (pinFor === 'unlock') {
+              if (stop.kind === 'final') treasureFound('pin');
+              else unlockStop('pin');
+            }
             else nextStop(true);
             setPinFor(null);
           }}
@@ -337,6 +365,24 @@ function StationView({ game, station }: { game: Game; station: Station }) {
         </section>
       )}
 
+      {allDone && !quiet && CACHE_CLUES[station.id] && game.stops.some((x) => x.kind === 'final') && (
+        <div className="cache-clue" data-testid="cache-clue">
+          📓 <strong>Cache-Zahl für euer Notizbuch:</strong>{' '}
+          {(() => {
+            const letters = game.cacheLetters ?? [];
+            const existing = letters.find((l) => l.stationId === station.id);
+            const letter = existing?.letter ?? LETTERS[letters.length % LETTERS.length];
+            return (
+              <span className="clue">
+                {letter} = {CACHE_CLUES[station.id].value}
+              </span>
+            );
+          })()}
+          <br />
+          <small>{CACHE_CLUES[station.id].label}</small>
+        </div>
+      )}
+
       {allDone && (
         <>
           {!quiet && <p className="station-points">Punkte an dieser Station: {pts}</p>}
@@ -352,6 +398,7 @@ function StationView({ game, station }: { game: Game; station: Station }) {
           </button>
         </>
       )}
+      {!quiet && <NearbyCaches center={station.coords} />}
       <details className="sources">
         <summary>Quellen</summary>
         <ul>

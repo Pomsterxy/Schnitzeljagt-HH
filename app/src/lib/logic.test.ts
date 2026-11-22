@@ -3,6 +3,9 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { STATIONS_WINTERHUDE } from '../data/stations-winterhude';
 import { STATIONS_ALSTERDORF, STATIONS_BARMBEK } from '../data/stations-barmbek-alsterdorf';
+import { STATIONS_ARCHITEKTUR } from '../data/stations-architektur';
+import { CACHE_CLUES } from '../data/cache-clues';
+import { buildFormula, checkCoords, fromDegMin, toDegMin } from './cache';
 import { START_POINTS } from '../data/districts';
 import pois from '../data/pois.json';
 import credits from '../../public/img/credits.json';
@@ -11,7 +14,7 @@ import { distance, isWithinUnlock, temperature } from './geo';
 import { generateRoute, measure } from './route';
 import { evaluate, normalize, scoreTask, tasksFor } from './scoring';
 
-const RAW: Station[] = [...STATIONS_WINTERHUDE, ...STATIONS_BARMBEK, ...STATIONS_ALSTERDORF];
+const RAW: Station[] = [...STATIONS_WINTERHUDE, ...STATIONS_BARMBEK, ...STATIONS_ALSTERDORF, ...STATIONS_ARCHITEKTUR];
 const STATIONS = RAW.map((s) => ({ ...s, images: s.images.length ? s.images : [s.id] }));
 const POIS = pois as Poi[];
 
@@ -164,5 +167,92 @@ describe('Auswertung', () => {
     expect(scoreTask(q, 1, 1, 0)).toBe(10);
     expect(scoreTask(q, 1, 2, 0)).toBe(5);
     expect(scoreTask(q, 1, 1, 1)).toBe(7);
+  });
+});
+
+describe('Geocaching-Finale', () => {
+  it('jede normale Station hat eine Cache-Zahl 0–9, Gedenkorte keine', () => {
+    for (const s of STATIONS) {
+      const c = CACHE_CLUES[s.id];
+      if (s.mode === 'quiet') expect(c, s.id).toBeUndefined();
+      else {
+        expect(c, s.id).toBeTruthy();
+        expect(c.value).toBeGreaterThanOrEqual(0);
+        expect(c.value).toBeLessThanOrEqual(9);
+      }
+    }
+    for (const id of Object.keys(CACHE_CLUES)) expect(STATIONS.some((s) => s.id === id), id).toBe(true);
+  });
+  it('rechnet Grad/Minuten hin und zurück', () => {
+    const d = toDegMin(53.59078);
+    expect(d.deg).toBe(53);
+    expect(d.min).toBe(35);
+    const back = fromDegMin(d.deg, d.min, d.digits[0] * 100 + d.digits[1] * 10 + d.digits[2]);
+    expect(Math.abs(back - 53.59078)).toBeLessThan(0.00002);
+  });
+  it('die Formel ergibt genau die Zielkoordinaten', () => {
+    const target: [number, number] = [53.597361, 10.021583];
+    const letters = [
+      { letter: 'A', value: 6, label: '', stationId: 'a' },
+      { letter: 'B', value: 3, label: '', stationId: 'b' },
+      { letter: 'C', value: 9, label: '', stationId: 'c' },
+    ];
+    const vals: Record<string, number> = { A: 6, B: 3, C: 9 };
+    for (const hard of [false, true]) {
+      const f = buildFormula(target, letters, hard, 42);
+      const evalExpr = (t: string) => {
+        // "A + B − 3" auswerten
+        return t
+          .replace(/−/g, '-')
+          .split(/\s+/)
+          .reduce((acc, tok, i, arr) => {
+            if (tok === '+' || tok === '-') return acc;
+            const v = vals[tok] ?? Number(tok);
+            const op = i === 0 ? '+' : arr[i - 1];
+            return op === '-' ? acc - v : acc + v;
+          }, 0);
+      };
+      const n = f.north.exprs.map((e) => evalExpr(e.text)).join('');
+      const e = f.east.exprs.map((x) => evalExpr(x.text)).join('');
+      for (const x of [...f.north.exprs, ...f.east.exprs]) {
+        expect(x.value).toBeGreaterThanOrEqual(0);
+        expect(x.value).toBeLessThanOrEqual(9);
+      }
+      expect(checkCoords(target, n, e)).toEqual({ north: true, east: true });
+    }
+    expect(checkCoords(target, '000', '000').north).toBe(false);
+  });
+});
+
+describe('Themen & Finale in der Route', () => {
+  const opt = {
+    districts: ['winterhude' as const, 'barmbek-nord' as const],
+    start: [53.59078, 10.01519] as [number, number],
+    kmh: 3.5,
+    includeQuiet: true,
+    includePause: true,
+    seed: 3,
+    minutes: 150,
+  };
+  it('Architektur-Thema bevorzugt Architektur-Stationen', () => {
+    const share = (theme?: 'architektur') => {
+      const st = generateRoute(STATIONS, POIS, { ...opt, theme }).stops.filter((s) => s.kind === 'station');
+      return st.filter((s) => s.kind === 'station' && s.station.categories.includes('architektur')).length / st.length;
+    };
+    expect(share('architektur')).toBeGreaterThan(0.8);
+    expect(share('architektur')).toBeGreaterThan(share());
+  });
+  it('plant das Schatz-Finale als letzten Stopp an einem Spielplatz ein und bleibt im Zeitbudget', () => {
+    for (const minutes of [45, 90, 180]) {
+      for (const d of ['winterhude', 'barmbek-nord', 'alsterdorf'] as const) {
+        const start = START_POINTS.find((x) => x.district === d)!.coords;
+        const r = generateRoute(STATIONS, POIS, { ...opt, districts: [d], start, minutes, cache: true });
+        const last = r.stops[r.stops.length - 1];
+        expect(last.kind, `${d}/${minutes}`).toBe('final');
+        if (last.kind === 'final') expect(last.poi.kind).toBe('spielplatz');
+        expect(r.minutes).toBeLessThanOrEqual(minutes + 0.01);
+        expect(r.stops.filter((s) => s.kind === 'station').length).toBeGreaterThan(0);
+      }
+    }
   });
 });

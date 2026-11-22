@@ -1,7 +1,9 @@
 import { useSyncExternalStore } from 'react';
-import type { AgeGroup, DistrictId, LatLng, Poi, Station, Task } from '../data/types';
+import type { AgeGroup, Category, DistrictId, LatLng, Poi, Station, Task } from '../data/types';
 import { POI_BY_ID, STATION_BY_ID, STATIONS } from '../data';
 import { BADGES, type BadgeContext } from '../data/badges';
+import { CACHE_CLUES } from '../data/cache-clues';
+import { checkCoords, LETTERS, type CacheLetter } from '../lib/cache';
 import { distance } from '../lib/geo';
 import type { Route } from '../lib/route';
 import { evaluate, POINTS, scoreTask, type Evaluation } from '../lib/scoring';
@@ -30,6 +32,8 @@ export interface TourConfig {
   start: LatLng;
   startLabel: string;
   seed: number;
+  theme?: Category | 'mix';
+  cache?: boolean;
 }
 
 export interface TaskState {
@@ -55,7 +59,7 @@ export interface StopState {
 }
 
 export interface StopRef {
-  kind: 'station' | 'pause';
+  kind: 'station' | 'pause' | 'final';
   id: string;
 }
 
@@ -77,7 +81,20 @@ export interface Game {
   photos: { id: string; stopId: string; taskId: string; title: string }[];
   perfectEstimates: number;
   earnedBadges: string[];
+  /** Geocaching-Notizbuch: gesammelte Cache-Zahlen */
+  cacheLetters?: CacheLetter[];
+  final?: FinalState;
 }
+
+export interface FinalState {
+  solved: boolean;
+  attempts: number;
+  revealed: boolean;
+  found: boolean;
+  foundBy?: 'gps' | 'pin';
+}
+
+export const FINAL_POINTS = { found: 30, firstTry: 10, reveal: 15 };
 
 export interface Career {
   points: number;
@@ -132,6 +149,10 @@ export function resolveStop(s: StopRef): { station?: Station; poi?: Poi } {
   return s.kind === 'station' ? { station: STATION_BY_ID.get(s.id) } : { poi: POI_BY_ID.get(s.id) };
 }
 
+export function finalState(g: Game): FinalState {
+  return g.final ?? { solved: false, attempts: 0, revealed: false, found: false };
+}
+
 export function stopCoords(s: StopRef): LatLng {
   const r = resolveStop(s);
   return (r.station?.coords ?? r.poi?.coords) as LatLng;
@@ -160,9 +181,10 @@ export function startGame(team: Team, config: TourConfig, route: Route): void {
     startedAt: Date.now(),
     team,
     config,
-    stops: route.stops.map((s) =>
-      s.kind === 'station' ? { kind: 'station', id: s.station.id } : { kind: 'pause', id: s.poi.id },
+    stops: route.stops.map((s): StopRef =>
+      s.kind === 'station' ? { kind: 'station', id: s.station.id } : { kind: s.kind, id: s.poi.id },
     ),
+    cacheLetters: [],
     plannedMeters: route.meters,
     plannedMinutes: route.minutes,
     index: 0,
@@ -315,6 +337,12 @@ export function nextStop(skipped = false): void {
     if (!skipped && s.kind === 'station' && !career.collected.includes(s.id)) {
       career = { ...career, collected: [...career.collected, s.id] };
     }
+    // Cache-Zahl ins Notizbuch (nur normale Stationen mit Hinweis, nur wenn ein Finale geplant ist)
+    const clue = s.kind === 'station' ? CACHE_CLUES[s.id] : undefined;
+    const letters = (g.cacheLetters ??= []);
+    if (!skipped && clue && g.stops.some((x) => x.kind === 'final') && !letters.some((l) => l.stationId === s.id)) {
+      letters.push({ letter: LETTERS[letters.length % LETTERS.length], value: clue.value, label: clue.label, stationId: s.id });
+    }
     g.index += 1;
     const newly = computeBadges(g).filter((b) => !g.earnedBadges.includes(b));
     g.earnedBadges.push(...newly);
@@ -378,6 +406,9 @@ export function badgeContext(g: Game): BadgeContext {
     photos: g.photos.length,
     perfectEstimates: g.perfectEstimates,
     toursFinished: career.tours,
+    cacheFound: !!g.final?.found,
+    cacheFirstTry: !!g.final?.found && g.final.attempts === 1 && !g.final.revealed,
+    collectedBadges: new Set(career.badges),
   };
 }
 
@@ -389,4 +420,41 @@ function computeBadges(g: Game): string[] {
 export function resetCareer(): void {
   career = { points: 0, tours: 0, collected: [], badges: [] };
   commit();
+}
+
+/** Koordinaten fürs Finale prüfen */
+export function submitCoords(target: LatLng, north: string, east: string): { north: boolean; east: boolean } {
+  const r = checkCoords(target, north, east);
+  mutate((g) => {
+    const f = (g.final ??= { solved: false, attempts: 0, revealed: false, found: false });
+    if (f.solved) return;
+    f.attempts += 1;
+    if (r.north && r.east) {
+      f.solved = true;
+      if (f.attempts === 1 && !f.revealed) g.points += FINAL_POINTS.firstTry;
+    }
+  });
+  return r;
+}
+
+export function revealCoords(): void {
+  mutate((g) => {
+    const f = (g.final ??= { solved: false, attempts: 0, revealed: false, found: false });
+    if (f.solved) return;
+    f.revealed = true;
+    f.solved = true;
+    g.points = Math.max(0, g.points - FINAL_POINTS.reveal);
+  });
+}
+
+export function treasureFound(by: 'gps' | 'pin'): void {
+  mutate((g) => {
+    const f = (g.final ??= { solved: true, attempts: 0, revealed: false, found: false });
+    if (f.found) return;
+    f.found = true;
+    f.foundBy = by;
+    g.points += FINAL_POINTS.found;
+    const newly = computeBadges(g).filter((b) => !g.earnedBadges.includes(b));
+    g.earnedBadges.push(...newly);
+  });
 }

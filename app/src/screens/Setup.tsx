@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { DISTRICTS, START_POINTS } from '../data/districts';
 import { PAUSE_POIS, STATIONS } from '../data';
-import type { AgeGroup, DistrictId, LatLng } from '../data/types';
+import type { AgeGroup, Category, DistrictId, LatLng } from '../data/types';
 import { formatDistance, distance } from '../lib/geo';
 import { generateRoute } from '../lib/route';
 import { speedFor, youngestGroup } from '../lib/scoring';
@@ -10,6 +10,17 @@ import { lastTeam, startGame, type Member, type NavMode, type Team, type TourCon
 import { MapView } from '../components/MapView';
 
 const AVATARS = ['🦊', '🐧', '🦉', '🐙', '🦁', '🐳', '🦄', '🐢', '🐝', '🦭'];
+const THEMES: { id: Category | 'mix'; label: string }[] = [
+  { id: 'mix', label: '🎲 Bunt gemischt' },
+  { id: 'architektur', label: '🏛️ Architektur & Baukunst' },
+  { id: 'geschichte', label: '📜 Geschichte' },
+  { id: 'wasser', label: '⛵ Wasser, Kanäle & Brücken' },
+  { id: 'technik', label: '⚙️ Technik' },
+  { id: 'kultur', label: '🎨 Kunst & Kultur' },
+  { id: 'natur', label: '🌳 Natur & Parks' },
+  { id: 'erinnern', label: '🕯️ Erinnern (Gedenkorte)' },
+];
+
 const AGE_LABEL: Record<AgeGroup, string> = { kids: 'Kind 6–9', tweens: 'Kind 10–13', adults: 'Teen / Erwachsen' };
 
 export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel: () => void }) {
@@ -25,6 +36,8 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
   const [includePause, setIncludePause] = useState(true);
   const [pin, setPin] = useState('');
   const [startId, setStartId] = useState<string>('u-borgweg');
+  const [theme, setTheme] = useState<Category | 'mix'>('mix');
+  const [cache, setCache] = useState(true);
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e9));
   const pos = usePosition();
 
@@ -46,11 +59,13 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
       start: start.coords,
       minutes,
       kmh: speedFor(youngest),
-      includeQuiet,
+      includeQuiet: includeQuiet || theme === 'erinnern',
       includePause,
       seed,
+      theme,
+      cache,
     });
-  }, [start, districts, minutes, youngest, includeQuiet, includePause, seed]);
+  }, [start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache]);
 
   const teamValid = team.name.trim().length > 0 && team.members.length > 0;
   const pinValid = /^\d{4}$/.test(pin);
@@ -158,8 +173,20 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
           <input type="range" min={30} max={240} step={15} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} />
         </label>
         <label className="field">
+          Thema der Tour
+          <select value={theme} onChange={(e) => setTheme(e.target.value as Category | 'mix')} aria-label="Thema">
+            {THEMES.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+          <small className="muted">Bei einem Thema bevorzugt die Route passende Stationen. Andere kommen nur dazu, wenn es sich lohnt.</small>
+        </label>
+        <label className="field">
           Startpunkt
           <select
+            aria-label="Startpunkt"
             value={startId}
             onChange={(e) => {
               setStartId(e.target.value);
@@ -202,6 +229,13 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
           </span>
         </label>
         <label className="check">
+          <input type="checkbox" checked={cache} onChange={(e) => setCache(e.target.checked)} data-testid="cache-toggle" />
+          <span>
+            <strong>💎 Schatz-Finale wie beim Geocaching</strong>: An jeder Station sammelt ihr eine Cache-Zahl. Am Ende berechnet ihr daraus
+            die Koordinaten eines Schatz-Ortes und sucht ihn nur mit Kompass und Entfernung.
+          </span>
+        </label>
+        <label className="check">
           <input type="checkbox" checked={includePause} onChange={(e) => setIncludePause(e.target.checked)} />
           <span>
             <strong>Pause einplanen</strong> (Spielplatz oder Eisdiele, ab 60 Minuten)
@@ -241,11 +275,13 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
                 ...route.stops.map((s, i) =>
                   s.kind === 'station'
                     ? { id: s.station.id, coords: s.station.coords, emoji: s.station.mode === 'quiet' ? '🕯️' : String(i + 1), label: `${i + 1}. ${s.station.title}` }
-                    : { id: s.poi.id, coords: s.poi.coords, emoji: s.poi.kind === 'eis' ? '🍦' : '🛝', label: `Pause: ${s.poi.title}` },
-                ),
+                    : s.kind === 'pause'
+                      ? { id: s.poi.id, coords: s.poi.coords, emoji: s.poi.kind === 'eis' ? '🍦' : '🛝', label: `Pause: ${s.poi.title}` }
+                      : null,
+                ).filter((m) => m !== null),
               ]}
-              path={[start!.coords, ...route.stops.map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
-              fit={[start!.coords, ...route.stops.map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
+              path={[start!.coords, ...route.stops.filter((s) => s.kind !== 'final').map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
+              fit={[start!.coords, ...route.stops.filter((s) => s.kind !== 'final').map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
               height={260}
             />
           ) : (
@@ -260,10 +296,12 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
                       {s.station.mode === 'quiet' ? '🕯️ ' : ''}
                       {s.station.title}
                     </>
-                  ) : (
+                  ) : s.kind === 'pause' ? (
                     <>
                       {s.poi.kind === 'eis' ? '🍦' : '🛝'} Pause: {s.poi.title}
                     </>
+                  ) : (
+                    <>💎 Schatz-Finale (Ort bleibt geheim!)</>
                   )}
                 </li>
               ))}
@@ -296,6 +334,8 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
               start: start!.coords,
               startLabel: start!.label,
               seed,
+              theme,
+              cache,
             };
             startGame({ ...team, name: team.name.trim() }, config, route!);
             onStarted();

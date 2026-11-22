@@ -1,9 +1,13 @@
 import { CREDITS } from '../data';
+import { useState } from 'react';
 import { setSimulated, usePosition } from '../lib/location';
+import { loadJSON, saveJSON } from '../lib/storage';
+import { OC_KEY_STORAGE } from '../components/NearbyCaches';
 import { resetCareer } from '../state/game';
 
 export function Settings({ onBack }: { onBack: () => void }) {
   const pos = usePosition();
+  const [ocKey, setOcKey] = useState(() => loadJSON<string>(OC_KEY_STORAGE, ''));
   return (
     <div className="screen">
       <h2>⚙️ Einstellungen & Infos</h2>
@@ -24,10 +28,31 @@ export function Settings({ onBack }: { onBack: () => void }) {
         Album & Abzeichen zurücksetzen
       </button>
 
+      <h3>🌍 Echte Geocaches</h3>
+      <p>
+        An jeder Station gibt es Links zur Geocaching.com- und Opencaching.de-Karte. Mit einem eigenen, kostenlosen Schlüssel von
+        Opencaching.de zeigt die App Caches in der Nähe direkt an. Den Schlüssel bekommt ihr unter{' '}
+        <a href="https://www.opencaching.de/okapi/signup.html" target="_blank" rel="noreferrer">
+          opencaching.de/okapi/signup.html
+        </a>
+        . Er bleibt nur auf diesem Gerät gespeichert.
+      </p>
+      <label className="field">
+        Opencaching-Schlüssel (Consumer Key)
+        <input
+          value={ocKey}
+          placeholder="z. B. AbCdEf123…"
+          onChange={(e) => {
+            setOcKey(e.target.value.trim());
+            saveJSON(OC_KEY_STORAGE, e.target.value.trim());
+          }}
+        />
+      </label>
+
       <h3>Datenschutz</h3>
       <p>
         Die App hat kein Konto und keinen Server. Spielstand, Fotos und Album bleiben nur auf diesem Gerät. Euer Standort wird nur
-        im Browser verwendet und nirgendwohin gesendet. Für die Karte werden Kartenkacheln von OpenStreetMap geladen.
+        im Browser verwendet und nirgendwohin gesendet. Für die Karte werden Kartenkacheln von OpenStreetMap geladen. Nur wenn ihr echte Geocaches abruft, wird der Standort der Station an Opencaching.de gesendet.
       </p>
 
       <h3>Quellen & Lizenzen</h3>

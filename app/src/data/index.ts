@@ -1,10 +1,11 @@
 import type { Poi, Station } from './types';
 import { STATIONS_WINTERHUDE } from './stations-winterhude';
 import { STATIONS_ALSTERDORF, STATIONS_BARMBEK } from './stations-barmbek-alsterdorf';
+import { STATIONS_ARCHITEKTUR } from './stations-architektur';
 import poisJson from './pois.json';
 import creditsJson from '../../public/img/credits.json';
 
-export const STATIONS: Station[] = [...STATIONS_WINTERHUDE, ...STATIONS_BARMBEK, ...STATIONS_ALSTERDORF].map((s) => ({
+export const STATIONS: Station[] = [...STATIONS_WINTERHUDE, ...STATIONS_BARMBEK, ...STATIONS_ALSTERDORF, ...STATIONS_ARCHITEKTUR].map((s) => ({
   ...s,
   // Stolperstein-Stationen haben ein Foto unter ihrer eigenen ID
   images: s.images.length ? s.images : [s.id],

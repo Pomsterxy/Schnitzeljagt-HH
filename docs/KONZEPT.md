@@ -190,3 +190,10 @@ Umgesetzt und getestet (Logiktests + kompletter Spieldurchlauf im Browser):
 
 Abweichung vom Konzept: Die Karte nutzt OpenStreetMap-Kacheln mit Zwischenspeicher statt eines vorab geladenen PMTiles-Ausschnitts.
 Die Fußwege werden mit einem Umwegfaktor (1,3 × Luftlinie) geschätzt statt mit OSRM. Beides kann später nachgerüstet werden.
+
+### Erweiterung v0.2: Geocaching & Architektur
+
+- Schatz-Finale als Multi-Cache: Cache-Zahlen pro Station (`app/src/data/cache-clues.ts`), Formel mit Buchstaben (für Kinder einfach, sonst mit zwei Buchstaben), Koordinateneingabe im Geocaching-Format, Suche ohne Karte, Eltern-PIN als Fallback
+- Echte Geocaches: Kartenlinks zu Geocaching.com/Opencaching.de an jeder Station; Live-Liste über die Opencaching-API mit eigenem Schlüssel
+- Themen-Touren (Architektur, Geschichte, Wasser, Technik, Kultur, Natur, Erinnern)
+- 8 zusätzliche Architektur-Stationen (Schumacher-Schulen, Kirchen 1910–1962, City-Nord-Bürohäuser, U-Bahnhof von 1912)

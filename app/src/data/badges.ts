@@ -12,6 +12,9 @@ export interface BadgeContext {
   photos: number;
   perfectEstimates: number;
   toursFinished: number;
+  cacheFound?: boolean;
+  cacheFirstTry?: boolean;
+  collectedBadges?: Set<string>;
 }
 
 export interface Badge {
@@ -58,6 +61,15 @@ export const BADGES: Badge[] = [
   { id: 'all-winterhude', icon: '⭐', title: 'Winterhude komplett', description: 'Alle Stationen in Winterhude gesammelt.', check: (c) => districtDone(c, 'winterhude') },
   { id: 'all-barmbek', icon: '⭐', title: 'Barmbek komplett', description: 'Alle Stationen in Barmbek-Nord gesammelt.', check: (c) => districtDone(c, 'barmbek-nord') },
   { id: 'all-alsterdorf', icon: '⭐', title: 'Alsterdorf komplett', description: 'Alle Stationen in Alsterdorf gesammelt.', check: (c) => districtDone(c, 'alsterdorf') },
+  { id: 'cacher', icon: '💎', title: 'Schatzfinder', description: 'Den Schatz am Ende eines Multi-Caches gefunden.', check: (c) => !!c.cacheFound },
+  { id: 'koordinaten', icon: '🧮', title: 'Koordinaten-Profi', description: 'Die Schatz-Koordinaten im ersten Versuch richtig berechnet.', check: (c) => !!c.cacheFirstTry },
+  {
+    id: 'architektur-profi',
+    icon: '🏛️',
+    title: 'Architektur-Profi',
+    description: '6 Architektur-Stationen in einer Tour besucht.',
+    check: (c) => has(c, 'architektur', 6),
+  },
   { id: 'drei-touren', icon: '🎖️', title: 'Stammgast', description: '3 Touren beendet.', check: (c) => c.toursFinished >= 3 },
 ];
 
