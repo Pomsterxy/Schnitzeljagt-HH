@@ -174,3 +174,19 @@ Zusätzlich: `data/pois/` (Spielplätze, WCs, Eisdielen aus OSM), `data/matrix.j
 - Erweiterung auf weitere Stadtteile (Altstadt, HafenCity, Grindel …)
 - Englische Version
 - Saisonale Sondertouren (Halloween, Advent)
+
+## 12. Umsetzungsstand (v0.1, November 2026)
+
+Umgesetzt und getestet (Logiktests + kompletter Spieldurchlauf im Browser):
+
+- PWA mit Offline-Speicher für alle Texte und Bilder, Kartenkacheln werden beim Ansehen zwischengespeichert
+- 43 Stationen in Winterhude, Barmbek-Nord und Alsterdorf, davon 10 Gedenkorte im ruhigen Modus (siehe `RECHERCHE.md`)
+- Team mit Altersstufen, Routengenerator nach Stadtteil, Dauer und Startpunkt, Pausen aus OpenStreetMap
+- GPS-Freischaltung mit Radius pro Station, Eltern-PIN als Fallback, Überspringen per PIN
+- Karten- und Abenteuermodus mit Richtungspfeil, Heiß/Kalt, Wegbeschreibung und Rätsel
+- Aufgaben: Quiz, Schätzen, Zählen, Beobachten (Text), Foto, Nachdenken, mit Hinweisen und zweitem Versuch
+- Punkte, 19 Abzeichen, Ränge, Sammelalbum, Urkunde (PNG), Fotoalbum, Vorlesefunktion
+- Testmodus zum Ausprobieren am Schreibtisch
+
+Abweichung vom Konzept: Die Karte nutzt OpenStreetMap-Kacheln mit Zwischenspeicher statt eines vorab geladenen PMTiles-Ausschnitts.
+Die Fußwege werden mit einem Umwegfaktor (1,3 × Luftlinie) geschätzt statt mit OSRM. Beides kann später nachgerüstet werden.

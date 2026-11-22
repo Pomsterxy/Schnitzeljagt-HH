@@ -1,0 +1,2117 @@
+[
+{
+"id": "spielplatz-n33412746",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.600957,
+9.999201
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-n268505728",
+"kind": "spielplatz",
+"title": "Waldspielplatz",
+"coords": [
+53.594171,
+10.005204
+],
+"district": "winterhude"
+},
+{
+"id": "eis-n287822858",
+"kind": "eis",
+"title": "Eis Warneke",
+"coords": [
+53.585452,
+10.033229
+],
+"district": "winterhude",
+"note": "Öffnungszeiten: Tu-Su 11:00-22:00, rollstuhlgerecht"
+},
+{
+"id": "spielplatz-n424220402",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.580794,
+10.040837
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n471990268",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.593269,
+10.045938
+],
+"district": "barmbek-nord"
+},
+{
+"id": "wc-n610918228",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.594856,
+9.999734
+],
+"district": "winterhude",
+"note": "kostenpflichtig, rollstuhlgerecht"
+},
+{
+"id": "spielplatz-n687710192",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.58368,
+9.99413
+],
+"district": "winterhude"
+},
+{
+"id": "eis-n1106752693",
+"kind": "eis",
+"title": "Eis Pavillon",
+"coords": [
+53.595301,
+10.043433
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n1404742818",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.613414,
+10.007887
+],
+"district": "alsterdorf"
+},
+{
+"id": "wc-n1657352393",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.588827,
+10.032563
+],
+"district": "winterhude",
+"note": "Öffnungszeiten: 24/7, kostenpflichtig"
+},
+{
+"id": "spielplatz-n1665067650",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.600956,
+10.014376
+],
+"district": "winterhude"
+},
+{
+"id": "wc-n1942791856",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.590898,
+10.015252
+],
+"district": "winterhude",
+"note": "kostenpflichtig, rollstuhlgerecht"
+},
+{
+"id": "spielplatz-n2058927440",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.578158,
+10.046713
+],
+"district": "barmbek-nord"
+},
+{
+"id": "eis-n2074551777",
+"kind": "eis",
+"title": "Lecassia",
+"coords": [
+53.587691,
+10.045591
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: Mo-Su 11:00-18:00"
+},
+{
+"id": "wc-n2426396452",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.613163,
+10.02448
+],
+"district": "alsterdorf",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "wc-n2447900412",
+"kind": "wc",
+"title": "Rückseite Kapelle 4",
+"coords": [
+53.616562,
+10.040991
+],
+"district": "alsterdorf"
+},
+{
+"id": "wc-n2450852279",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.596827,
+10.027295
+],
+"district": "winterhude",
+"note": "kostenpflichtig, rollstuhlgerecht"
+},
+{
+"id": "eis-n2708946610",
+"kind": "eis",
+"title": "Eis & Innig",
+"coords": [
+53.582987,
+10.010447
+],
+"district": "winterhude",
+"note": "Öffnungszeiten: 13:30-18:00"
+},
+{
+"id": "wc-n2832520403",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.594457,
+10.000828
+],
+"district": "winterhude",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "eis-n3686157713",
+"kind": "eis",
+"title": "Mio Eiscafe",
+"coords": [
+53.592142,
+10.043904
+],
+"district": "barmbek-nord",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "wc-n3750466150",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.59691,
+10.015463
+],
+"district": "winterhude",
+"note": "kostenpflichtig"
+},
+{
+"id": "wc-n3831462270",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.591868,
+10.024604
+],
+"district": "winterhude",
+"note": "kostenpflichtig"
+},
+{
+"id": "eis-n3876155549",
+"kind": "eis",
+"title": "Café P5",
+"coords": [
+53.586129,
+10.0434
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: Mo,Th,Fr,Sa 10:00-18:00; Su 12:00-18:00; Tu, We off"
+},
+{
+"id": "spielplatz-n4184245061",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.596182,
+10.001901
+],
+"district": "winterhude"
+},
+{
+"id": "wc-n4228143302",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.601033,
+9.991034
+],
+"district": "winterhude"
+},
+{
+"id": "wc-n4277813740",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.592038,
+10.028421
+],
+"district": "winterhude",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "wc-n4399732310",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.620983,
+10.032351
+],
+"district": "alsterdorf",
+"note": "Öffnungszeiten: 24/7, kostenpflichtig, rollstuhlgerecht"
+},
+{
+"id": "wc-n4823975346",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.596471,
+10.021485
+],
+"district": "winterhude",
+"note": "kostenpflichtig, rollstuhlgerecht, Wickeltisch"
+},
+{
+"id": "wc-n4933935075",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.620727,
+10.03395
+],
+"district": "alsterdorf",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "eis-n5007332935",
+"kind": "eis",
+"title": "Froyowelt",
+"coords": [
+53.586027,
+10.005725
+],
+"district": "winterhude",
+"note": "Öffnungszeiten: Mo-Fr 13:00-18:00; Sa,Su 12:30-18:00"
+},
+{
+"id": "spielplatz-n5120234055",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.596187,
+10.000442
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-n5120346994",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.600937,
+9.998437
+],
+"district": "winterhude"
+},
+{
+"id": "wc-n5513401959",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.588065,
+10.043397
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: Mo-Fr 08:00-18:00, kostenpflichtig, rollstuhlgerecht"
+},
+{
+"id": "spielplatz-n5734699278",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.591656,
+10.036042
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-n5734699288",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.593181,
+10.035552
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-n5734699290",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.595759,
+10.034932
+],
+"district": "winterhude"
+},
+{
+"id": "eis-n5795798113",
+"kind": "eis",
+"title": "Eis-Cafe Toni's Gelato",
+"coords": [
+53.595717,
+10.043921
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n5961709160",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.595138,
+10.035083
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-n5961709162",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.595651,
+10.035071
+],
+"district": "winterhude"
+},
+{
+"id": "wc-n6008084485",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.594638,
+10.043591
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: Mo-Fr 07:00-18:30; Su 08:00-17:30; Sa 07:00-17:30, rollstuhlgerecht"
+},
+{
+"id": "wc-n6008084486",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.593125,
+10.043958
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: Fr,Sa 11:30-23:00; Su-Th 11:30-22:00, rollstuhlgerecht"
+},
+{
+"id": "wc-n6535707902",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.60246,
+10.044122
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n7157143087",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.58827,
+10.050438
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n7623118585",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.605171,
+10.038772
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n7646478385",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.60286,
+10.035965
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n9430706046",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.596371,
+10.044569
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n9460089934",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.61002,
+10.033803
+],
+"district": "barmbek-nord"
+},
+{
+"id": "wc-n9803790696",
+"kind": "wc",
+"title": "Toilette für alle",
+"coords": [
+53.602702,
+10.031299
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: 24/7, rollstuhlgerecht, Wickeltisch"
+},
+{
+"id": "eis-n10838063048",
+"kind": "eis",
+"title": "eis | fuhle | 460",
+"coords": [
+53.604927,
+10.040297
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n10911722910",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.594992,
+10.041569
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n10911722928",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.594051,
+10.04051
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n10911722930",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.592529,
+10.039153
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-n10911722932",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.594443,
+10.039341
+],
+"district": "barmbek-nord"
+},
+{
+"id": "eis-n11462304643",
+"kind": "eis",
+"title": "Leontes",
+"coords": [
+53.589449,
+10.045719
+],
+"district": "barmbek-nord"
+},
+{
+"id": "wc-n12122650000",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.598393,
+10.030709
+],
+"district": "winterhude"
+},
+{
+"id": "wc-n12325599145",
+"kind": "wc",
+"title": "Öffentliche Toilette",
+"coords": [
+53.589064,
+9.991404
+],
+"district": "winterhude",
+"note": "kostenpflichtig, rollstuhlgerecht"
+},
+{
+"id": "spielplatz-n13042820612",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.612739,
+10.020014
+],
+"district": "alsterdorf"
+},
+{
+"id": "eis-n13756696644",
+"kind": "eis",
+"title": "Eis",
+"coords": [
+53.590837,
+10.015318
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w4905641",
+"kind": "spielplatz",
+"title": "Spielplatz Hartzloh",
+"coords": [
+53.60112,
+10.039667
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w22673246",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.581603,
+10.051964
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w24250360",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.584512,
+10.054444
+],
+"district": "barmbek-nord",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w25558524",
+"kind": "spielplatz",
+"title": "Spielplatz Pfenningsbusch",
+"coords": [
+53.580015,
+10.050021
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w27280631",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.586555,
+10.002559
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w27463553",
+"kind": "spielplatz",
+"title": "Bauspielplatz Poßmoorwiese",
+"coords": [
+53.588039,
+10.015019
+],
+"district": "winterhude",
+"note": "Öffnungszeiten: Tu-Fr 14:00-19:00; Sa 11:00-17:00"
+},
+{
+"id": "spielplatz-w31830475",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.588937,
+9.989655
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w31830725",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.589085,
+9.989988
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w32810703",
+"kind": "spielplatz",
+"title": "DRK-Aktivspielplatz Villa Kunterbunt",
+"coords": [
+53.615885,
+10.055215
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: Mo-Fr 14:00-19:00; Sa 13:00-18:00"
+},
+{
+"id": "spielplatz-w32952927",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.584088,
+10.010541
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w34321974",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.580911,
+10.033192
+],
+"district": "winterhude",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w34992753",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.596227,
+10.02325
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w34992800",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.589343,
+10.047525
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w35041189",
+"kind": "spielplatz",
+"title": "Spielplatz Schwalbenplatz",
+"coords": [
+53.594168,
+10.046216
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w35608883",
+"kind": "spielplatz",
+"title": "Bauspielplatz Rübezahl",
+"coords": [
+53.589962,
+10.038806
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: Tu-Fr 13:00-18:00; Sa 12:00-16:00, rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w36901595",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.583237,
+10.044975
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w40690805",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.600028,
+10.048593
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w48052089",
+"kind": "spielplatz",
+"title": "Spielplatz Seelemannpark",
+"coords": [
+53.592086,
+9.994217
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w48814208",
+"kind": "spielplatz",
+"title": "Spielplatz Neue Wöhr",
+"coords": [
+53.598258,
+10.038953
+],
+"district": "barmbek-nord",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w48815678",
+"kind": "spielplatz",
+"title": "Spielplatz Hermann-Kauffmann-Straße",
+"coords": [
+53.594036,
+10.040609
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w51366034",
+"kind": "spielplatz",
+"title": "Spielplatz Rungestraße",
+"coords": [
+53.603256,
+10.047393
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w51366043",
+"kind": "spielplatz",
+"title": "Spielplatz Meister-Francke-Straße",
+"coords": [
+53.606528,
+10.04368
+],
+"district": "barmbek-nord",
+"note": "Öffnungszeiten: 24/7"
+},
+{
+"id": "spielplatz-w53292812",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.585057,
+10.033183
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w55301786",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.585768,
+10.011466
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w55301794",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.58879,
+10.018176
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w55466787",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.587105,
+10.022033
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w55466788",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.58654,
+10.021975
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w55466793",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.587544,
+10.025956
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w55696184",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.58213,
+10.03078
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w56253600",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.592898,
+10.019932
+],
+"district": "winterhude",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w60558698",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.601802,
+10.006733
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w60917687",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.582291,
+10.006104
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w62046525",
+"kind": "spielplatz",
+"title": "Giraffenspielplatz",
+"coords": [
+53.604865,
+10.052187
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w62046578",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.609369,
+10.042185
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w62046579",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.609047,
+10.042302
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w65620397",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.584961,
+10.038165
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w77302973",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.580481,
+10.017602
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w83897977",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603992,
+9.99959
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w89124671",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.620104,
+10.010617
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w100262754",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.590531,
+10.051681
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w111351739",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.613008,
+10.045623
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w118847370",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.581943,
+10.026144
+],
+"district": "winterhude",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w118847379",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.581928,
+10.02546
+],
+"district": "winterhude",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w143824747",
+"kind": "spielplatz",
+"title": "Lattenkamp-Spielplatz",
+"coords": [
+53.599962,
+9.992164
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w146171107",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.606269,
+10.003884
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w147001963",
+"kind": "spielplatz",
+"title": "Spielplatz Hartzlohplatz",
+"coords": [
+53.602466,
+10.044802
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w161456197",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.581462,
+10.021462
+],
+"district": "winterhude",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w171809762",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.614501,
+10.009705
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w171809763",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.61703,
+10.00982
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w186776496",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.584544,
+10.010937
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w220059747",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.578311,
+10.021274
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w230681153",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.614033,
+10.006291
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w243026337",
+"kind": "spielplatz",
+"title": "Spielplatz Noldering",
+"coords": [
+53.606741,
+10.047284
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w244425684",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.594073,
+10.054655
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w251489816",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.586699,
+10.055243
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w275276855",
+"kind": "spielplatz",
+"title": "Spielplatz Spiel- und Bolzplatz Alte Wöhr",
+"coords": [
+53.59635,
+10.03319
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w282412652",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.584184,
+10.016691
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w330628394",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.610557,
+10.03848
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w337678273",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.583343,
+10.018386
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w355248901",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.583679,
+10.03899
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w398912032",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.618219,
+10.01774
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w439111774",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.613585,
+10.004926
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w458995212",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.57855,
+10.024888
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w483252394",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603876,
+10.037605
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w485193988",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.609149,
+10.03599
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w485194092",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.610106,
+10.035035
+],
+"district": "barmbek-nord",
+"note": "rollstuhlgerecht"
+},
+{
+"id": "spielplatz-w503119415",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.582815,
+10.013354
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w527100169",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.590784,
+10.040282
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w528484606",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.580495,
+10.032862
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w533744566",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.610875,
+10.034355
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w533745386",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.610665,
+10.033774
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w544734245",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.616502,
+10.011462
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w627374230",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.585043,
+10.039216
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w629855575",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.61865,
+10.013495
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w629855576",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.618523,
+10.013646
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w629868399",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.618129,
+10.008996
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w629868420",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.617206,
+10.010298
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w629868421",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.617232,
+10.009554
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w660959202",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.607711,
+10.048691
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w686260213",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.61874,
+10.020157
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w686260216",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.61864,
+10.01978
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w691028377",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.619269,
+10.017268
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w691028380",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.618903,
+10.017442
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w692541843",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.619704,
+10.018992
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w693934828",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.616335,
+10.010448
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w693934829",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.61646,
+10.010778
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w693934830",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.616135,
+10.009758
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w693934925",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.618188,
+10.014282
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w712544270",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603246,
+10.037909
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w712544271",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.601402,
+10.038188
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w752986212",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.611919,
+10.047214
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w849283600",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.591527,
+9.991406
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w904819395",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.609411,
+10.036249
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w904843339",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.618941,
+10.016317
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w906583630",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.604811,
+10.029368
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w906583634",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.605345,
+10.02827
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w907701930",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603277,
+10.030154
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w927109411",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.605603,
+10.028893
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w951381649",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.605862,
+10.014296
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w952902250",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.593472,
+10.006927
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w963342206",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.596402,
+10.05114
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w976637480",
+"kind": "spielplatz",
+"title": "Spielplatz Kita Feldahornweg",
+"coords": [
+53.598794,
+10.033674
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w987186254",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.61343,
+10.00996
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w988374416",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.617391,
+10.01265
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w991806395",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.617919,
+10.020014
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w1002786694",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.597856,
+10.004522
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1009164923",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.620045,
+10.027415
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w1024426993",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.619516,
+10.013476
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w1024426994",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.621725,
+10.011602
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w1028137661",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.604752,
+10.02958
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1028137667",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.605194,
+10.028448
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1028137680",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.60575,
+10.030222
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1028137695",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.605153,
+10.030751
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1028137696",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.60408,
+10.029942
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1028137697",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.604293,
+10.029871
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1028137698",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603715,
+10.030225
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1054829779",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.598315,
+10.033782
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1057167917",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.595919,
+9.990358
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1093922702",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.602563,
+10.037381
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1093922703",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.602609,
+10.037869
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1093922704",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.602657,
+10.038343
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1093922723",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.604334,
+10.03737
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1102871246",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603088,
+10.031635
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1102871253",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603298,
+10.031585
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1102871255",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603422,
+10.031541
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1102871263",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.603751,
+10.031465
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1104353707",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.596054,
+10.051906
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1105760384",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.60408,
+10.031356
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1105760388",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.604378,
+10.031265
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1122144939",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.597695,
+10.034755
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1196276056",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.597563,
+10.03428
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1210725869",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.608913,
+10.034298
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1210725870",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.609217,
+10.03513
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1219536760",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.609921,
+10.035558
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1233267721",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.608986,
+10.035064
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1235502865",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.597803,
+10.052487
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1246707052",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.601925,
+10.052006
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1257594340",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.597093,
+10.05469
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1299937497",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.596077,
+9.995111
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-w1301264030",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.615419,
+10.00904
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w1340148096",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.612542,
+10.054438
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1340148097",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.613193,
+10.054853
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1342316372",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.613421,
+10.052715
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1342316373",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.613442,
+10.052337
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1492264438",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.613735,
+10.027998
+],
+"district": "alsterdorf"
+},
+{
+"id": "spielplatz-w1507098197",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.594817,
+10.051289
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1507098198",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.595022,
+10.051303
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-w1507098206",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.594924,
+10.051368
+],
+"district": "barmbek-nord"
+},
+{
+"id": "spielplatz-r361041",
+"kind": "spielplatz",
+"title": "Spielplatz",
+"coords": [
+53.597179,
+10.0221
+],
+"district": "winterhude"
+},
+{
+"id": "spielplatz-r393326",
+"kind": "spielplatz",
+"title": "Spielplatz Genslerstraße",
+"coords": [
+53.59256,
+10.039514
+],
+"district": "barmbek-nord"
+}
+]
