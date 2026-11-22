@@ -1,0 +1,37 @@
+import type { District, StartPoint } from './types';
+
+export const DISTRICTS: District[] = [
+  {
+    id: 'winterhude',
+    name: 'Winterhude',
+    center: [53.5925, 10.012],
+    intro:
+      'Winterhude war einmal ein kleines Dorf mit sieben Bauernhöfen. Heute gibt es hier den Stadtpark, Kanäle mit Alsterdampfern, rote Klinkerhäuser und einen Wasserturm voller Sterne.',
+  },
+  {
+    id: 'barmbek-nord',
+    name: 'Barmbek-Nord',
+    center: [53.594, 10.042],
+    intro:
+      'Barmbek war ein Arbeiterviertel mit vielen Fabriken. Wo früher Gummi und Zinnformen hergestellt wurden, erzählt heute das Museum der Arbeit davon, und davor liegt ein riesiges Tunnelbohrrad.',
+  },
+  {
+    id: 'alsterdorf',
+    name: 'Alsterdorf',
+    center: [53.611, 10.013],
+    intro:
+      'In Alsterdorf fließt die Alster zwischen Ufermauern, Treppen und vielen Brücken. Hier steht auch eine über 100 Jahre alte Feuerwache, und hier liegt die Evangelische Stiftung Alsterdorf mit einem wichtigen Gedenkort.',
+  },
+];
+
+export const START_POINTS: StartPoint[] = [
+  { id: 'u-borgweg', title: 'U Borgweg (Stadtpark)', coords: [53.59078, 10.01519], district: 'winterhude' },
+  { id: 'u-saarlandstrasse', title: 'U Saarlandstraße', coords: [53.58889, 10.0325], district: 'winterhude' },
+  { id: 'u-hudtwalckerstrasse', title: 'U Hudtwalckerstraße', coords: [53.59464, 9.99605], district: 'winterhude' },
+  { id: 'u-sierichstrasse', title: 'U Sierichstraße', coords: [53.59028, 10.00111], district: 'winterhude' },
+  { id: 'bf-barmbek', title: 'U/S Barmbek', coords: [53.58726, 10.04462], district: 'barmbek-nord' },
+  { id: 's-alte-woehr', title: 'S Alte Wöhr', coords: [53.59806, 10.03536], district: 'barmbek-nord' },
+  { id: 's-ruebenkamp', title: 'S Rübenkamp', coords: [53.60661, 10.03293], district: 'barmbek-nord' },
+  { id: 'u-alsterdorf', title: 'U Alsterdorf', coords: [53.60639, 10.01167], district: 'alsterdorf' },
+  { id: 'u-sengelmannstrasse', title: 'U Sengelmannstraße', coords: [53.60944, 10.02194], district: 'alsterdorf' },
+];
