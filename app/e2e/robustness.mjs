@@ -4,7 +4,8 @@ const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 
 const URL = process.argv[2] ?? 'http://localhost:4173/';
-const browser = await chromium.launch();
+// PW_PROXY: optionaler Proxy (z. B. in abgeschotteten Umgebungen)
+const browser = await chromium.launch(process.env.PW_PROXY ? { proxy: { server: process.env.PW_PROXY } } : {});
 const fail = (m) => {
   console.error('FEHLER: ' + m);
   process.exit(1);
