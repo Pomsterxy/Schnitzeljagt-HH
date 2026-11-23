@@ -4,6 +4,7 @@ import { abandonGame, useGame } from '../state/game';
 import { Lilli } from '../components/Lilli';
 import { Icon } from '../components/Icon';
 import { play, setSoundOn, useSoundOn } from '../lib/feedback';
+import { requestMotionPermission } from '../lib/pedometer';
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -94,7 +95,7 @@ export function Home({
               {nextStation ? `Nächstes Ziel: ${nextStation.teaser}` : next?.kind === 'final' ? 'Nächstes Ziel: der Schatz!' : 'Nächster Halt: Pause'}
             </div>
           </div>
-          <button type="button" className="play-fab" aria-label="Weiterspielen" onClick={() => { play('select'); onContinue(); }}>
+          <button type="button" className="play-fab" aria-label="Weiterspielen" onClick={() => { play('select'); void requestMotionPermission(); onContinue(); }}>
             <Icon name="play" size={18} color="#fff" />
           </button>
         </div>

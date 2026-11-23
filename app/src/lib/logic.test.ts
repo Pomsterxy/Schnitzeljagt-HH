@@ -256,3 +256,32 @@ describe('Themen & Finale in der Route', () => {
     }
   });
 });
+
+describe('Schrittzähler', () => {
+  it('zählt Schritte in einem gleichmäßigen Gangmuster', async () => {
+    const { StepDetector } = await import('./pedometer');
+    const det = new StepDetector();
+    let steps = 0;
+    // 30 s Gehen mit 1,8 Schritten/s bei 50 Hz Abtastung
+    for (let i = 0; i < 1500; i++) {
+      const t = i * 20;
+      const z = 9.81 + 2.5 * Math.sin((2 * Math.PI * 1.8 * t) / 1000);
+      if (det.push(t, 0.3, 0.2, z)) steps++;
+    }
+    expect(steps).toBeGreaterThan(48);
+    expect(steps).toBeLessThan(58);
+  });
+  it('zählt im Stillstand (nur Rauschen) keine Schritte', async () => {
+    const { StepDetector } = await import('./pedometer');
+    const det = new StepDetector();
+    let steps = 0;
+    for (let i = 0; i < 1500; i++) if (det.push(i * 20, 0.1, 0.1, 9.81 + Math.sin(i * 7.3) * 0.2)) steps++;
+    expect(steps).toBe(0);
+  });
+  it('schätzt und formatiert', async () => {
+    const { estimateSteps, formatDuration, strideFor } = await import('./pedometer');
+    expect(estimateSteps(1000, strideFor('kids'))).toBe(2000);
+    expect(formatDuration(95 * 60000)).toBe('1 h 35 min');
+    expect(formatDuration(42 * 60000)).toBe('42 min');
+  });
+});

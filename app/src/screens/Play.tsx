@@ -4,7 +4,9 @@ import { bearing, compassWord, distance, formatDistance, isWithinUnlock, tempera
 import { enableCompass, setSimulatedPosition, startTracking, usePosition } from '../lib/location';
 import { POINTS, tasksFor, youngestGroup } from '../lib/scoring';
 import { play, setSoundOn, useSoundOn } from '../lib/feedback';
+import { estimateSteps, formatSteps, startPedometer, strideFor } from '../lib/pedometer';
 import {
+  addActivity,
   currentStop,
   nextStop,
   resolveStop,
@@ -81,6 +83,28 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
   const [notebook, setNotebook] = useState(false);
   useWakeLock();
 
+  // Dezenter Schrittzähler + reine Spielzeit (nur solange die Tour offen und sichtbar ist)
+  useEffect(() => {
+    let last = Date.now();
+    const stop = startPedometer((n) => addActivity(n, 0));
+    const tick = setInterval(() => {
+      const now = Date.now();
+      if (document.visibilityState === 'visible') addActivity(0, now - last);
+      last = now;
+    }, 15000);
+    const onVis = () => {
+      if (document.visibilityState === 'visible') last = Date.now();
+    };
+    document.addEventListener('visibilitychange', onVis);
+    return () => {
+      const now = Date.now();
+      if (document.visibilityState === 'visible') addActivity(0, now - last);
+      clearInterval(tick);
+      document.removeEventListener('visibilitychange', onVis);
+      stop();
+    };
+  }, []);
+
   useEffect(() => {
     startTracking();
   }, []);
@@ -145,8 +169,11 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
           <div className="dialog" onClick={(e) => e.stopPropagation()}>
             <div className="grabber" />
             <h3>Menü</h3>
-            <p className="muted">
-              Gelaufen: {formatDistance(game.meters)} · GPS: {pos.status === 'ok' ? `±${Math.round(pos.accuracy)} m` : pos.status}
+            <p className="muted" data-testid="menu-steps">
+              {(game.steps ?? 0) > 0
+                ? `${formatSteps(game.steps ?? 0)} Schritte`
+                : `ca. ${formatSteps(estimateSteps(game.meters, strideFor(youngestGroup(game.team.members.map((m) => m.age)))))} Schritte`}{' '}
+              · {formatDistance(game.meters)} · GPS: {pos.status === 'ok' ? `±${Math.round(pos.accuracy)} m` : pos.status}
             </p>
             <div className="sheet-list">
               {hasFinal && (

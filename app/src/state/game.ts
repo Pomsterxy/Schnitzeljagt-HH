@@ -83,6 +83,10 @@ export interface Game {
   earnedBadges: string[];
   /** Geocaching-Notizbuch: gesammelte Cache-Zahlen */
   cacheLetters?: CacheLetter[];
+  /** Schritte, die der Bewegungssensor gezählt hat */
+  steps?: number;
+  /** Reine Spielzeit in ms (nur während die Tour geöffnet ist) */
+  activeMs?: number;
   final?: FinalState;
 }
 
@@ -185,6 +189,8 @@ export function startGame(team: Team, config: TourConfig, route: Route): void {
       s.kind === 'station' ? { kind: 'station', id: s.station.id } : { kind: s.kind, id: s.poi.id },
     ),
     cacheLetters: [],
+    steps: 0,
+    activeMs: 0,
     plannedMeters: route.meters,
     plannedMinutes: route.minutes,
     index: 0,
@@ -457,4 +463,24 @@ export function treasureFound(by: 'gps' | 'pin'): void {
     const newly = computeBadges(g).filter((b) => !g.earnedBadges.includes(b));
     g.earnedBadges.push(...newly);
   });
+}
+
+/** Schritte und Spielzeit aufaddieren (gebündelt, damit nicht ständig gespeichert wird) */
+export function addActivity(steps: number, ms: number): void {
+  if (!game || game.finishedAt || (steps <= 0 && ms <= 0)) return;
+  mutate((g) => {
+    g.steps = (g.steps ?? 0) + Math.max(0, steps);
+    g.activeMs = (g.activeMs ?? 0) + Math.max(0, Math.min(ms, 5 * 60000));
+  });
+}
+
+/** Auswertung für den Abschluss: Schritte (gezählt oder geschätzt), Strecke, Zeit */
+export function tourStats(g: Game, stride: number): { steps: number; estimated: boolean; meters: number; ms: number } {
+  const meters = Math.max(g.meters, 0);
+  const counted = g.steps ?? 0;
+  // Sensorwerte nur nehmen, wenn sie plausibel zur Strecke passen (Handy lag nicht nur in der Tasche herum)
+  const plausible = counted > 0 && (meters < 100 || counted * stride > meters * 0.4);
+  const steps = plausible ? counted : Math.round(meters / stride);
+  const ms = g.activeMs && g.activeMs > 60000 ? g.activeMs : (g.finishedAt ?? Date.now()) - g.startedAt;
+  return { steps, estimated: !plausible, meters, ms };
 }

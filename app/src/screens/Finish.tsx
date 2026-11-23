@@ -4,7 +4,9 @@ import { formatDistance } from '../lib/geo';
 import { drawCertificate, shareOrDownload } from '../lib/certificate';
 import { loadPhoto } from '../lib/storage';
 import { play } from '../lib/feedback';
-import { finishedStations, finishGame, useGame } from '../state/game';
+import { finishedStations, finishGame, tourStats, useGame } from '../state/game';
+import { formatDuration, formatSteps, strideFor } from '../lib/pedometer';
+import { youngestGroup } from '../lib/scoring';
 import { LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
 import { Confetti } from './Play';
@@ -81,7 +83,7 @@ export function Finish({ onHome }: { onHome: () => void }) {
   if (!game) return null;
   const stations = finishedStations(game);
   const earned = BADGES.filter((b) => game.earnedBadges.includes(b.id));
-  const minutes = Math.round(((game.finishedAt ?? Date.now()) - game.startedAt) / 60000);
+  const stats = tourStats(game, strideFor(youngestGroup(game.team.members.map((m) => m.age))));
   const rank = rankFor(career.points);
 
   return (
@@ -100,20 +102,36 @@ export function Finish({ onHome }: { onHome: () => void }) {
         Was für eine Tour! {game.final?.found ? 'Und den Schatz habt ihr auch geknackt. ' : ''}Ihr seid jetzt „{rank.title}“.
         {rank.next ? ` Noch ${rank.next.min - career.points} Punkte bis „${rank.next.title}“.` : ''}
       </LilliSays>
-      <div className="stats rise">
-        <div>
-          <strong>{stations.length}</strong>
-          <span>Stationen</span>
+      <section className="card walk-stats rise" aria-label="Eure Tour in Zahlen">
+        <div className="caption">Eure Tour in Zahlen</div>
+        <div className="walk-main" data-testid="steps">
+          <Icon name="steps" size={30} color="var(--accent)" width={1.8} />
+          <div>
+            <div className="walk-big">
+              {stats.estimated ? 'ca. ' : ''}
+              {formatSteps(stats.steps)}
+            </div>
+            <div className="muted">Schritte{stats.estimated ? ' (geschätzt aus der Strecke)' : ''}</div>
+          </div>
         </div>
-        <div>
-          <strong>{formatDistance(game.meters)}</strong>
-          <span>gelaufen</span>
+        <div className="walk-grid">
+          <div>
+            <Icon name="route" size={20} color="var(--teal)" />
+            <strong data-testid="walk-distance">{formatDistance(stats.meters)}</strong>
+            <span>Strecke</span>
+          </div>
+          <div>
+            <Icon name="clock" size={20} color="var(--gold-ink)" />
+            <strong data-testid="walk-time">{formatDuration(stats.ms)}</strong>
+            <span>Zeit</span>
+          </div>
+          <div>
+            <Icon name="pin" size={20} color="var(--label)" />
+            <strong>{stations.length}</strong>
+            <span>Stationen</span>
+          </div>
         </div>
-        <div>
-          <strong>{minutes} min</strong>
-          <span>unterwegs</span>
-        </div>
-      </div>
+      </section>
       {game.stops.some((s) => s.kind === 'final') && (
         <div className="card rise" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 30 }} aria-hidden="true">
@@ -139,7 +157,7 @@ export function Finish({ onHome }: { onHome: () => void }) {
         type="button"
         className="btn big tinted"
         onClick={async () => {
-          const b = await drawCertificate(game, stations.length);
+          const b = await drawCertificate(game, stations.length, { steps: stats.steps, estimated: stats.estimated, meters: stats.meters, time: formatDuration(stats.ms) });
           if (b) await shareOrDownload(b, `urkunde-${game.team.name.replace(/\W+/g, '-')}.png`);
         }}
       >
