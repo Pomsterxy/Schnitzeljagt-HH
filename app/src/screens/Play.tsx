@@ -25,6 +25,7 @@ import { PinDialog } from '../components/PinDialog';
 import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
+import { FamilyGameCard } from '../components/FamilyGameCard';
 import { Lilli, LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
 import { FinalView, Notebook } from './FinalView';
@@ -478,6 +479,9 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
   const [silence, setSilence] = useState(false);
   const fresh = ss.unlockedAt && Date.now() - ss.unlockedAt < 5000;
   const clue = CACHE_CLUES[station.id];
+  const familyGame = quiet ? undefined : game.familyGames?.[station.id];
+  const familyState = game.familyDone?.[station.id];
+  const familyPending = !!familyGame && !familyState;
   const letters = game.cacheLetters ?? [];
   const letter = letters.find((l) => l.stationId === station.id)?.letter ?? LETTERS[letters.length % LETTERS.length];
 
@@ -570,6 +574,8 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         </section>
       )}
 
+      {allDone && familyGame && <FamilyGameCard stationId={station.id} gameId={familyGame} state={familyState} />}
+
       {allDone && quiet && (
         <div className="card fade" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {silence && (
@@ -586,7 +592,7 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         </div>
       )}
 
-      {allDone && (
+      {allDone && !familyPending && (
         <>
           {!quiet && pts > 0 && (
             <p className="caption" style={{ textAlign: 'center' }}>

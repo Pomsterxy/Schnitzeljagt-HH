@@ -285,3 +285,20 @@ describe('Schrittzähler', () => {
     expect(formatDuration(42 * 60000)).toBe('42 min');
   });
 });
+
+describe('Familien-Momente', () => {
+  it('verteilt etwa jede dritte Station, ohne Doppelte', async () => {
+    const { assignFamilyGames } = await import('./family');
+    const ids = Array.from({ length: 9 }, (_, i) => `s${i}`);
+    for (const seed of [1, 2, 3, 99]) {
+      const a = assignFamilyGames(ids, seed);
+      const n = Object.keys(a).length;
+      expect(n).toBeGreaterThanOrEqual(2);
+      expect(n).toBeLessThanOrEqual(3);
+      expect(new Set(Object.values(a)).size).toBe(n);
+      expect(a.s0).toBeUndefined();
+    }
+    expect(Object.keys(assignFamilyGames(['a'], 1)).length).toBe(0);
+    expect(Object.keys(assignFamilyGames(['a', 'b', 'c'], 1)).length).toBe(1);
+  });
+});

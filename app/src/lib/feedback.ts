@@ -129,3 +129,24 @@ export function play(cue: Cue): void {
       break;
   }
 }
+
+/**
+ * Fröhliche Schleifen-Melodie (für Lillis Freeze-Tanz).
+ * Liefert eine Stopp-Funktion. Spielt nur, wenn Töne eingeschaltet sind.
+ */
+export function startMelody(): () => void {
+  if (!soundOn) return () => {};
+  const c = audio();
+  if (!c) return () => {};
+  const notes = [523, 659, 784, 659, 587, 698, 880, 698, 523, 659, 784, 1047, 988, 784, 659, 587];
+  let i = 0;
+  const step = () => {
+    const f = notes[i % notes.length];
+    tone(c, f, 0, 0.16, 'triangle', 0.12);
+    if (i % 4 === 0) tone(c, f / 2, 0, 0.22, 'sine', 0.1);
+    i++;
+  };
+  step();
+  const t = setInterval(step, 180);
+  return () => clearInterval(t);
+}

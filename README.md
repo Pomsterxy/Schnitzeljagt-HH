@@ -11,7 +11,8 @@ ruhigen Modus ohne Punkte.
 - **Zwei Navigationsmodi**: Karte mit Richtungspfeil oder Abenteuer (nur Rätsel, Heiß/Kalt kostet Punkte)
 - **Altersstufen**: Kinder 6–9, Kinder 10–13, Teens/Erwachsene
 - **Aufgabentypen**: Quiz, Schätzen, Zählen, Beobachten, Foto, Nachdenken
-- **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 22 Abzeichen, Ränge, Sammelalbum, Urkunde
+- **Familien-Momente**: an etwa jeder dritten Station ein gemeinsames Spiel (Mini-Versteckspiel, Lillis Freeze-Tanz, Grimassen-Selfie, Geräusche-Detektive, Komplimente-Runde u. a.) mit Timer, Musik oder Foto
+- **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 23 Abzeichen, Ränge, Sammelalbum, Urkunde
 - **Design im Apple-Stil** mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert, Kartenkacheln werden beim Ansehen zwischengespeichert

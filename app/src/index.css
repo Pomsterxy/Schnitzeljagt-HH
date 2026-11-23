@@ -419,3 +419,25 @@ textarea { resize: none; }
 .walk-grid > div { background: var(--fill2); border-radius: 14px; padding: 10px 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .walk-grid strong { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .walk-grid span { font-size: 12px; color: var(--label2); }
+
+/* Familien-Momente */
+.family-card { display: flex; flex-direction: column; gap: 12px; background: linear-gradient(160deg, #fff8e6 0%, #ffffff 55%); border: 1px solid #f7e2b0; }
+.family-card.done { gap: 6px; background: #fffbef; }
+.family-kicker { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-ink); }
+.family-steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.45; }
+.countdown { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.countdown-val { position: absolute; top: 48px; font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.freeze { display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 120px; justify-content: center; border-radius: 18px; padding: 14px; transition: background-color 0.3s; }
+.freeze-dance { background: #e8f8ec; }
+.freeze-freeze { background: #e3f0ff; }
+.freeze strong { font-size: 34px; font-weight: 900; letter-spacing: -0.02em; }
+.freeze-freeze strong { color: #0a4fa3; }
+.freeze-dance strong { color: var(--green-ink); }
+.freeze small { color: var(--label2); text-align: center; }
+@keyframes eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+.eq { display: flex; gap: 6px; height: 40px; align-items: flex-end; }
+.eq i { width: 8px; height: 40px; border-radius: 4px; background: var(--green); transform-origin: bottom; animation: eq 0.6s ease-in-out infinite; }
+.eq i:nth-child(2) { animation-delay: 0.1s; background: var(--gold); }
+.eq i:nth-child(3) { animation-delay: 0.25s; background: var(--accent); }
+.eq i:nth-child(4) { animation-delay: 0.15s; background: var(--blue); }
+.eq i:nth-child(5) { animation-delay: 0.05s; background: #7c3aed; }

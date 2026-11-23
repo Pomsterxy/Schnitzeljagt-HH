@@ -4,6 +4,8 @@ import { POI_BY_ID, STATION_BY_ID, STATIONS } from '../data';
 import { BADGES, type BadgeContext } from '../data/badges';
 import { CACHE_CLUES } from '../data/cache-clues';
 import { checkCoords, LETTERS, type CacheLetter } from '../lib/cache';
+import { assignFamilyGames } from '../lib/family';
+import { FAMILY_POINTS } from '../data/family-games';
 import { distance } from '../lib/geo';
 import type { Route } from '../lib/route';
 import { evaluate, POINTS, scoreTask, type Evaluation } from '../lib/scoring';
@@ -85,6 +87,10 @@ export interface Game {
   cacheLetters?: CacheLetter[];
   /** Schritte, die der Bewegungssensor gezählt hat */
   steps?: number;
+  /** Familien-Momente: Station → Spiel-ID */
+  familyGames?: Record<string, string>;
+  /** Erledigte Familien-Momente: Station → 'done' | 'skipped' */
+  familyDone?: Record<string, 'done' | 'skipped'>;
   /** Reine Spielzeit in ms (nur während die Tour geöffnet ist) */
   activeMs?: number;
   final?: FinalState;
@@ -190,6 +196,11 @@ export function startGame(team: Team, config: TourConfig, route: Route): void {
     ),
     cacheLetters: [],
     steps: 0,
+    familyGames: assignFamilyGames(
+      route.stops.filter((s) => s.kind === 'station' && s.station.mode === 'normal').map((s) => (s.kind === 'station' ? s.station.id : '')),
+      config.seed,
+    ),
+    familyDone: {},
     activeMs: 0,
     plannedMeters: route.meters,
     plannedMinutes: route.minutes,
@@ -413,6 +424,7 @@ export function badgeContext(g: Game): BadgeContext {
     perfectEstimates: g.perfectEstimates,
     toursFinished: career.tours,
     cacheFound: !!g.final?.found,
+    familyGames: Object.values(g.familyDone ?? {}).filter((v) => v === 'done').length,
     cacheFirstTry: !!g.final?.found && g.final.attempts === 1 && !g.final.revealed,
     collectedBadges: new Set(career.badges),
   };
@@ -483,4 +495,17 @@ export function tourStats(g: Game, stride: number): { steps: number; estimated: 
   const steps = plausible ? counted : Math.round(meters / stride);
   const ms = g.activeMs && g.activeMs > 60000 ? g.activeMs : (g.finishedAt ?? Date.now()) - g.startedAt;
   return { steps, estimated: !plausible, meters, ms };
+}
+
+/** Familien-Moment abschließen (oder überspringen) */
+export function finishFamilyGame(stationId: string, result: 'done' | 'skipped', photo?: { id: string; title: string }): void {
+  mutate((g) => {
+    const d = (g.familyDone ??= {});
+    if (d[stationId]) return;
+    d[stationId] = result;
+    if (result === 'done') g.points += FAMILY_POINTS;
+    if (photo) g.photos.push({ id: photo.id, stopId: `station:${stationId}`, taskId: 'family', title: photo.title });
+    const newly = computeBadges(g).filter((b) => !g.earnedBadges.includes(b));
+    g.earnedBadges.push(...newly);
+  });
 }
