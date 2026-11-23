@@ -5,6 +5,7 @@ import { loadJSON, saveJSON } from '../lib/storage';
 import { setSoundOn, useSoundOn } from '../lib/feedback';
 import { OC_KEY_STORAGE } from '../components/NearbyCaches';
 import { resetCareer } from '../state/game';
+import { Legal } from '../components/Legal';
 import { clearReports, reportsText, useReports } from '../state/reports';
 
 function SwitchRow({ on, onToggle, title, sub, testId }: { on: boolean; onToggle: () => void; title: string; sub: string; testId?: string }) {
@@ -91,6 +92,8 @@ export function Settings() {
       </div>
 
       <Reports />
+
+      <Legal />
 
       <button
         type="button"
