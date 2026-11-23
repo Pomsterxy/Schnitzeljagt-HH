@@ -31,7 +31,7 @@ export default defineConfig({
       },
       workbox: {
         // Alle Texte und Stationsbilder sind sofort offline verfügbar
-        globPatterns: ['**/*.{js,css,html,svg,png,jpg,json,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,jpg,json,webmanifest,woff2}'],
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         runtimeCaching: [
           {

@@ -10,9 +10,9 @@ const TABS: { id: Tab; label: string; icon: IconName }[] = [
   { id: 'settings', label: 'Mehr', icon: 'more' },
 ];
 
-export function TabBar({ active, onChange }: { active: Tab; onChange: (t: Tab) => void }) {
+export function TabBar({ active, onChange, dark }: { active: Tab; onChange: (t: Tab) => void; dark?: boolean }) {
   return (
-    <nav className="tabbar" aria-label="Hauptnavigation">
+    <nav className={`tabbar${dark ? ' dark' : ''}`} aria-label="Hauptnavigation">
       <div className="tabbar-inner">
         {TABS.map((t) => (
           <button

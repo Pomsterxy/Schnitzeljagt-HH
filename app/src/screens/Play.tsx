@@ -25,6 +25,7 @@ import { PinDialog } from '../components/PinDialog';
 import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
+import { Breath } from '../components/Breath';
 import { FamilyGameCard } from '../components/FamilyGameCard';
 import { Lilli, LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
@@ -579,12 +580,7 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
       {allDone && quiet && (
         <div className="card fade" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {silence && (
-            <>
-              <div className="breathe" />
-              <p className="muted" style={{ textAlign: 'center' }}>
-                Einatmen … ausatmen …
-              </p>
-            </>
+            <Breath />
           )}
           <button type="button" className="btn" style={{ background: '#E3E1DC' }} onClick={() => { play('soft'); setSilence(!silence); }}>
             {silence ? 'Moment der Stille beenden' : 'Einen Moment der Stille'}
