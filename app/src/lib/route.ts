@@ -16,6 +16,8 @@ export interface RouteOptions {
   theme?: Category | 'mix';
   /** Multi-Cache-Finale (Schatz) am Ende einplanen */
   cache?: boolean;
+  /** Längste erlaubte Etappe in Metern (Luftlinie); Standard 500, Infinity = egal */
+  maxLeg?: number;
 }
 
 export type RouteStop =
@@ -98,14 +100,14 @@ class Network {
   private adj: { to: number; d: number }[][];
   private cache = new Map<number, { dist: number[]; prev: number[] }>();
 
-  constructor(start: LatLng, stations: Station[], pois: Poi[]) {
+  constructor(start: LatLng, stations: Station[], pois: Poi[], maxLeg: number) {
     this.nodes = [{ coords: start }, ...stations.map((station) => ({ coords: station.coords, station })), ...pois.map((poi) => ({ coords: poi.coords, poi }))];
     const n = this.nodes.length;
     this.adj = this.nodes.map(() => []);
     for (let i = 0; i < n; i++) {
       for (let k = i + 1; k < n; k++) {
         const d = distance(this.nodes[i].coords, this.nodes[k].coords);
-        if (d <= MAX_LEG) {
+        if (d <= maxLeg) {
           this.adj[i].push({ to: k, d });
           this.adj[k].push({ to: i, d });
         }
@@ -115,7 +117,7 @@ class Network {
     // länger sein. Diese Kanten sind "teuer" und werden nur genommen, wenn es anders nicht geht.
     for (let i = 1; i < n; i++) {
       const d = distance(start, this.nodes[i].coords);
-      if (d > MAX_LEG && d < 2500) this.adj[0].push({ to: i, d: d * 4 });
+      if (d > maxLeg && d < 2500) this.adj[0].push({ to: i, d: d * 4 });
     }
     if (!this.adj[0].length) {
       const near = this.nodes
@@ -200,7 +202,8 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
   const budget = opt.minutes - pauseBudget - finalBudget;
 
   const pool = all.filter((s) => opt.districts.includes(s.district) && (opt.includeQuiet || s.mode === 'normal'));
-  const net = new Network(opt.start, pool, pois);
+  const maxLeg = opt.maxLeg ?? MAX_LEG;
+  const net = new Network(opt.start, pool, pois, maxLeg);
   const idx = new Map(pool.map((s, i) => [s.id, i + 1]));
   const legCache = new Map<string, Leg | null>();
   const leg = (a: number, b: number): Leg | null => {
@@ -305,7 +308,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
         const to = idx.get(t.station.id)!;
         if (afterPoi) {
           // nach einer Pause: die liegt höchstens 500 m vor der Station
-          if (distance(prevCoords, t.station.coords) > MAX_LEG) return null;
+          if (distance(prevCoords, t.station.coords) > maxLeg) return null;
         } else {
           const l = leg(prevNode, to);
           if (!l) return null;
@@ -315,8 +318,8 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
         prevNode = to;
         afterPoi = false;
       } else {
-        // Pause und Schatz liegen höchstens MAX_LEG vom vorigen Ziel entfernt
-        if (distance(prevCoords, t.poi.coords) > MAX_LEG) return null;
+        // Pause und Schatz liegen höchstens eine Etappe vom vorigen Ziel entfernt
+        if (distance(prevCoords, t.poi.coords) > maxLeg) return null;
         out.push(t);
         afterPoi = true;
       }
@@ -339,7 +342,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
       for (const p of pauseList) {
         const da = distance(a, p.coords);
         const db = distance(p.coords, b);
-        if (da > MAX_LEG || db > MAX_LEG) continue;
+        if (da > maxLeg || db > maxLeg) continue;
         const score = da + db - distance(a, b) - (p.kind === 'eis' ? 60 : 0) - (p.kind === 'spielplatz' && p.title !== 'Spielplatz' ? 40 : 0);
         if (score < bestScore) {
           bestScore = score;
@@ -365,7 +368,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
     for (const p of pauseList) {
       if (p.kind !== 'spielplatz' || used.has(p.id)) continue;
       const d = distance(last, p.coords);
-      if (d < 100 || d > MAX_LEG) continue;
+      if (d < 100 || d > Math.min(maxLeg, 800)) continue;
       const score = Math.abs(d - 250) + rand() * 60;
       if (score < bestScore) {
         bestScore = score;

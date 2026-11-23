@@ -36,6 +36,8 @@ export interface TourConfig {
   seed: number;
   theme?: Category | 'mix';
   cache?: boolean;
+  /** Längste Etappe in Metern, 0 = egal */
+  maxLeg?: number;
 }
 
 export interface TaskState {

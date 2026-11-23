@@ -43,6 +43,7 @@ const plan = await planTour(page, {
   theme: THEME_NAME[THEME],
   start: START[DISTRICTS[0]],
   nav: NAV === 'map' ? 'Mit Karte' : 'Abenteuer',
+  legs: process.env.LEGS ?? 'Höchstens 500 m',
   snap,
 });
 console.log('Route:', plan.summary.replace(/\s+/g, ' '), '|', plan.legs);
