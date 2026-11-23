@@ -86,8 +86,8 @@ export function MapView({
         />
         <FitBounds points={fit} />
         <ClickHandler onClick={onMapClick} />
-        {path && path.length > 1 && <Polyline positions={path} pathOptions={{ color: '#0b6e99', weight: 3, dashArray: '6 8' }} />}
-        {target && radius && <Circle center={target} radius={radius} pathOptions={{ color: '#e07a00', weight: 2, fillOpacity: 0.12 }} />}
+        {path && path.length > 1 && <Polyline positions={path} pathOptions={{ color: '#c2410c', weight: 4, dashArray: '2 9', lineCap: 'round' }} />}
+        {target && radius && <Circle center={target} radius={radius} pathOptions={{ color: '#c2410c', weight: 2, fillOpacity: 0.1 }} />}
         {markers.map((m) => (
           <Marker key={m.id} position={m.coords} icon={emojiIcon(m.emoji, m.active, m.done)}>
             {m.label && <Tooltip>{m.label}</Tooltip>}
@@ -96,9 +96,9 @@ export function MapView({
         {me && (
           <>
             {accuracy && accuracy > 8 && (
-              <Circle center={me} radius={accuracy} pathOptions={{ color: '#1a73e8', weight: 1, fillOpacity: 0.08 }} />
+              <Circle center={me} radius={accuracy} pathOptions={{ color: '#0a84ff', weight: 1, fillOpacity: 0.08 }} />
             )}
-            <CircleMarker center={me} radius={8} pathOptions={{ color: '#fff', weight: 3, fillColor: '#1a73e8', fillOpacity: 1 }} />
+            <CircleMarker center={me} radius={8} pathOptions={{ color: '#fff', weight: 3, fillColor: '#0a84ff', fillOpacity: 1 }} />
           </>
         )}
       </MapContainer>

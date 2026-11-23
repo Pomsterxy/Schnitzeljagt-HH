@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { play } from '../lib/feedback';
 
 export function PinDialog({
   title,
@@ -14,41 +15,43 @@ export function PinDialog({
   onCancel: () => void;
 }) {
   const [v, setV] = useState('');
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState(0);
   return (
-    <div className="overlay" role="dialog" aria-modal="true">
-      <div className="dialog">
+    <div className="overlay" role="dialog" aria-modal="true" aria-label={title} onClick={onCancel}>
+      <div className="dialog" onClick={(e) => e.stopPropagation()}>
+        <div className="grabber" />
         <h3>{title}</h3>
-        <p>{text}</p>
+        <p className="muted">{text}</p>
         <input
-          className="pin-input"
+          key={err}
+          className={`pin-input${err ? ' shake' : ''}`}
           inputMode="numeric"
           type="password"
           autoFocus
           maxLength={6}
           value={v}
           aria-label="Eltern-PIN"
-          onChange={(e) => {
-            setV(e.target.value.replace(/\D/g, ''));
-            setErr(false);
-          }}
+          onChange={(e) => setV(e.target.value.replace(/\D/g, ''))}
         />
-        {err && <p className="error">Falsche PIN.</p>}
-        <div className="row">
-          <button type="button" className="btn ghost" onClick={onCancel}>
-            Abbrechen
-          </button>
-          <button
-            type="button"
-            className="btn primary"
-            onClick={() => {
-              if (v === pin) onOk();
-              else setErr(true);
-            }}
-          >
-            Freischalten
-          </button>
-        </div>
+        {err > 0 && <p className="error">Falsche PIN.</p>}
+        <button
+          type="button"
+          className="btn primary"
+          onClick={() => {
+            if (v === pin) {
+              play('unlock');
+              onOk();
+            } else {
+              play('wrong');
+              setErr((x) => x + 1);
+            }
+          }}
+        >
+          Freischalten
+        </button>
+        <button type="button" className="btn" onClick={onCancel}>
+          Abbrechen
+        </button>
       </div>
     </div>
   );

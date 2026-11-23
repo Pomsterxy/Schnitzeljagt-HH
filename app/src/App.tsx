@@ -5,10 +5,11 @@ import { Play } from './screens/Play';
 import { Finish } from './screens/Finish';
 import { Album } from './screens/Album';
 import { Settings } from './screens/Settings';
+import { TabBar, type Tab } from './components/TabBar';
 import { getGame } from './state/game';
 import { setSimulated } from './lib/location';
 
-type Screen = 'home' | 'setup' | 'play' | 'finish' | 'album' | 'settings';
+type Screen = Tab | 'setup' | 'play' | 'finish';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>(() => {
@@ -27,25 +28,40 @@ export default function App() {
     window.scrollTo(0, 0);
   }, [screen]);
 
+  const tab = screen === 'home' || screen === 'album' || screen === 'badges' || screen === 'settings' ? screen : null;
+
+  let content: React.ReactNode;
   switch (screen) {
     case 'setup':
-      return <Setup onStarted={() => setScreen('play')} onCancel={() => setScreen('home')} />;
+      content = <Setup onStarted={() => setScreen('play')} onCancel={() => setScreen('home')} />;
+      break;
     case 'play':
-      return <Play onFinish={() => setScreen('finish')} onHome={() => setScreen('home')} />;
+      content = <Play onFinish={() => setScreen('finish')} onHome={() => setScreen('home')} />;
+      break;
     case 'finish':
-      return <Finish onHome={() => setScreen('home')} />;
+      content = <Finish onHome={() => setScreen('home')} />;
+      break;
     case 'album':
-      return <Album onBack={() => setScreen('home')} />;
+      content = <Album mode="cards" />;
+      break;
+    case 'badges':
+      content = <Album mode="badges" />;
+      break;
     case 'settings':
-      return <Settings onBack={() => setScreen('home')} />;
+      content = <Settings />;
+      break;
     default:
-      return (
-        <Home
-          onNew={() => setScreen('setup')}
-          onContinue={() => setScreen('play')}
-          onAlbum={() => setScreen('album')}
-          onSettings={() => setScreen('settings')}
-        />
+      content = (
+        <Home onNew={() => setScreen('setup')} onContinue={() => setScreen('play')} onAlbum={() => setScreen('album')} onBadges={() => setScreen('badges')} />
       );
   }
+
+  return (
+    <>
+      <div key={screen} className="screen-enter">
+        {content}
+      </div>
+      {tab && <TabBar active={tab} onChange={setScreen} />}
+    </>
+  );
 }

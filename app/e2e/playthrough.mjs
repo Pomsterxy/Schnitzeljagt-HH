@@ -44,16 +44,26 @@ await page.getByPlaceholder('Name 2 (optional)').fill('Lotta');
 await snap('team');
 await page.getByRole('button', { name: 'Weiter' }).click();
 
-// 2. Tour
+// 2. Stadtteile
 for (const [id, name] of Object.entries(NAMES)) {
-  const cb = page.locator('label.check', { hasText: name }).locator('input[type=checkbox]');
-  if (DISTRICTS.includes(id) !== (await cb.isChecked())) await cb.click();
+  const b = page.locator('button.choice', { hasText: name });
+  const on = (await b.getAttribute('aria-pressed')) === 'true';
+  if (DISTRICTS.includes(id) !== on) await b.click();
 }
-await page.locator('input[type=range]').fill('120');
+await snap('districts');
+await page.getByRole('button', { name: 'Weiter' }).click();
+// 3. Dauer
+await page.locator('button.choice', { hasText: '2 h' }).click();
+await page.getByRole('button', { name: 'Weiter' }).click();
+// 4. Thema
+const THEME_NAME = { mix: 'Gemischt', architektur: 'Architektur', wasser: 'Wasser', technik: 'Technik', erinnern: 'Erinnern' };
+await page.locator('button.choice', { hasText: THEME_NAME[THEME] }).click();
+await snap('theme');
+await page.getByRole('button', { name: 'Weiter' }).click();
+// 5. Extras
 const START = { winterhude: 'u-borgweg', 'barmbek-nord': 'bf-barmbek', alsterdorf: 'u-alsterdorf' };
 await page.getByLabel('Startpunkt', { exact: true }).selectOption(START[DISTRICTS[0]]);
-await page.getByLabel('Thema', { exact: true }).selectOption(THEME);
-await page.locator(`input[name=nav]`).nth(NAV === 'map' ? 0 : 1).check();
+await page.getByRole('button', { name: NAV === 'map' ? 'Mit Karte' : 'Abenteuer' }).click();
 await page.getByPlaceholder('z. B. 1234').fill('1234');
 await snap('tour');
 await page.getByRole('button', { name: 'Route planen' }).click();
@@ -90,13 +100,17 @@ while (guard++ < 40) {
     const nb = await page.locator('[data-testid=notebook] li').count();
     if (nb !== clues) errors.push(`Notizbuch hat ${nb} Einträge, erwartet ${clues}`);
     await snap('final-formula');
-    await page.getByLabel('Nord-Ziffern').fill('000');
-    await page.getByLabel('Ost-Ziffern').fill('000');
-    await page.getByRole('button', { name: 'Koordinaten prüfen' }).click();
+    // erst falsch (000), dann die Ziffern am Zahlenschloss einstellen
+    await page.getByRole('button', { name: 'Schloss öffnen' }).click();
     await page.getByText(/stimmt noch nicht/).first().waitFor();
-    await page.getByLabel('Nord-Ziffern').fill(dm(coords[0]));
-    await page.getByLabel('Ost-Ziffern').fill(dm(coords[1]));
-    await page.getByRole('button', { name: 'Koordinaten prüfen' }).click();
+    for (const [lbl, v] of [['Nord', dm(coords[0])], ['Ost', dm(coords[1])]]) {
+      for (let i = 0; i < 3; i++) {
+        const wheel = page.getByRole('group', { name: `${lbl}-Ziffern` }).locator('button').nth(i);
+        for (let k = 0; k < Number(v[i]); k++) await wheel.click();
+      }
+    }
+    await snap('final-lock');
+    await page.getByRole('button', { name: 'Schloss öffnen' }).click();
     await page.getByTestId('final-coords').waitFor();
     await context.setGeolocation({ latitude: coords[0] - 0.003, longitude: coords[1], accuracy: 10 });
     await page.waitForTimeout(400);
@@ -147,12 +161,18 @@ while (guard++ < 40) {
       if (!photoUploaded) {
         // echtes Foto hochladen testen
         await card.locator('input[type=file]').setInputFiles('public/icon-512.png');
-        await card.locator('.feedback.ok').waitFor();
+        await page.locator(`[data-testid="${tid}"].done`).waitFor();
         photoUploaded = true;
       } else await card.getByRole('button', { name: /Ohne Foto/ }).click();
     } else if (await card.locator('textarea').count()) {
       await card.locator('textarea').fill('Wir denken an sie.');
       await card.getByRole('button', { name: 'Weiter' }).click();
+    } else if (await card.locator('.stepper').count()) {
+      await card.getByRole('button', { name: 'Prüfen' }).click();
+      if (!(await card.evaluate((el) => el.classList.contains('done')))) {
+        for (let i = 0; i < 6; i++) await card.getByRole('button', { name: 'Eins mehr' }).click();
+        await card.getByRole('button', { name: 'Prüfen' }).click();
+      }
     } else if (await card.locator('input').count()) {
       if (k === 0 && (await card.getByRole('button', { name: /Hinweis/ }).count())) await card.getByRole('button', { name: /Hinweis/ }).click();
       await card.locator('input').fill('6');
@@ -166,10 +186,11 @@ while (guard++ < 40) {
   }
   if (await page.getByTestId('cache-clue').count()) clues++;
   if (stations <= 2) await snap(`station-${state.stop.id}`);
-  await page.getByRole('button', { name: /Weiter zum nächsten Ziel|Tour abschließen/ }).click();
+  await page.getByRole('button', { name: /Weiter zum nächsten Ziel|Tour abschließen|Leise weitergehen/ }).click();
 }
 
 await page.waitForSelector('[data-testid=final-score]', { timeout: 8000 });
+await page.waitForTimeout(1500);
 await snap('finish');
 if (photoUploaded && !(await page.locator('.photo-grid img').count())) errors.push('Foto fehlt im Fotoalbum');
 const score = await page.getByTestId('final-score').innerText();
@@ -185,8 +206,8 @@ if (THEME === 'architektur') {
 
 // Reload-Test: Album zeigt gesammelte Karten
 await page.getByRole('button', { name: 'Zum Hauptmenü' }).click();
-await page.getByRole('button', { name: /Album/ }).click();
-const cards = await page.locator('.card:not(.locked)').count();
+await page.locator('.tabbar').getByRole('button', { name: 'Album' }).click();
+const cards = await page.locator('.cardlet:not(.locked)').count();
 if (photoUploaded) console.log('Foto hochgeladen und im Album gespeichert');
 console.log('Gesammelte Karten im Album:', cards);
 await snap('album');

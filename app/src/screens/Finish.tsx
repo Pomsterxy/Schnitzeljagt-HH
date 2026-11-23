@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import { BADGES } from '../data/badges';
+import { BADGES, rankFor } from '../data/badges';
 import { formatDistance } from '../lib/geo';
 import { drawCertificate, shareOrDownload } from '../lib/certificate';
 import { loadPhoto } from '../lib/storage';
+import { play } from '../lib/feedback';
 import { finishedStations, finishGame, useGame } from '../state/game';
-import { rankFor } from '../data/badges';
+import { LilliSays } from '../components/Lilli';
+import { Icon } from '../components/Icon';
+import { Confetti } from './Play';
 
 export function PhotoGrid({ photos }: { photos: { id: string; title: string }[] }) {
   const [urls, setUrls] = useState<Record<string, string>>({});
@@ -33,17 +36,17 @@ export function PhotoGrid({ photos }: { photos: { id: string; title: string }[] 
     <div className="photo-grid">
       {photos.map((p) =>
         urls[p.id] ? (
-          <figure key={p.id}>
+          <figure key={p.id} className="rise">
             <img src={urls[p.id]} alt={p.title} />
             <button
               type="button"
-              className="btn small ghost"
+              className="btn small tinted"
               onClick={async () => {
                 const b = await loadPhoto(p.id);
                 if (b) await shareOrDownload(b, `schnitzeljagd-${p.id}.jpg`);
               }}
             >
-              Teilen / Speichern
+              <Icon name="share" size={16} /> Teilen
             </button>
           </figure>
         ) : null,
@@ -54,9 +57,27 @@ export function PhotoGrid({ photos }: { photos: { id: string; title: string }[] 
 
 export function Finish({ onHome }: { onHome: () => void }) {
   const { game, career } = useGame();
+  const [shown, setShown] = useState(0);
   useEffect(() => {
-    if (game && !game.finishedAt) finishGame();
+    if (game && !game.finishedAt) {
+      finishGame();
+      play('treasure');
+    }
   }, [game]);
+  // Punkte hochzählen
+  useEffect(() => {
+    if (!game) return;
+    const target = game.points;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - start) / 1200);
+      setShown(Math.round(target * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [game?.points, game]);
   if (!game) return null;
   const stations = finishedStations(game);
   const earned = BADGES.filter((b) => game.earnedBadges.includes(b.id));
@@ -65,27 +86,47 @@ export function Finish({ onHome }: { onHome: () => void }) {
 
   return (
     <div className="screen finish">
-      <h1>🏁 Geschafft!</h1>
-      <p className="big-score" data-testid="final-score">
-        {game.team.avatar} {game.team.name}: ⭐ {game.points} Punkte
-      </p>
-      <ul className="stats">
-        <li>📍 {stations.length} Stationen gefunden</li>
-        <li>👟 {formatDistance(game.meters)} gelaufen (geplant: {formatDistance(game.plannedMeters)})</li>
-        <li>⏱️ {minutes} Minuten unterwegs</li>
-        {game.stops.some((s) => s.kind === 'final') && (
-          <li>💎 Schatz: {game.final?.found ? 'gefunden!' : 'diesmal nicht gefunden'}</li>
-        )}
-        <li>
-          🎖️ Euer Rang: <strong>{rank.title}</strong> ({career.points} Punkte insgesamt
-          {rank.next ? `, noch ${rank.next.min - career.points} bis „${rank.next.title}“` : ''})
-        </li>
-      </ul>
-      <h3>Abzeichen</h3>
+      <Confetti />
+      <div className="finish-hero">
+        <div className="caption rise">Tour geschafft</div>
+        <div className="score-big pop" data-testid="final-score" aria-label={`${game.team.name}: ${game.points} Punkte`}>
+          {shown}
+        </div>
+        <div className="rise" style={{ fontSize: 17, fontWeight: 600 }}>
+          Punkte für {game.team.avatar} {game.team.name}
+        </div>
+      </div>
+      <LilliSays mood="excited">
+        Was für eine Tour! {game.final?.found ? 'Und den Schatz habt ihr auch geknackt. ' : ''}Ihr seid jetzt „{rank.title}“.
+        {rank.next ? ` Noch ${rank.next.min - career.points} Punkte bis „${rank.next.title}“.` : ''}
+      </LilliSays>
+      <div className="stats rise">
+        <div>
+          <strong>{stations.length}</strong>
+          <span>Stationen</span>
+        </div>
+        <div>
+          <strong>{formatDistance(game.meters)}</strong>
+          <span>gelaufen</span>
+        </div>
+        <div>
+          <strong>{minutes} min</strong>
+          <span>unterwegs</span>
+        </div>
+      </div>
+      {game.stops.some((s) => s.kind === 'final') && (
+        <div className="card rise" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 30 }} aria-hidden="true">
+            💎
+          </span>
+          <span style={{ fontWeight: 600 }}>Schatz: {game.final?.found ? 'gefunden!' : 'diesmal nicht gefunden'}</span>
+        </div>
+      )}
+      <h2 className="section-title">Abzeichen</h2>
       {earned.length ? (
         <div className="badges">
-          {earned.map((b) => (
-            <div key={b.id} className={b.quiet ? 'badge quiet' : 'badge'} title={b.description}>
+          {earned.map((b, i) => (
+            <div key={b.id} className={b.quiet ? 'badge quiet' : 'badge'} title={b.description} style={{ animationDelay: `${0.2 + i * 0.12}s` }}>
               <span className="icon">{b.icon}</span>
               <span>{b.title}</span>
             </div>
@@ -96,17 +137,17 @@ export function Finish({ onHome }: { onHome: () => void }) {
       )}
       <button
         type="button"
-        className="btn primary"
+        className="btn big tinted"
         onClick={async () => {
           const b = await drawCertificate(game, stations.length);
           if (b) await shareOrDownload(b, `urkunde-${game.team.name.replace(/\W+/g, '-')}.png`);
         }}
       >
-        📜 Urkunde herunterladen / teilen
+        <Icon name="share" size={18} /> Urkunde teilen
       </button>
-      <h3>Euer Fotoalbum</h3>
+      <h2 className="section-title">Fotoalbum</h2>
       <PhotoGrid photos={game.photos} />
-      <button type="button" className="btn big" onClick={onHome}>
+      <button type="button" className="btn big dark" onClick={onHome}>
         Zum Hauptmenü
       </button>
     </div>
