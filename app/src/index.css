@@ -728,3 +728,9 @@ html[data-dark] body { background: #101b33; }
 .reports { display: flex; flex-direction: column; gap: 10px; }
 .reports ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
 .quiet-screen .report-link { color: var(--quiet-2); }
+
+/* Impressum & Datenschutz */
+.legal { display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.5; }
+.legal summary { font-weight: 800; cursor: pointer; padding: 6px 0; }
+.legal ul { margin: 6px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.legal p { margin: 6px 0; }

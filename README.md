@@ -20,7 +20,7 @@ ruhigen Modus ohne Punkte.
 - **Ruhiges Design** mit Atem-Intro, Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert, Kartenkacheln werden beim Ansehen zwischengespeichert
-- **Datenschutz**: kein Konto, kein Server, alles bleibt auf dem Handy
+- **Datenschutz**: kein Konto, kein Server, alles bleibt auf dem Handy; Impressum und Datenschutzhinweis unter „Mehr“ (Angaben in `app/src/data/impressum.ts`)
 
 ## Starten
 
