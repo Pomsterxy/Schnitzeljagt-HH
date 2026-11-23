@@ -128,6 +128,8 @@ while (guard++ < 40) {
     await context.setGeolocation({ latitude: coords[0], longitude: coords[1], accuracy: 10 });
     await page.waitForTimeout(400);
     await snap(`pause-${state.index}`);
+    // erst weggehen, damit eine nahe Station nicht sofort freischaltet
+    await context.setGeolocation({ latitude: coords[0] - 0.01, longitude: coords[1], accuracy: 10 });
     await page.getByRole('button', { name: /Pause (beendet|überspringen)/ }).click();
     continue;
   }
@@ -186,6 +188,7 @@ while (guard++ < 40) {
   }
   if (await page.getByTestId('cache-clue').count()) clues++;
   if (stations <= 2) await snap(`station-${state.stop.id}`);
+  await context.setGeolocation({ latitude: coords[0] - 0.01, longitude: coords[1], accuracy: 10 });
   await page.getByRole('button', { name: /Weiter zum nächsten Ziel|Tour abschließen|Leise weitergehen/ }).click();
 }
 
