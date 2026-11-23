@@ -9,7 +9,7 @@ import { FAMILY_POINTS } from '../data/family-games';
 import { distance } from '../lib/geo';
 import type { Route } from '../lib/route';
 import { evaluate, POINTS, scoreTask, type Evaluation } from '../lib/scoring';
-import { deletePhotos, loadJSON, removeKey, saveJSON } from '../lib/storage';
+import { askPersistentStorage, deletePhotos, loadJSON, mirrorState, removeKey, saveJSON } from '../lib/storage';
 
 export interface Member {
   name: string;
@@ -130,6 +130,7 @@ function commit() {
   if (game) saveJSON(GAME_KEY, game);
   else removeKey(GAME_KEY);
   saveJSON(CAREER_KEY, career);
+  mirrorState();
   snapshot = { game, career };
   listeners.forEach((l) => l());
 }
@@ -141,6 +142,63 @@ export function useGame() {
       return () => listeners.delete(l);
     },
     () => snapshot,
+  );
+}
+
+// ---------- Rückgängig (für versehentliches Löschen oder Überspringen) ----------
+
+export interface UndoInfo {
+  label: string;
+  at: number;
+}
+export const UNDO_MS = 8000;
+let undo: { game: Game | null; career: Career; info: UndoInfo; cleanup?: () => void } | null = null;
+let undoTimer: ReturnType<typeof setTimeout> | null = null;
+const undoListeners = new Set<() => void>();
+let undoSnapshot: UndoInfo | null = null;
+
+function emitUndo() {
+  undoSnapshot = undo ? undo.info : null;
+  undoListeners.forEach((l) => l());
+}
+
+/** Endgültig machen: z. B. Fotos einer gelöschten Tour wirklich entfernen */
+function finalizeUndo() {
+  if (undoTimer) clearTimeout(undoTimer);
+  undoTimer = null;
+  undo?.cleanup?.();
+  undo = null;
+  emitUndo();
+}
+
+function remember(label: string, cleanup?: () => void) {
+  finalizeUndo();
+  undo = { game: game ? structuredClone(game) : null, career, info: { label, at: Date.now() }, cleanup };
+  undoTimer = setTimeout(finalizeUndo, UNDO_MS);
+  emitUndo();
+}
+
+/** Letzte Aktion zurücknehmen; liefert die Beschreibung oder null */
+export function undoLast(): string | null {
+  if (!undo) return null;
+  const label = undo.info.label;
+  game = undo.game;
+  career = undo.career;
+  if (undoTimer) clearTimeout(undoTimer);
+  undoTimer = null;
+  undo = null;
+  commit();
+  emitUndo();
+  return label;
+}
+
+export function useUndo(): UndoInfo | null {
+  return useSyncExternalStore(
+    (l) => {
+      undoListeners.add(l);
+      return () => undoListeners.delete(l);
+    },
+    () => undoSnapshot,
   );
 }
 
@@ -187,6 +245,8 @@ function st(g: Game, key: string): StopState {
 }
 
 export function startGame(team: Team, config: TourConfig, route: Route): void {
+  finalizeUndo();
+  askPersistentStorage();
   saveJSON(TEAM_KEY, team);
   const old = game;
   if (old) void deletePhotos(old.photos.map((p) => p.id));
@@ -221,7 +281,9 @@ export function startGame(team: Team, config: TourConfig, route: Route): void {
 }
 
 export function abandonGame(): void {
-  if (game) void deletePhotos(game.photos.map((p) => p.id));
+  const photos = game ? game.photos.map((p) => p.id) : [];
+  // Fotos erst löschen, wenn "Rückgängig" abgelaufen ist
+  remember('Tour gelöscht', () => void deletePhotos(photos));
   game = null;
   removeKey(GAME_KEY);
   commit();
@@ -350,6 +412,7 @@ export function completeReflection(taskId: string, note: string): void {
 }
 
 export function nextStop(skipped = false): void {
+  if (skipped) remember('Stopp übersprungen');
   mutate((g) => {
     const s = currentStop(g);
     if (!s) return;

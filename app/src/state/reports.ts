@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { loadJSON, saveJSON } from '../lib/storage';
+import { loadJSON, mirrorState, saveJSON } from '../lib/storage';
 import type { LatLng } from '../data/types';
 
 /** Meldung: "Hier stimmt etwas nicht" – bleibt auf dem Handy, kann geteilt werden */
@@ -20,6 +20,7 @@ const listeners = new Set<() => void>();
 
 function commit() {
   saveJSON(KEY, reports);
+  mirrorState();
   listeners.forEach((l) => l());
 }
 

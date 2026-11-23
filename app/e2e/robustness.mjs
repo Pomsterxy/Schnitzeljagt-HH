@@ -32,7 +32,7 @@ async function skipWaypoints(page) {
 // 1) GPS verweigert → Hinweis + PIN-Freischaltung, falsche PIN wird abgelehnt
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } }); // keine Geolocation-Erlaubnis
-  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '', headers: { 'Access-Control-Allow-Origin': '*' } }));
   const page = await ctx.newPage();
   const errs = [];
   page.on('pageerror', (e) => errs.push(e.message));
@@ -95,7 +95,7 @@ async function skipWaypoints(page) {
     permissions: ['geolocation'],
     geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 },
   });
-  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '', headers: { 'Access-Control-Allow-Origin': '*' } }));
   const page = await ctx.newPage();
   await page.goto(URL);
   await page.evaluate(async () => {
@@ -141,7 +141,7 @@ async function context_check(page) {
     permissions: ['geolocation'],
     geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 },
   });
-  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '', headers: { 'Access-Control-Allow-Origin': '*' } }));
   const page = await ctx.newPage();
   const errs = [];
   page.on('pageerror', (e) => errs.push(e.message));
@@ -170,17 +170,56 @@ async function context_check(page) {
   await page.getByTestId('quit-keep').click();
   await page.getByTestId('final-score').waitFor();
   console.log('✓ Tour vorzeitig beenden (Punkte behalten) funktioniert');
-  // Neue Tour starten und löschen
+  // Neue Tour starten, löschen, rückgängig machen, dann endgültig löschen
   await page.getByRole('button', { name: 'Zum Hauptmenü' }).click();
   await planTour(page, { team: 'Löscher' });
+  // Offline-Karten werden im Hintergrund gespeichert
+  await page.waitForTimeout(2500);
+  await page.getByLabel('Menü').click();
+  await page.getByTestId('tiles-status').waitFor();
+  console.log('✓ Offline-Karten:', await page.getByTestId('tiles-status').innerText());
+  // Stromsparmodus
+  await page.getByTestId('power-toggle').click();
+  if (!(await page.evaluate(() => JSON.parse(localStorage.getItem('hh-hunt:powerSave'))))) fail('Stromsparmodus nicht gespeichert');
+  console.log('✓ Stromsparmodus schaltbar');
+  await page.getByTestId('quit-tour').click();
+  await page.getByTestId('quit-delete').click();
+  await page.getByTestId('undo').click();
+  await page.locator('.play').waitFor();
+  if (!(await page.evaluate(() => localStorage.getItem('hh-hunt:game')))) fail('Rückgängig hat die Tour nicht zurückgeholt');
+  console.log('✓ Löschen lässt sich rückgängig machen');
+  // Überspringen rückgängig
+  const idx0 = await page.evaluate(() => JSON.parse(localStorage.getItem('hh-hunt:game')).index);
+  await page.getByLabel('Menü').click();
+  await page.getByRole('button', { name: /überspringen/ }).click();
+  await page.getByLabel('Eltern-PIN').fill('1234');
+  await page.getByRole('button', { name: 'Freischalten' }).click();
+  await page.getByTestId('undo').click();
+  const idx1 = await page.evaluate(() => JSON.parse(localStorage.getItem('hh-hunt:game')).index);
+  if (idx1 !== idx0) fail(`Überspringen nicht rückgängig: ${idx0} → ${idx1}`);
+  console.log('✓ Überspringen lässt sich rückgängig machen');
   await page.getByLabel('Menü').click();
   await page.getByTestId('quit-tour').click();
   await page.getByTestId('quit-delete').click();
   await page.getByTestId('new-tour').waitFor();
+  await page.getByTestId('undo-toast').waitFor({ state: 'detached', timeout: 12000 });
   const left = await page.evaluate(() => localStorage.getItem('hh-hunt:game'));
   if (left) fail('Tour wurde nicht gelöscht');
   if (await page.getByRole('button', { name: /Weiterspielen/ }).count()) fail('Gelöschte Tour wird noch angeboten');
   console.log('✓ Tour mittendrin löschen funktioniert');
+
+  // Sicherung: speichern, Daten löschen, wieder einspielen
+  await page.locator('.tabbar').getByRole('button', { name: 'Mehr' }).click();
+  const dl = page.waitForEvent('download');
+  await page.getByTestId('backup-save').click();
+  const file = await (await dl).path();
+  const careerBefore = await page.evaluate(() => localStorage.getItem('hh-hunt:career'));
+  await page.evaluate(() => localStorage.removeItem('hh-hunt:career'));
+  await page.getByTestId('backup-load').setInputFiles(file);
+  await page.waitForTimeout(1500);
+  const careerAfter = await page.evaluate(() => localStorage.getItem('hh-hunt:career'));
+  if (!careerAfter || JSON.parse(careerAfter).tours !== JSON.parse(careerBefore).tours) fail('Sicherung nicht korrekt eingespielt');
+  console.log('✓ Sicherung speichern und laden funktioniert');
   if (errs.length) fail('Seitenfehler: ' + errs.join(' / '));
   await ctx.close();
 }

@@ -31,6 +31,8 @@ import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { setPowerSave, usePowerSave, watchBattery } from '../lib/power';
+import { prefetchTour, useTilePrefetch } from '../lib/prefetch';
 import { ReportButton } from '../components/ReportButton';
 import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effects';
 import { WALK_GAMES } from '../data/walk-games';
@@ -44,8 +46,9 @@ import { FinalView, Notebook } from './FinalView';
 import { CACHE_CLUES } from '../data/cache-clues';
 import { LETTERS } from '../lib/cache';
 
-function useWakeLock() {
+function useWakeLock(enabled: boolean) {
   useEffect(() => {
+    if (!enabled) return;
     let lock: { release: () => Promise<void> } | null = null;
     const req = async () => {
       try {
@@ -62,7 +65,7 @@ function useWakeLock() {
       document.removeEventListener('visibilitychange', onVis);
       void lock?.release();
     };
-  }, []);
+  }, [enabled]);
 }
 
 
@@ -74,7 +77,20 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
   const [quit, setQuit] = useState(false);
   const [pinFor, setPinFor] = useState<null | 'unlock' | 'skip'>(null);
   const [notebook, setNotebook] = useState(false);
-  useWakeLock();
+  const powerSave = usePowerSave();
+  const tiles = useTilePrefetch();
+  // Karten der Tour für offline vorladen (einmal pro Tour)
+  useEffect(() => {
+    if (!game) return;
+    const t = setTimeout(() => void prefetchTour(game.id, game.config.start, game.stops.map(stopCoords)), 1500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [game?.id]);
+  useWakeLock(!powerSave);
+  // Akku-Warnung (Android/Chrome; iPhones geben den Akkustand nicht heraus)
+  const [lowBattery, setLowBattery] = useState<number | null>(null);
+  const [batteryDismissed, setBatteryDismissed] = useState(false);
+  useEffect(() => watchBattery((level, charging) => setLowBattery(!charging && level <= 0.2 ? Math.round(level * 100) : null)), []);
 
   // Dezenter Schrittzähler + reine Spielzeit (nur solange die Tour offen und sichtbar ist)
   useEffect(() => {
@@ -156,6 +172,24 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
       {poi && stop.kind === 'waypoint' && <WaypointView key={key} game={game} poi={poi} />}
       {poi && stop.kind === 'final' && <FinalView game={game} poi={poi} onPin={() => setPinFor('unlock')} />}
 
+      {lowBattery !== null && !batteryDismissed && (
+        <div className="battery-banner slidedown" role="status" data-testid="battery-banner">
+          <LilliSays mood="happy">
+            Der Akku hat nur noch {lowBattery} %. {powerSave ? 'Der Stromsparmodus ist schon an.' : 'Soll ich Strom sparen? Der Bildschirm darf dann ausgehen.'}
+          </LilliSays>
+          <div className="battery-actions">
+            {!powerSave && (
+              <button type="button" className="btn primary small" onClick={() => { setPowerSave(true); setBatteryDismissed(true); }}>
+                Strom sparen
+              </button>
+            )}
+            <button type="button" className="btn small" onClick={() => setBatteryDismissed(true)}>
+              Okay
+            </button>
+          </div>
+        </div>
+      )}
+
       {pos.simulated && <SimPanel target={stopCoords(stop)} radius={station?.radius ?? WAYPOINT_RADIUS} />}
 
       {menu && (
@@ -169,6 +203,11 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
                 : `ca. ${formatSteps(estimateSteps(game.meters, strideFor(youngestGroup(game.team.members.map((m) => m.age)))))} Schritte`}{' '}
               · {formatDistance(game.meters)} · GPS: {pos.status === 'ok' ? `±${Math.round(pos.accuracy)} m` : pos.status}
             </p>
+            {tiles && (
+              <p className="muted" data-testid="tiles-status" style={{ fontSize: 13 }}>
+                {tiles.running ? `Offline-Karten werden gespeichert … ${Math.round((tiles.done / Math.max(tiles.total, 1)) * 100)} %` : 'Offline-Karten für diese Tour gespeichert'}
+              </p>
+            )}
             <div className="sheet-list">
               {hasFinal && (
                 <button type="button" onClick={() => { setMenu(false); setNotebook(true); }}>
@@ -182,6 +221,9 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
               )}
               <button type="button" onClick={() => { setMenu(false); setPinFor('skip'); }}>
                 <Icon name="skip" size={20} color="var(--accent)" /> Diesen Stopp überspringen (Eltern-PIN)
+              </button>
+              <button type="button" role="switch" aria-checked={powerSave} data-testid="power-toggle" onClick={() => setPowerSave(!powerSave)}>
+                <Icon name="steps" size={20} color="var(--accent)" /> Stromsparmodus {powerSave ? 'ausschalten' : 'einschalten'}
               </button>
               <button type="button" onClick={() => void enableCompass()}>
                 <Icon name="compass" size={20} color="var(--accent)" /> Kompass des Handys aktivieren

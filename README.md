@@ -19,7 +19,8 @@ ruhigen Modus ohne Punkte.
 - **Effekte**: Konfetti-Kanonen bei jeder gefundenen Station, fliegende Punkte bei richtigen Antworten, Herzen bei Familien-Momenten, Goldregen beim Schatz, großes Finale am Ende (bei „Bewegung reduzieren“ aus)
 - **Ruhiges Design** mit Atem-Intro, Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
-- **Offline**: Texte und Bilder sind in der App gespeichert, Kartenkacheln werden beim Ansehen zwischengespeichert
+- **Offline**: Texte und Bilder sind in der App gespeichert; beim Start einer Tour werden die Kartenausschnitte entlang der Route vorgeladen (sparsam, Zoom 15–17)
+- **Stabilität**: Stromsparmodus und Akku-Warnung (Android), „Rückgängig“ nach Löschen oder Überspringen, automatische Sicherungskopie des Spielstands und Sicherung als Datei unter „Mehr“
 - **Datenschutz**: kein Konto, kein Server, alles bleibt auf dem Handy; Impressum und Datenschutzhinweis unter „Mehr“ (Angaben in `app/src/data/impressum.ts`)
 
 ## Starten
