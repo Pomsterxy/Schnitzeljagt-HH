@@ -210,7 +210,10 @@ while (guard++ < 40) {
     await page.locator('[data-testid=family-game][data-state=done]').waitFor();
   }
   if (await page.getByTestId('cache-clue').count()) clues++;
-  if (stations <= 2) await snap(`station-${state.stop.id}`);
+  if (stations <= 2) {
+    await page.waitForTimeout(900);
+    await snap(`station-${state.stop.id}`);
+  }
   await context.setGeolocation({ latitude: coords[0] - 0.01, longitude: coords[1], accuracy: 10 });
   await page.getByRole('button', { name: /Weiter zum nächsten Ziel|Tour abschließen|Leise weitergehen/ }).click();
 }

@@ -14,6 +14,7 @@ ruhigen Modus ohne Punkte.
 - **Aufgabentypen**: Quiz, Schätzen, Zählen, Beobachten, Foto, Nachdenken
 - **Familien-Momente**: an etwa jeder dritten Station ein gemeinsames Spiel (Mini-Versteckspiel, Lillis Freeze-Tanz, Grimassen-Selfie, Geräusche-Detektive, Komplimente-Runde u. a.) mit Timer, Musik oder Foto
 - **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 23 Abzeichen, Ränge, Sammelalbum, Urkunde
+- **Gesprächsstoff**: An jeder Station, an Zwischenzielen, in der Pause und am Ende eine Frage oder These zum gemeinsamen Diskutieren (passend zum Thema und Alter, ohne Wiederholung; an Gedenkorten nachdenkliche Fragen)
 - **Effekte**: Konfetti-Kanonen bei jeder gefundenen Station, fliegende Punkte bei richtigen Antworten, Herzen bei Familien-Momenten, Goldregen beim Schatz, großes Finale am Ende (bei „Bewegung reduzieren“ aus)
 - **Ruhiges Design** mit Atem-Intro, Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte

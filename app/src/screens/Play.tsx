@@ -30,6 +30,8 @@ import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
 import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effects';
 import { WALK_GAMES } from '../data/walk-games';
+import { TalkCard } from '../components/TalkCard';
+import { talksForTour, type TalkPool } from '../data/talk';
 import { STATION_BY_ID } from '../data';
 import { FamilyGameCard } from '../components/FamilyGameCard';
 import { Lilli, LilliSays } from '../components/Lilli';
@@ -477,6 +479,14 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [station.id]);
 
+  // Gesprächsstoff: über die ganze Tour ohne Wiederholung
+  const tourTalk = useMemo(() => {
+    const stationStops = game.stops.filter((s) => s.kind === 'station');
+    const pools = stationStops.map((s) => talkPools(STATION_BY_ID.get(s.id)!));
+    const i = stationStops.findIndex((s) => s.id === station.id);
+    return talksForTour(pools, game.config.seed, youngest)[i];
+  }, [game.stops, game.config.seed, youngest, station.id]);
+
   const lilliText = quiet
     ? 'Hier sind wir leise. Lasst uns gemeinsam einen Moment innehalten.'
     : allDone
@@ -565,6 +575,10 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         </section>
       )}
 
+      {allDone && !quiet && (
+        <TalkCard pools={talkPools(station)} seed={game.config.seed + game.index} youngest={youngest} initial={tourTalk} />
+      )}
+
       {allDone && familyGame && <FamilyGameCard stationId={station.id} gameId={familyGame} state={familyState} />}
 
       {allDone && quiet && (
@@ -576,6 +590,10 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
             {silence ? 'Moment der Stille beenden' : 'Einen Moment der Stille'}
           </button>
         </div>
+      )}
+
+      {allDone && quiet && (
+        <TalkCard pools={['erinnern']} seed={game.config.seed + game.index} youngest={youngest} title="Zum Nachdenken" quiet initial={tourTalk} />
       )}
 
       {allDone && !familyPending && (
@@ -656,6 +674,7 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
           height={260}
         />
       </div>
+      {arrived && <TalkCard pools={['pause']} seed={game.config.seed + game.index} youngest={youngestGroup(game.team.members.map((m) => m.age))} title="Pausen-Frage" />}
       <button type="button" className="btn big primary" onClick={() => { play('unlock'); nextStop(false); }}>
         {arrived ? 'Pause beendet – weiter' : 'Pause überspringen'}
       </button>
@@ -665,6 +684,11 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
 }
 
 const WAYPOINT_RADIUS = 35;
+
+/** Themen-Pools für den Gesprächsstoff einer Station */
+function talkPools(s: Station): TalkPool[] {
+  return s.mode === 'quiet' ? ['erinnern'] : (s.categories.filter((c) => c !== 'erinnern') as TalkPool[]);
+}
 
 function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
   const pos = usePosition();
@@ -726,10 +750,14 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
               height={200}
             />
           </div>
-          <div className="card walk-game rise">
-            <div className="caption">Spiel für unterwegs</div>
-            <p>{walkGame}</p>
-          </div>
+          {n % 2 === 0 ? (
+            <div className="card walk-game rise">
+              <div className="caption">Spiel für unterwegs</div>
+              <p>{walkGame}</p>
+            </div>
+          ) : (
+            <TalkCard pools={['weg']} seed={game.config.seed + n} youngest={youngestGroup(game.team.members.map((m) => m.age))} />
+          )}
           <button type="button" className="btn ghost small" style={{ alignSelf: 'center' }} onClick={() => { play('tap'); reachWaypoint(false); }}>
             Zwischenziel auslassen
           </button>

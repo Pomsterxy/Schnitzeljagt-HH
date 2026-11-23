@@ -50,7 +50,14 @@ export function Intro({ onDone }: { onDone: () => void }) {
           <Lilli size={150} mood={phase === 2 ? 'excited' : 'happy'} />
         </div>
         <svg viewBox="0 0 390 400" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 80 C80 20 150 0 195 0 C240 0 310 20 390 80 V400 H0 Z" fill="#F0561A" />
+          <defs>
+            <linearGradient id="intro-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#FFB547" />
+              <stop offset="0.45" stopColor="#FF5E3A" />
+              <stop offset="1" stopColor="#E8457C" />
+            </linearGradient>
+          </defs>
+          <path d="M0 80 C80 20 150 0 195 0 C240 0 310 20 390 80 V400 H0 Z" fill="url(#intro-grad)" />
         </svg>
       </div>
       <div className="intro-skip">Tippen zum Überspringen</div>
