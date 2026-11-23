@@ -11,14 +11,14 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
+      includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'],
       manifest: {
         name: 'Schnitzeljagd Hamburg',
         short_name: 'Schnitzeljagd',
         description: 'Familien-Schnitzeljagd durch Winterhude, Barmbek-Nord und Alsterdorf',
         lang: 'de',
-        theme_color: '#0b6e99',
-        background_color: '#fffaf0',
+        theme_color: '#f2f2f7',
+        background_color: '#f2f2f7',
         display: 'standalone',
         orientation: 'portrait',
         start_url: base,
@@ -26,7 +26,7 @@ export default defineConfig({
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
