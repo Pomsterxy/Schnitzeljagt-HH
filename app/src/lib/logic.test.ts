@@ -354,3 +354,17 @@ describe('Familien-Momente', () => {
     expect(Object.keys(assignFamilyGames(['a', 'b', 'c'], 1)).length).toBe(1);
   });
 });
+
+describe('Gesprächsstoff', () => {
+  it('wiederholt innerhalb einer Tour keine Frage und passt zum Alter', async () => {
+    const { talksForTour, TALK } = await import('../data/talk');
+    const stops = [['architektur', 'geschichte'], ['architektur', 'geschichte'], ['architektur'], ['wasser'], ['erinnern'], ['natur']] as const;
+    for (const age of ['kids', 'adults'] as const) {
+      const talks = talksForTour(stops.map((s) => [...s]), 42, age);
+      expect(new Set(talks.map((t) => t.text)).size).toBe(talks.length);
+      for (const t of talks) expect(t.age === undefined || t.age === (age === 'kids' ? 'kids' : 'older')).toBe(true);
+    }
+    // Gedenkorte bekommen nur nachdenkliche Fragen, keine Thesen zum Abstimmen
+    expect(TALK.erinnern.every((t) => t.kind === 'frage')).toBe(true);
+  });
+});
