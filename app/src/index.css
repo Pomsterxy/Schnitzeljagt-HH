@@ -718,3 +718,13 @@ html[data-dark] body { background: #101b33; }
 .chat-setup, .home-dark { color-scheme: dark; color: #fff; }
 .chat-setup input, .chat-setup button { color: inherit; }
 .chat-setup .chip:not(.on) { color: #fff; -webkit-text-fill-color: #fff; }
+
+/* Problem melden */
+.report-link { align-self: center; color: var(--label2); font-weight: 700; }
+.report-thanks { text-align: center; font-size: 14px; }
+.report-kinds { display: flex; flex-wrap: wrap; gap: 8px; }
+.report-kind { appearance: none; border: 1.5px solid var(--sep); background: var(--card); color: var(--label); font: inherit; font-size: 14px; font-weight: 700; padding: 8px 12px; border-radius: 999px; cursor: pointer; }
+.report-kind.on { background: var(--grad-primary); color: #fff; border-color: transparent; }
+.reports { display: flex; flex-direction: column; gap: 10px; }
+.reports ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
+.quiet-screen .report-link { color: var(--quiet-2); }

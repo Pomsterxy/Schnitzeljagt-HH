@@ -50,6 +50,16 @@ async function skipWaypoints(page) {
   await page.getByTestId('arrived').waitFor();
   console.log('✓ PIN-Freischaltung funktioniert, falsche PIN wird abgelehnt');
 
+  // Problem melden
+  await page.getByTestId('report-open').click();
+  await page.getByRole('button', { name: 'Ort nicht zugänglich' }).click();
+  await page.getByTestId('report-text').fill('Baustelle');
+  await page.getByTestId('report-save').click();
+  await page.getByTestId('report-sent').waitFor();
+  const reps = await page.evaluate(() => JSON.parse(localStorage.getItem('hh-hunt:reports') || '[]'));
+  if (reps.length !== 1 || reps[0].kind !== 'Ort nicht zugänglich' || reps[0].text !== 'Baustelle') fail('Meldung nicht gespeichert');
+  console.log('✓ Problem melden funktioniert');
+
   // 2) Neuladen mitten in der Station → gleicher Zustand
   const before = await page.locator('.station h1').innerText();
   await page.reload();

@@ -14,6 +14,7 @@ ruhigen Modus ohne Punkte.
 - **Aufgabentypen**: Quiz, Schätzen, Zählen, Beobachten, Foto, Nachdenken
 - **Familien-Momente**: an etwa jeder dritten Station ein gemeinsames Spiel (Mini-Versteckspiel, Lillis Freeze-Tanz, Grimassen-Selfie, Geräusche-Detektive, Komplimente-Runde u. a.) mit Timer, Musik oder Foto
 - **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 23 Abzeichen, Ränge, Sammelalbum, Urkunde
+- **Problem melden**: An jeder Station „Stimmt hier etwas nicht?“; Meldungen bleiben auf dem Handy und lassen sich unter „Mehr“ teilen. Zählaufgaben werten kleine Abweichungen großzügig
 - **Gesprächsstoff**: An jeder Station, an Zwischenzielen, in der Pause und am Ende eine Frage oder These zum gemeinsamen Diskutieren (passend zum Thema und Alter, ohne Wiederholung; an Gedenkorten nachdenkliche Fragen)
 - **Effekte**: Konfetti-Kanonen bei jeder gefundenen Station, fliegende Punkte bei richtigen Antworten, Herzen bei Familien-Momenten, Goldregen beim Schatz, großes Finale am Ende (bei „Bewegung reduzieren“ aus)
 - **Ruhiges Design** mit Atem-Intro, Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
@@ -63,6 +64,7 @@ npm run e2e                   # Kompletter Spieldurchlauf im Browser (Karte + Ab
 - `app/src/lib/`: Geo-Berechnung, Routengenerator, Punkteauswertung, GPS, Speicher, Vorlesen
 - `app/src/state/game.ts`: Spielstand (lokal gespeichert)
 - `app/src/screens/`: Start, Tour-Planung, Spiel, Abschluss, Album, Einstellungen
+- `docs/PRAXISTEST.md`: Checkliste für die erste echte Tour
 - `docs/KONZEPT.md`: Funktionskonzept · `docs/RECHERCHE.md`: Stationen und Quellen
 
 ## Lizenzen

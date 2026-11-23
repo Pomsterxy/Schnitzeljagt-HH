@@ -368,3 +368,17 @@ describe('Gesprächsstoff', () => {
     expect(TALK.erinnern.every((t) => t.kind === 'frage')).toBe(true);
   });
 });
+
+describe('Großzügiges Zählen', () => {
+  it('wertet kleine Abweichungen beim Zählen als richtig, Jahreszahlen bleiben exakt', () => {
+    const count = { id: 'c', type: 'number' as const, question: 'Wie viele?', answer: 12 };
+    expect(evaluate(count, 12).message).toBe('Genau!');
+    expect(evaluate(count, 13).correct).toBe(true);
+    expect(evaluate(count, 13).message).toMatch(/Gilt/);
+    expect(evaluate(count, 15).correct).toBe(false);
+    const year = { id: 'y', type: 'number' as const, question: 'Wann?', answer: 1914 };
+    expect(evaluate(year, 1915).correct).toBe(false);
+    const small = { id: 's', type: 'number' as const, question: 'Wie viele?', answer: 3 };
+    expect(evaluate(small, 4).correct).toBe(false);
+  });
+});
