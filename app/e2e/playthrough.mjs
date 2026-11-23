@@ -100,6 +100,7 @@ const coordsOf = async () =>
 let stations = 0;
 let photoUploaded = false;
 let clues = 0;
+let families = 0;
 let treasure = false;
 let pauses = 0;
 let guard = 0;
@@ -205,6 +206,16 @@ while (guard++ < 40) {
     }
     await page.waitForTimeout(150);
   }
+  // Familien-Moment: mitspielen
+  const fam = page.locator('[data-testid=family-game]:not([data-state])');
+  if (await fam.count()) {
+    families++;
+    if (families === 1) await snap(`family-${state.stop.id}`);
+    const noPhoto = fam.getByRole('button', { name: /Gespielt, ohne Foto/ });
+    if (await noPhoto.count()) await noPhoto.click();
+    else await fam.getByRole('button', { name: /Geschafft/ }).click();
+    await page.locator('[data-testid=family-game][data-state=done]').waitFor();
+  }
   if (await page.getByTestId('cache-clue').count()) clues++;
   if (stations <= 2) await snap(`station-${state.stop.id}`);
   await context.setGeolocation({ latitude: coords[0] - 0.01, longitude: coords[1], accuracy: 10 });
@@ -218,7 +229,7 @@ if (photoUploaded && !(await page.locator('.photo-grid img').count())) errors.pu
 const score = await page.getByTestId('final-score').innerText();
 const walk = (await page.getByTestId('steps').innerText()).replace(/\s+/g, ' ');
 console.log('Auswertung:', walk, '|', await page.getByTestId('walk-distance').innerText(), '|', await page.getByTestId('walk-time').innerText());
-console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Schatz: ${treasure ? 'gefunden' : 'nein'}`);
+console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Familien-Momente: ${families}, Schatz: ${treasure ? 'gefunden' : 'nein'}`);
 if (!treasure) errors.push('Schatz-Finale wurde nicht gespielt');
 if (THEME === 'architektur') {
   const arch = await page.evaluate(() => {

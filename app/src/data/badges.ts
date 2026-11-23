@@ -13,6 +13,7 @@ export interface BadgeContext {
   perfectEstimates: number;
   toursFinished: number;
   cacheFound?: boolean;
+  familyGames?: number;
   cacheFirstTry?: boolean;
   collectedBadges?: Set<string>;
 }
@@ -61,6 +62,7 @@ export const BADGES: Badge[] = [
   { id: 'all-winterhude', icon: '⭐', title: 'Winterhude komplett', description: 'Alle Stationen in Winterhude gesammelt.', check: (c) => districtDone(c, 'winterhude') },
   { id: 'all-barmbek', icon: '⭐', title: 'Barmbek komplett', description: 'Alle Stationen in Barmbek-Nord gesammelt.', check: (c) => districtDone(c, 'barmbek-nord') },
   { id: 'all-alsterdorf', icon: '⭐', title: 'Alsterdorf komplett', description: 'Alle Stationen in Alsterdorf gesammelt.', check: (c) => districtDone(c, 'alsterdorf') },
+  { id: 'familienbande', icon: '🤝', title: 'Familienbande', description: '3 Familien-Momente gemeinsam gespielt.', check: (c) => (c.familyGames ?? 0) >= 3 },
   { id: 'cacher', icon: '💎', title: 'Schatzfinder', description: 'Den Schatz am Ende eines Multi-Caches gefunden.', check: (c) => !!c.cacheFound },
   { id: 'koordinaten', icon: '🧮', title: 'Koordinaten-Profi', description: 'Die Schatz-Koordinaten im ersten Versuch richtig berechnet.', check: (c) => !!c.cacheFirstTry },
   {
