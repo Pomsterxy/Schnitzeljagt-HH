@@ -32,7 +32,7 @@ page.on('pageerror', (e) => { errors.push('pageerror: ' + e.message); console.lo
 page.on('console', (m) => m.type() === 'error' && !/204|tile/.test(m.text()) && errors.push('console: ' + m.text()));
 
 let shot = 0;
-const snap = async (name) => page.screenshot({ path: `${SHOTS}/${String(++shot).padStart(2, '0')}-${name}.png`, fullPage: true });
+const snap = async (name) => page.screenshot({ path: `${SHOTS}/${String(++shot).padStart(2, '0')}-${name}.png`, fullPage: process.env.FULL !== '0' });
 
 await page.goto(URL);
 await snap('home');
