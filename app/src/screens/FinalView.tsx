@@ -5,6 +5,7 @@ import { bearing, compassWord, distance, formatDistance, isWithinUnlock } from '
 import { setSimulatedPosition, usePosition } from '../lib/location';
 import { youngestGroup } from '../lib/scoring';
 import { play } from '../lib/feedback';
+import { celebrateTreasure, celebrateUnlock } from '../lib/effects';
 import { FINAL_POINTS, finalState, nextStop, revealCoords, submitCoords, treasureFound, type Game } from '../state/game';
 import { MapView } from '../components/MapView';
 import { NearbyCaches } from '../components/NearbyCaches';
@@ -69,6 +70,14 @@ export function FinalView({ game, poi, onPin }: { game: Game; poi: Poi; onPin: (
   const dist = pos.coords ? distance(pos.coords, target) : null;
   const nearSince = useRef<number | null>(null);
   const [fallback, setFallback] = useState(false);
+
+  // Schloss geknackt / Schatz gefunden feiern (nur beim Übergang, nicht beim Neuladen)
+  const was = useRef({ solved: f.solved, found: f.found });
+  useEffect(() => {
+    if (f.solved && !was.current.solved) celebrateUnlock(document.querySelector('.lock, [data-testid=final-coords]'));
+    if (f.found && !was.current.found) setTimeout(celebrateTreasure, 250);
+    was.current = { solved: f.solved, found: f.found };
+  }, [f.solved, f.found]);
 
   useEffect(() => {
     if (!f.solved || f.found || dist === null) return;

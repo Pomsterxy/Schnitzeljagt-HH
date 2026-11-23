@@ -558,3 +558,75 @@ body:has(.chat-setup) { background: var(--navy); }
 .wp-flag { width: 48px; height: 48px; border-radius: 24px; background: var(--fill2); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
 .walk-game p { margin: 4px 0 0; font-size: 17px; font-weight: 700; line-height: 1.4; }
 .waypoint-done { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; padding: 40px 0; }
+
+/* ---------- Effekte: Konfetti-Ebene, fliegende Punkte, Lichtblitz ---------- */
+.fx-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 950; }
+.fx-flash { position: fixed; inset: 0; pointer-events: none; z-index: 940; animation: flashOut 0.7s ease-out both; }
+@keyframes flashOut { 0% { opacity: 0; } 20% { opacity: 1; } 100% { opacity: 0; } }
+.fx-float { position: fixed; z-index: 960; pointer-events: none; font-size: 38px; font-weight: 900; color: #f5b000; text-shadow: 0 2px 0 #fff, 0 6px 18px rgba(245, 176, 0, 0.55); transform: translate(-50%, -50%); animation: floatUp 1.35s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  18% { opacity: 1; transform: translate(-50%, -70%) scale(1.25); }
+  35% { transform: translate(-50%, -85%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -260%) scale(0.9); }
+}
+
+/* Glanz, der über die Haupt-Knöpfe streicht */
+.btn.primary { position: relative; overflow: hidden; isolation: isolate; }
+.btn.primary::after { content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent); transform: skewX(-20deg); animation: sheen 3.8s ease-in-out infinite; pointer-events: none; }
+.btn.primary:disabled::after { animation: none; }
+@keyframes sheen { 0%, 62% { left: -60%; } 100% { left: 130%; } }
+.btn:active { transform: scale(0.96); }
+
+/* Richtige Antwort leuchtet kurz auf */
+.btn.option.correct { animation: correctGlow 0.9s var(--ease) both; }
+@keyframes correctGlow { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.6); transform: scale(1); } 40% { box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); transform: scale(1.03); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); transform: scale(1); } }
+.task-card.done { animation: cardDone 0.6s var(--ease); }
+@keyframes cardDone { 0% { transform: scale(1); } 35% { transform: scale(1.025); } 100% { transform: scale(1); } }
+
+/* Punkte-Pille pulsiert bei neuen Punkten */
+.points-pill { position: relative; }
+.points-pill .bump { display: inline-block; animation: bump 0.55s var(--ease); }
+.points-pill:has(.bump)::after { content: ''; position: absolute; inset: -2px; border-radius: inherit; box-shadow: 0 0 0 0 rgba(245, 176, 0, 0.7); animation: pillRing 0.9s ease-out; pointer-events: none; }
+@keyframes pillRing { to { box-shadow: 0 0 0 12px rgba(245, 176, 0, 0); } }
+
+/* Gefunden-Häkchen: federnder Auftritt und Strahlen */
+.celebrate .check-badge { animation: pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.celebrate .check-badge::before { content: ''; position: absolute; inset: -40px; border-radius: 50%; background: repeating-conic-gradient(rgba(255, 181, 71, 0.35) 0 10deg, transparent 10deg 30deg); animation: spinrays 9s linear infinite, fade 0.6s both; z-index: -1; -webkit-mask: radial-gradient(circle, #000 35%, transparent 70%); mask: radial-gradient(circle, #000 35%, transparent 70%); }
+.celebrate .large-title { animation: titleIn 0.7s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+@keyframes titleIn { from { opacity: 0; transform: translateY(14px) scale(0.92); } to { opacity: 1; transform: none; } }
+
+/* Zwischenziel geschafft */
+.waypoint-done .lilli { animation: hop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 2; }
+@keyframes hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-26px) rotate(-6deg); } 70% { transform: translateY(0) scale(1.06, 0.94); } }
+.waypoint-done .points-pill { animation: pop 0.6s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both; font-size: 20px; }
+
+/* Listen und Karten erscheinen gestaffelt */
+.home-body > .rise:nth-child(2) { animation-delay: 0.06s; }
+.home-body > .rise:nth-child(3) { animation-delay: 0.12s; }
+.home-body > .rise:nth-child(4) { animation-delay: 0.18s; }
+.home-body > .rise:nth-child(5) { animation-delay: 0.24s; }
+.home-body > .rise:nth-child(6) { animation-delay: 0.3s; }
+.chat-stops li { animation: rise 0.5s var(--ease) both; }
+.chat-stops li:nth-child(2) { animation-delay: 0.08s; }
+.chat-stops li:nth-child(3) { animation-delay: 0.16s; }
+.chat-stops li:nth-child(4) { animation-delay: 0.24s; }
+.chat-stops li:nth-child(5) { animation-delay: 0.32s; }
+.chat-stops li:nth-child(n + 6) { animation-delay: 0.4s; }
+.chip { animation: chipIn 0.4s var(--ease) both; }
+.chips .chip:nth-child(2) { animation-delay: 0.04s; }
+.chips .chip:nth-child(3) { animation-delay: 0.08s; }
+.chips .chip:nth-child(4) { animation-delay: 0.12s; }
+.chips .chip:nth-child(n + 5) { animation-delay: 0.16s; }
+@keyframes chipIn { from { opacity: 0; transform: translateY(10px) scale(0.9); } to { opacity: 1; transform: none; } }
+
+/* Lilli tippt … */
+.typing-dots { display: inline-flex; gap: 5px; padding: 16px 18px !important; }
+.typing-dots i { width: 8px; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.7); animation: dotJump 0.9s ease-in-out infinite; }
+.typing-dots i:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes dotJump { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-6px); opacity: 1; } }
+
+/* Tab-Leiste: Symbol hüpft beim Antippen */
+.tabbar button.on svg { animation: tabHop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes tabHop { 0% { transform: scale(1); } 40% { transform: scale(1.25) translateY(-3px); } 100% { transform: scale(1); } }

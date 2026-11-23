@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FAMILY_GAME_BY_ID, FAMILY_POINTS } from '../data/family-games';
 import { finishFamilyGame } from '../state/game';
+import { celebrateFamily } from '../lib/effects';
 import { play, startMelody, useSoundOn } from '../lib/feedback';
 import { compressImage, savePhoto } from '../lib/storage';
 import { LilliSays } from './Lilli';
@@ -122,6 +123,12 @@ export function FamilyGameCard({ stationId, gameId, state }: { stationId: string
   const [ready, setReady] = useState(game?.kind === 'simple');
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
+  /** Geschafft: Herzen fliegen lassen und speichern */
+  const markDone = (photo?: Parameters<typeof finishFamilyGame>[2]) => {
+    celebrateFamily(cardRef.current);
+    finishFamilyGame(stationId, 'done', photo);
+  };
   if (!game) return null;
 
   if (state)
@@ -144,12 +151,12 @@ export function FamilyGameCard({ stationId, gameId, state }: { stationId: string
     const id = `${Date.now()}-family`;
     await savePhoto(id, blob);
     play('correct');
-    finishFamilyGame(stationId, 'done', { id, title: game.title });
+    markDone({ id, title: game.title });
     setBusy(false);
   };
 
   return (
-    <section className="card family-card rise" data-testid="family-game">
+    <section ref={cardRef} className="card family-card rise" data-testid="family-game">
       <div className="family-kicker">
         <Icon name="star" size={14} color="var(--gold-ink)" /> Familien-Moment
       </div>
@@ -172,7 +179,7 @@ export function FamilyGameCard({ stationId, gameId, state }: { stationId: string
           <button type="button" className="btn primary big" disabled={busy} onClick={() => fileRef.current?.click()}>
             <Icon name="camera" size={20} color="#fff" /> {busy ? 'Speichere …' : 'Foto machen'}
           </button>
-          <button type="button" className="btn" onClick={() => { play('correct'); finishFamilyGame(stationId, 'done'); }}>
+          <button type="button" className="btn" onClick={() => { play('correct'); markDone(); }}>
             Gespielt, ohne Foto (+{FAMILY_POINTS})
           </button>
         </>
@@ -182,7 +189,7 @@ export function FamilyGameCard({ stationId, gameId, state }: { stationId: string
           className={`btn big ${ready ? 'primary' : 'dark'}`}
           onClick={() => {
             play('correct');
-            finishFamilyGame(stationId, 'done');
+            markDone();
           }}
         >
           Geschafft! (+{FAMILY_POINTS})

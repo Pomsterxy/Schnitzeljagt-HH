@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import type { Task } from '../data/types';
+import { celebrateCorrect } from '../lib/effects';
 import { answerTask, completePhotoTask, completeReflection, takeTaskHint, type TaskState } from '../state/game';
 import { POINTS, taskMaxPoints } from '../lib/scoring';
 import { compressImage, savePhoto } from '../lib/storage';
@@ -38,6 +39,7 @@ export function TaskCard({
   const [picked, setPicked] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
   const hintsUsed = state?.hints ?? 0;
   const done = state?.done ?? false;
   const max = taskMaxPoints(task);
@@ -48,6 +50,7 @@ export function TaskCard({
     if (r.final) {
       if (r.correct) {
         play(task.type === 'estimate' && r.quality < 1 ? 'coin' : 'correct');
+        if (!quiet) celebrateCorrect(cardRef.current, r.points);
         if (r.points) onPoints?.(r.points);
       } else play('wrong');
       setFeedback({ ok: r.correct, msg: r.message });
@@ -67,6 +70,7 @@ export function TaskCard({
     await savePhoto(id, blob);
     const pts = completePhotoTask(task.id, id, quiet, task.question);
     play('correct');
+    if (!quiet) celebrateCorrect(cardRef.current, pts);
     if (pts) onPoints?.(pts);
     setFeedback({ ok: true, msg: 'Foto gespeichert!' });
     setBusy(false);
@@ -81,7 +85,7 @@ export function TaskCard({
   };
 
   return (
-    <section className={`card task-card rise${done ? ' done' : ''}${quiet ? ' quiet' : ''}`} data-testid={`task-${task.id}`}>
+    <section ref={cardRef} className={`card task-card rise${done ? ' done' : ''}${quiet ? ' quiet' : ''}`} data-testid={`task-${task.id}`}>
       <div className="task-head">
         <span>
           {TYPE_LABEL[task.type]} · {index + 1} von {total}

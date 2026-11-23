@@ -9,7 +9,7 @@ import { formatDuration, formatSteps, strideFor } from '../lib/pedometer';
 import { youngestGroup } from '../lib/scoring';
 import { LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
-import { Confetti } from './Play';
+import { celebrateFinish } from '../lib/effects';
 
 export function PhotoGrid({ photos }: { photos: { id: string; title: string }[] }) {
   const [urls, setUrls] = useState<Record<string, string>>({});
@@ -80,6 +80,10 @@ export function Finish({ onHome }: { onHome: () => void }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [game?.points, game]);
+  useEffect(() => {
+    const t = setTimeout(celebrateFinish, 300);
+    return () => clearTimeout(t);
+  }, []);
   if (!game) return null;
   const stations = finishedStations(game);
   const earned = BADGES.filter((b) => game.earnedBadges.includes(b.id));
@@ -88,7 +92,6 @@ export function Finish({ onHome }: { onHome: () => void }) {
 
   return (
     <div className="screen finish">
-      <Confetti />
       <div className="finish-hero">
         <div className="caption rise">Tour geschafft</div>
         <div className="score-big pop" data-testid="final-score" aria-label={`${game.team.name}: ${game.points} Punkte`}>

@@ -9,6 +9,7 @@ import { TabBar, type Tab } from './components/TabBar';
 import { getGame } from './state/game';
 import { setSimulated } from './lib/location';
 import { Intro, shouldShowIntro } from './components/Intro';
+import { EffectsLayer } from './components/EffectsLayer';
 
 type Screen = Tab | 'setup' | 'play' | 'finish';
 
@@ -65,6 +66,7 @@ export default function App() {
         {content}
       </div>
       {tab && <TabBar active={tab} onChange={setScreen} dark={tab === 'home'} />}
+      <EffectsLayer />
       {intro && <Intro onDone={() => setIntro(false)} />}
     </>
   );
