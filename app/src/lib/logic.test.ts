@@ -174,6 +174,24 @@ describe('Routengenerator', () => {
     }
     expect(checked).toBeGreaterThan(100);
   });
+  it('richtet sich nach der gewünschten Etappenlänge', () => {
+    const legsOf = (maxLeg: number) => {
+      const r = generateRoute(STATIONS, POIS, { ...base, districts: ['barmbek-nord', 'alsterdorf'], start: START_POINTS[4].coords, minutes: 240, maxLeg, cache: true });
+      let prev = START_POINTS[4].coords;
+      const legs = r.stops.map((s) => {
+        const c = s.kind === 'station' ? s.station.coords : s.poi.coords;
+        const d = distance(prev, c);
+        prev = c;
+        return d;
+      });
+      return { legs: legs.slice(1), waypoints: r.stops.filter((s) => s.kind === 'waypoint').length };
+    };
+    const km = legsOf(1000);
+    expect(Math.max(...km.legs)).toBeLessThanOrEqual(1000.5);
+    const any = legsOf(Infinity);
+    expect(any.waypoints).toBe(0);
+    expect(legsOf(500).waypoints).toBeGreaterThanOrEqual(km.waypoints);
+  });
   it('misst konsistent', () => {
     const r = generateRoute(STATIONS, POIS, { ...base, minutes: 90 });
     const m = measure(base.start, r.stops, base.kmh);

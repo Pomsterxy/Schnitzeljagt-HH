@@ -3,7 +3,7 @@ import { DISTRICTS, START_POINTS } from '../data/districts';
 import { POIS, STATIONS } from '../data';
 import type { AgeGroup, Category, DistrictId, LatLng } from '../data/types';
 import { formatDistance, distance } from '../lib/geo';
-import { generateRoute, MAX_LEG } from '../lib/route';
+import { generateRoute } from '../lib/route';
 import { speedFor, youngestGroup } from '../lib/scoring';
 import { usePosition, startTracking } from '../lib/location';
 import { play } from '../lib/feedback';
@@ -34,6 +34,12 @@ const THEMES: { id: Category | 'mix'; name: string }[] = [
   { id: 'erinnern', name: 'Erinnern' },
 ];
 const MAX_PEOPLE = 8;
+/** Wie weit darf ein Weg zwischen zwei Zielen sein? 0 = egal */
+const LEGS = [
+  { v: 500, name: 'Höchstens 500 m' },
+  { v: 1000, name: 'Bis 1 km ist okay' },
+  { v: 0, name: 'Egal, auch weiter' },
+];
 
 type Q =
   | { id: 'team' }
@@ -42,6 +48,7 @@ type Q =
   | { id: 'avatar' }
   | { id: 'districts' }
   | { id: 'minutes' }
+  | { id: 'legs' }
   | { id: 'theme' }
   | { id: 'start' }
   | { id: 'nav' }
@@ -66,13 +73,14 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
   const [startId, setStartId] = useState<string>('');
   const [theme, setTheme] = useState<Category | 'mix'>('mix');
   const [cache, setCache] = useState(true);
+  const [maxLeg, setMaxLeg] = useState(500);
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e9));
   const pos = usePosition();
 
   const questions: Q[] = useMemo(() => {
     const q: Q[] = [{ id: 'team' }, { id: 'count' }];
     for (let i = 0; i < count; i++) q.push({ id: 'member', i });
-    q.push({ id: 'avatar' }, { id: 'districts' }, { id: 'minutes' }, { id: 'theme' }, { id: 'start' }, { id: 'nav' }, { id: 'cache' });
+    q.push({ id: 'avatar' }, { id: 'districts' }, { id: 'minutes' }, { id: 'legs' }, { id: 'theme' }, { id: 'start' }, { id: 'nav' }, { id: 'cache' });
     if (minutes >= 60) q.push({ id: 'pause' });
     if (theme !== 'erinnern') q.push({ id: 'quiet' });
     q.push({ id: 'pin' }, { id: 'route' });
@@ -102,8 +110,9 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
       seed,
       theme,
       cache,
+      maxLeg: maxLeg || Infinity,
     });
-  }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache]);
+  }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache, maxLeg]);
 
   // neue Nachricht: nach unten scrollen
   const endRef = useRef<HTMLDivElement>(null);
@@ -140,6 +149,8 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
         return 'Wo wollen wir suchen? Ihr könnt auch mehrere Stadtteile antippen.';
       case 'minutes':
         return 'Wie lange haben eure Beine Lust?';
+      case 'legs':
+        return 'Sind auch Wege über 500 Meter bis zum nächsten Ziel okay? Bei kurzen Wegen baue ich kleine Zwischenziele ein, damit niemand quengelt.';
       case 'theme':
         return 'Habt ihr ein Lieblingsthema?';
       case 'start':
@@ -156,7 +167,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
         return 'Zum Schluss: Ein Erwachsener legt eine 4-stellige Eltern-PIN fest. Damit schaltet ihr Stationen frei, wenn das GPS mal spinnt.';
       case 'route':
         return route && route.stops.some((s) => s.kind === 'station')
-          ? 'Eure Route steht! Kein Weg ist länger als 500 Meter. Den Schatz-Ort verrate ich natürlich noch nicht …'
+          ? `Eure Route steht!${maxLeg ? ` Kein Weg ist länger als ${maxLeg === 1000 ? '1 Kilometer' : `${maxLeg} Meter`}.` : ''} Den Schatz-Ort verrate ich natürlich noch nicht …`
           : 'Hm, für diese Auswahl finde ich keine passende Route. Tippt oben auf eine Antwort, um etwas zu ändern.';
     }
   };
@@ -178,6 +189,8 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
         return districts.map((d) => DISTRICTS.find((x) => x.id === d)!.name).join(', ');
       case 'minutes':
         return DURATIONS.find((d) => d.v === minutes)!.name;
+      case 'legs':
+        return LEGS.find((l) => l.v === maxLeg)!.name;
       case 'theme':
         return THEMES.find((t) => t.id === theme)!.name;
       case 'start':
@@ -199,7 +212,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
 
   const begin = () => {
     if (!route || !start) return;
-    const config: TourConfig = { districts, minutes, nav, includeQuiet, includePause, pin, start: start.coords, startLabel: start.label, seed, theme, cache };
+    const config: TourConfig = { districts, minutes, nav, includeQuiet, includePause, pin, start: start.coords, startLabel: start.label, seed, theme, cache, maxLeg };
     play('found');
     // Schrittzähler: iOS fragt nur nach einem Tipp um Erlaubnis
     void requestMotionPermission();
@@ -304,7 +317,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             <p className="dark-caption" data-testid="leg-info">
               {waypointCount === 1 ? 'Ein Zwischenziel hält die Wege kurz. ' : waypointCount > 1 ? `${waypointCount} Zwischenziele halten die Wege kurz. ` : ''}
               Längste Etappe: {formatDistance(longest)}
-              {firstLeg > MAX_LEG ? ` · Der erste Weg vom Start ist ${formatDistance(firstLeg * 1.3)} lang.` : ''}
+              {maxLeg && firstLeg > maxLeg ? ` · Der erste Weg vom Start ist ${formatDistance(firstLeg * 1.3)} lang.` : ''}
             </p>
             {nav === 'map' && (
               <ol className="chat-stops">
@@ -419,6 +432,17 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             selected={[String(minutes)]}
             onPick={(v) => {
               setMinutes(Number(v));
+              next();
+            }}
+          />
+        );
+      case 'legs':
+        return (
+          <Chips
+            options={LEGS.map((l) => ({ id: String(l.v), label: l.name }))}
+            selected={[String(maxLeg)]}
+            onPick={(v) => {
+              setMaxLeg(Number(v));
               next();
             }}
           />

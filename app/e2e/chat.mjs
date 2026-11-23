@@ -7,6 +7,7 @@ export async function planTour(page, o = {}) {
     people = [['Mama', 'Teen / Erwachsen'], ['Lotta', 'Kind 6–9']],
     districts = ['Winterhude'],
     duration = '2 Stunden',
+    legs = 'Höchstens 500 m',
     theme = 'Von allem etwas',
     start = 'U Borgweg (Stadtpark)',
     nav = 'Mit Karte',
@@ -31,6 +32,7 @@ export async function planTour(page, o = {}) {
   await snap('chat-districts');
   await page.getByRole('button', { name: 'Passt so' }).click();
   await chip(page, duration).click();
+  await chip(page, legs).click();
   await chip(page, theme).click();
   await chip(page, start).click();
   await chip(page, nav).click();
@@ -44,8 +46,8 @@ export async function planTour(page, o = {}) {
   await page.getByRole('button', { name: "Los geht's!" }).waitFor();
   await snap('chat-route');
   const summary = await page.locator('.summary').innerText();
-  const legs = await page.getByTestId('leg-info').innerText();
+  const legInfo = await page.getByTestId('leg-info').innerText();
   await page.getByRole('button', { name: "Los geht's!" }).click();
   await page.locator('.play').waitFor();
-  return { summary, legs };
+  return { summary, legs: legInfo };
 }
