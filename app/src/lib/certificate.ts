@@ -3,7 +3,7 @@ import { BADGES } from '../data/badges';
 import { formatDistance } from './geo';
 
 /** Zeichnet die Urkunde als PNG (Canvas) */
-export async function drawCertificate(game: Game, stations: number): Promise<Blob | null> {
+export async function drawCertificate(game: Game, stations: number, walk?: { steps: number; estimated: boolean; meters: number; time: string }): Promise<Blob | null> {
   const W = 1080;
   const H = 1350;
   const c = document.createElement('canvas');
@@ -36,7 +36,13 @@ export async function drawCertificate(game: Game, stations: number): Promise<Blo
   if (names) x.fillText(names, W / 2, 615);
   x.font = '40px system-ui, sans-serif';
   x.fillText(`hat ${stations} Stationen gefunden`, W / 2, 700);
-  x.fillText(`und ${formatDistance(game.meters || game.plannedMeters)} zurückgelegt.`, W / 2, 755);
+  x.fillText(`und ${formatDistance(walk?.meters ?? (game.meters || game.plannedMeters))} zurückgelegt.`, W / 2, 755);
+  if (walk) {
+    x.font = '32px system-ui, sans-serif';
+    x.fillStyle = '#555';
+    x.fillText(`${walk.estimated ? 'ca. ' : ''}${walk.steps.toLocaleString('de-DE')} Schritte · ${walk.time}`, W / 2, 805);
+    x.fillStyle = '#0b3d5c';
+  }
   x.font = 'bold 90px system-ui, sans-serif';
   x.fillText(`⭐ ${game.points} Punkte`, W / 2, 880);
   const badges = BADGES.filter((b) => game.earnedBadges.includes(b.id));

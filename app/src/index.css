@@ -409,3 +409,12 @@ textarea { resize: none; }
 .sim-panel .btn { min-height: 34px; font-size: 13px; background: rgba(255, 255, 255, 0.15); color: #fff; }
 @keyframes enter { from { opacity: 0; } to { opacity: 1; } }
 .screen-enter { animation: enter 0.35s ease both; }
+
+/* Schrittzähler-Auswertung */
+.walk-stats { display: flex; flex-direction: column; gap: 12px; }
+.walk-main { display: flex; align-items: center; gap: 14px; }
+.walk-big { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.walk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.walk-grid > div { background: var(--fill2); border-radius: 14px; padding: 10px 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.walk-grid strong { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.walk-grid span { font-size: 12px; color: var(--label2); }

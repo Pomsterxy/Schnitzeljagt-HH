@@ -71,6 +71,25 @@ await snap('route');
 const summary = await page.locator('.summary').innerText();
 console.log('Route:', summary);
 await page.getByRole('button', { name: "Los geht's!" }).click();
+// Gehen simulieren: 10 s Beschleunigungsdaten mit 1,8 Schritten/s (wie ein echter Bewegungssensor)
+await page.evaluate(
+  () =>
+    new Promise((res) => {
+      let i = 0;
+      const t = setInterval(() => {
+        const z = 9.81 + 2.5 * Math.sin((2 * Math.PI * 1.8 * i * 20) / 1000);
+        window.dispatchEvent(new DeviceMotionEvent('devicemotion', { accelerationIncludingGravity: { x: 0.3, y: 0.2, z } }));
+        if (++i >= 500) {
+          clearInterval(t);
+          res();
+        }
+      }, 20);
+    }),
+);
+await page.waitForTimeout(3500);
+const sensorSteps = await page.evaluate(() => JSON.parse(localStorage.getItem('hh-hunt:game')).steps);
+console.log('Schritte vom simulierten Sensor:', sensorSteps);
+if (!(sensorSteps >= 12 && sensorSteps <= 22)) errors.push(`Schrittzähler unplausibel: ${sensorSteps}`);
 
 const coordsOf = async () =>
   page.evaluate(() => {
@@ -197,6 +216,8 @@ await page.waitForTimeout(1500);
 await snap('finish');
 if (photoUploaded && !(await page.locator('.photo-grid img').count())) errors.push('Foto fehlt im Fotoalbum');
 const score = await page.getByTestId('final-score').innerText();
+const walk = (await page.getByTestId('steps').innerText()).replace(/\s+/g, ' ');
+console.log('Auswertung:', walk, '|', await page.getByTestId('walk-distance').innerText(), '|', await page.getByTestId('walk-time').innerText());
 console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Schatz: ${treasure ? 'gefunden' : 'nein'}`);
 if (!treasure) errors.push('Schatz-Finale wurde nicht gespielt');
 if (THEME === 'architektur') {

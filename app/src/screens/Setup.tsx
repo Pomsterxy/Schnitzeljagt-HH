@@ -7,6 +7,7 @@ import { generateRoute } from '../lib/route';
 import { speedFor, youngestGroup } from '../lib/scoring';
 import { usePosition, startTracking } from '../lib/location';
 import { play } from '../lib/feedback';
+import { requestMotionPermission } from '../lib/pedometer';
 import { lastTeam, startGame, type Member, type NavMode, type Team, type TourConfig } from '../state/game';
 import { MapView } from '../components/MapView';
 import { Icon } from '../components/Icon';
@@ -116,6 +117,8 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
   const begin = () => {
     const config: TourConfig = { districts, minutes, nav, includeQuiet, includePause, pin, start: start!.coords, startLabel: start!.label, seed, theme, cache };
     play('found');
+    // Schrittzähler: iOS fragt nur nach einem Tipp um Erlaubnis
+    void requestMotionPermission();
     startGame({ ...team, name: team.name.trim() }, config, route!);
     onStarted();
   };
