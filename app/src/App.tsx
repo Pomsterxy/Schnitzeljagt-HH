@@ -8,6 +8,7 @@ import { Settings } from './screens/Settings';
 import { TabBar, type Tab } from './components/TabBar';
 import { getGame } from './state/game';
 import { setSimulated } from './lib/location';
+import { Intro, shouldShowIntro } from './components/Intro';
 
 type Screen = Tab | 'setup' | 'play' | 'finish';
 
@@ -16,6 +17,8 @@ export default function App() {
     const g = getGame();
     return g && !g.finishedAt && g.index < g.stops.length ? 'play' : 'home';
   });
+
+  const [intro, setIntro] = useState(shouldShowIntro);
 
   useEffect(() => {
     // ?test=1 schaltet den Testmodus ein (Standort simulieren)
@@ -61,7 +64,8 @@ export default function App() {
       <div key={screen} className="screen-enter">
         {content}
       </div>
-      {tab && <TabBar active={tab} onChange={setScreen} />}
+      {tab && <TabBar active={tab} onChange={setScreen} dark={tab === 'home'} />}
+      {intro && <Intro onDone={() => setIntro(false)} />}
     </>
   );
 }
