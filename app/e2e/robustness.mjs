@@ -2,6 +2,7 @@
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
+import { planTour } from './chat.mjs';
 
 const URL = process.argv[2] ?? 'http://localhost:4173/';
 // PW_PROXY: optionaler Proxy (z. B. in abgeschotteten Umgebungen)
@@ -12,13 +13,20 @@ const fail = (m) => {
 };
 
 async function setupTour(page) {
-  await page.getByTestId('new-tour').click();
-  await page.getByPlaceholder('z. B. Die Alsterpiraten').fill('Robust');
-  for (let i = 0; i < 4; i++) await page.getByRole('button', { name: 'Weiter' }).click();
-  await page.getByPlaceholder('z. B. 1234').fill('4321');
-  await page.getByRole('button', { name: 'Route planen' }).click();
-  await page.getByRole('button', { name: "Los geht's!" }).click();
-  await page.locator('.play').waitFor();
+  await planTour(page, { team: 'Robust', pin: '4321' });
+}
+
+/** Zwischenziele am Anfang auslassen, bis eine Station kommt */
+async function skipWaypoints(page) {
+  for (let i = 0; i < 10; i++) {
+    const kind = await page.evaluate(() => {
+      const g = JSON.parse(localStorage.getItem('hh-hunt:game'));
+      return g.stops[g.index].kind;
+    });
+    if (kind !== 'waypoint') return;
+    await page.getByRole('button', { name: 'Zwischenziel auslassen' }).click();
+    await page.waitForTimeout(200);
+  }
 }
 
 // 1) GPS verweigert → Hinweis + PIN-Freischaltung, falsche PIN wird abgelehnt
@@ -30,6 +38,7 @@ async function setupTour(page) {
   page.on('pageerror', (e) => errs.push(e.message));
   await page.goto(URL);
   await setupTour(page);
+  await skipWaypoints(page);
   await page.getByRole('button', { name: /Wir sind da/ }).waitFor({ timeout: 15000 });
   console.log('✓ GPS verweigert: Hinweis + Fallback-Button sichtbar');
   await page.getByRole('button', { name: /Wir sind da/ }).click();
@@ -102,6 +111,7 @@ async function setupTour(page) {
 }
 
 async function context_check(page) {
+  await skipWaypoints(page);
   // erste Station freischalten und Bild prüfen
   const t = (await page.locator('.play').getAttribute('data-target')).split(',').map(Number);
   await page.context().setGeolocation({ latitude: t[0], longitude: t[1], accuracy: 8 });

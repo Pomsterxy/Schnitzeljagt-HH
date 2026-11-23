@@ -5,7 +5,8 @@ Aufgaben bearbeiten, Info-Snacks lesen, Punkte und Abzeichen sammeln. Gedenkorte
 ruhigen Modus ohne Punkte.
 
 - **51 Stationen** mit echten Fakten, 56 Fotos und Lizenzangaben, darunter 10 Gedenkorte und 24 Architektur-Stationen
-- **Route nach Wunsch**: Stadtteile, Dauer (30 min – 4 h), Startpunkt und Thema (z. B. Architektur, Wasser, Technik, Erinnern) wählen, die App plant automatisch, auf Wunsch mit Spielplatz- oder Eis-Pause
+- **Planung im Chat**: Lilli fragt nacheinander nach Teamname, Anzahl, Namen und Alter, Stadtteilen, Dauer (45 min – 4 h), Thema, Startpunkt und Extras; jede Antwort lässt sich antippen und ändern
+- **Kurze, direkte Wege**: Keine Etappe zwischen zwei Zielpunkten ist länger als 500 m. Liegen Stationen weiter auseinander, führt der Weg ohne Zickzack über Zwischenziele (Spielplätze, Eisdielen u. a.) mit kleinen Spielen für unterwegs; auf Wunsch mit Spielplatz- oder Eis-Pause
 - **Geocaching**: Schatz-Finale wie ein Multi-Cache. Jede Station liefert eine Cache-Zahl fürs Notizbuch, am Ende berechnet ihr die Koordinaten und sucht den Schatz nur mit Kompass und Entfernung. Dazu kommen Links zu echten Geocaches (Geocaching.com, Opencaching.de); mit eigenem Opencaching-Schlüssel zeigt die App Caches in der Nähe direkt an
 - **GPS-Freischaltung**: Aufgaben erscheinen erst am Ort; wenn das GPS spinnt, hilft die Eltern-PIN
 - **Zwei Navigationsmodi**: Karte mit Richtungspfeil oder Abenteuer (nur Rätsel, Heiß/Kalt kostet Punkte)
@@ -13,7 +14,7 @@ ruhigen Modus ohne Punkte.
 - **Aufgabentypen**: Quiz, Schätzen, Zählen, Beobachten, Foto, Nachdenken
 - **Familien-Momente**: an etwa jeder dritten Station ein gemeinsames Spiel (Mini-Versteckspiel, Lillis Freeze-Tanz, Grimassen-Selfie, Geräusche-Detektive, Komplimente-Runde u. a.) mit Timer, Musik oder Foto
 - **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 23 Abzeichen, Ränge, Sammelalbum, Urkunde
-- **Design im Apple-Stil** mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
+- **Ruhiges Design** mit Atem-Intro, Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert, Kartenkacheln werden beim Ansehen zwischengespeichert
 - **Datenschutz**: kein Konto, kein Server, alles bleibt auf dem Handy

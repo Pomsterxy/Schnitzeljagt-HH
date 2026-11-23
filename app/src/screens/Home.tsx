@@ -82,7 +82,7 @@ export function Home({
                 {game.team.avatar} {game.team.name}
               </div>
               <div className="dark-caption" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {nextStation ? nextStation.teaser : next?.kind === 'final' ? 'Nächstes Ziel: der Schatz!' : 'Nächster Halt: Pause'}
+                {nextStation ? nextStation.teaser : next?.kind === 'final' ? 'Nächstes Ziel: der Schatz!' : next?.kind === 'waypoint' ? 'Nächster Halt: Zwischenziel' : 'Nächster Halt: Pause'}
               </div>
             </div>
             <button
