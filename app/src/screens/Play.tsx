@@ -28,6 +28,7 @@ import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
+import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effects';
 import { WALK_GAMES } from '../data/walk-games';
 import { STATION_BY_ID } from '../data';
 import { FamilyGameCard } from '../components/FamilyGameCard';
@@ -58,27 +59,6 @@ function useWakeLock() {
   }, []);
 }
 
-const CONFETTI_COLORS = ['#C2410C', '#F5B000', '#0F766E', '#0A84FF', '#7C3AED', '#34C759'];
-export function Confetti() {
-  return (
-    <div className="confetti" aria-hidden="true">
-      {Array.from({ length: 28 }, (_, i) => (
-        <i
-          key={i}
-          style={{
-            left: `${(i * 37) % 100}%`,
-            background: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-            animationDelay: `${(i % 7) * 0.08}s`,
-            animationDuration: `${2.2 + (i % 5) * 0.25}s`,
-            borderRadius: i % 3 === 0 ? 5 : 2,
-            width: i % 3 === 0 ? 9 : 8,
-            height: i % 3 === 0 ? 9 : 14,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () => void }) {
   const { game } = useGame();
@@ -491,6 +471,12 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
   const letters = game.cacheLetters ?? [];
   const letter = letters.find((l) => l.stationId === station.id)?.letter ?? LETTERS[letters.length % LETTERS.length];
 
+  // Ankunft feiern (nur direkt nach dem Freischalten, nicht an Gedenkorten)
+  useEffect(() => {
+    if (!quiet && fresh) celebrateArrival();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [station.id]);
+
   const lilliText = quiet
     ? 'Hier sind wir leise. Lasst uns gemeinsam einen Moment innehalten.'
     : allDone
@@ -501,7 +487,6 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
 
   return (
     <div className={`station${quiet ? ' quiet' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {!quiet && fresh && <Confetti />}
       {quiet ? (
         <div className="quiet-head fade" data-testid="arrived">
           <svg width="28" height="34" viewBox="0 0 28 34" aria-hidden="true">
@@ -638,7 +623,9 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
   const dist = pos.coords ? distance(pos.coords, poi.coords) : null;
   const arrived = dist !== null && dist < 60;
   useEffect(() => {
-    if (arrived) play('gull');
+    if (!arrived) return;
+    play('gull');
+    celebratePause(document.querySelector('.pause-hero .emoji'));
   }, [arrived]);
   return (
     <div className="pause" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -694,6 +681,7 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
     if (!arrived && dist !== null && isWithinUnlock(dist, WAYPOINT_RADIUS, pos.accuracy)) {
       setArrived(true);
       play('unlock');
+      celebrateWaypoint(document.querySelector('.compass-wrap, .waypoint'), WAYPOINT_POINTS);
     }
   }, [dist, pos.accuracy, arrived]);
   useEffect(() => {

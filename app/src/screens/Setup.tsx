@@ -7,6 +7,7 @@ import { generateRoute } from '../lib/route';
 import { speedFor, youngestGroup } from '../lib/scoring';
 import { usePosition, startTracking } from '../lib/location';
 import { play } from '../lib/feedback';
+import { sparkle } from '../lib/effects';
 import { requestMotionPermission } from '../lib/pedometer';
 import { lastTeam, startGame, type Member, type NavMode, type Team, type TourConfig } from '../state/game';
 import { MapView } from '../components/MapView';
@@ -116,6 +117,21 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
 
   // neue Nachricht: nach unten scrollen
   const endRef = useRef<HTMLDivElement>(null);
+  const routeRef = useRef<HTMLDivElement>(null);
+  // Lilli "tippt" kurz, bevor ihre nächste Frage erscheint
+  const [typing, setTyping] = useState(false);
+  useEffect(() => {
+    if (step === 0) return;
+    setTyping(true);
+    const t = setTimeout(() => setTyping(false), 650);
+    return () => clearTimeout(t);
+  }, [step]);
+  const hasRoute = !!route && route.stops.some((s) => s.kind === 'station');
+  useEffect(() => {
+    if (!hasRoute) return;
+    const t = setTimeout(() => sparkle(routeRef.current), 450);
+    return () => clearTimeout(t);
+  }, [hasRoute, seed]);
   useEffect(() => {
     // ganz nach unten, damit die Antwortleiste nichts verdeckt
     const t = setTimeout(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }), 60);
@@ -255,7 +271,15 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
                   <Lilli size={40} mood={q.id === 'route' ? 'excited' : 'happy'} />
                 </span>
               )}
-              <p className={i === step ? 'bubble typing-in' : 'bubble'}>{ask(q)}</p>
+              {i === step && typing ? (
+                <p className="bubble typing-dots" aria-label="Lilli schreibt …">
+                  <i />
+                  <i />
+                  <i />
+                </p>
+              ) : (
+                <p className={i === step ? 'bubble typing-in' : 'bubble'}>{ask(q)}</p>
+              )}
             </div>
             {i < step && answer(q) && (
               <button
@@ -274,7 +298,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
         ))}
 
         {current.id === 'route' && route && stationCount > 0 && start && (
-          <div className="chat-route rise">
+          <div ref={routeRef} className="chat-route rise">
             {nav === 'map' ? (
               <MapView
                 markers={[
