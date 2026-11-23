@@ -8,7 +8,7 @@ export function Gallery({ ids, alt }: { ids: string[]; alt: string }) {
   const c = CREDITS[id];
   return (
     <figure className="gallery">
-      <img src={imageUrl(id)} alt={alt} loading="lazy" onClick={() => setI((i + 1) % ids.length)} />
+      <img key={id} className="fade" src={imageUrl(id)} alt={alt} loading="lazy" onClick={() => setI((i + 1) % ids.length)} />
       {ids.length > 1 && (
         <div className="gallery-dots">
           {ids.map((x, k) => (

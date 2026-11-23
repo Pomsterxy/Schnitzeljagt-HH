@@ -14,7 +14,7 @@ const fail = (m) => {
 async function setupTour(page) {
   await page.getByTestId('new-tour').click();
   await page.getByPlaceholder('z. B. Die Alsterpiraten').fill('Robust');
-  await page.getByRole('button', { name: 'Weiter' }).click();
+  for (let i = 0; i < 4; i++) await page.getByRole('button', { name: 'Weiter' }).click();
   await page.getByPlaceholder('z. B. 1234').fill('4321');
   await page.getByRole('button', { name: 'Route planen' }).click();
   await page.getByRole('button', { name: "Los geht's!" }).click();
@@ -42,10 +42,10 @@ async function setupTour(page) {
   console.log('✓ PIN-Freischaltung funktioniert, falsche PIN wird abgelehnt');
 
   // 2) Neuladen mitten in der Station → gleicher Zustand
-  const before = await page.locator('.station h2').innerText();
+  const before = await page.locator('.station h1').innerText();
   await page.reload();
   await page.getByTestId('arrived').waitFor();
-  const after = await page.locator('.station h2').innerText();
+  const after = await page.locator('.station h1').innerText();
   if (before !== after) fail(`Nach Neuladen andere Station: ${before} / ${after}`);
   console.log('✓ Spielstand übersteht Neuladen:', after);
 

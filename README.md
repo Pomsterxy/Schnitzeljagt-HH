@@ -12,6 +12,7 @@ ruhigen Modus ohne Punkte.
 - **Altersstufen**: Kinder 6–9, Kinder 10–13, Teens/Erwachsene
 - **Aufgabentypen**: Quiz, Schätzen, Zählen, Beobachten, Foto, Nachdenken
 - **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 22 Abzeichen, Ränge, Sammelalbum, Urkunde
+- **Design im Apple-Stil** mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert, Kartenkacheln werden beim Ansehen zwischengespeichert
 - **Datenschutz**: kein Konto, kein Server, alles bleibt auf dem Handy

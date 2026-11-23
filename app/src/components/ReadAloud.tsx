@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { canSpeak, speak, stopSpeaking } from '../lib/speech';
+import { Icon } from './Icon';
 
 export function ReadAloud({ text, label = 'Vorlesen' }: { text: string; label?: string }) {
   const [on, setOn] = useState(false);
@@ -8,8 +9,9 @@ export function ReadAloud({ text, label = 'Vorlesen' }: { text: string; label?: 
   return (
     <button
       type="button"
-      className="btn small ghost"
+      className="icon-btn accent"
       aria-label={on ? 'Vorlesen stoppen' : label}
+      title={on ? 'Vorlesen stoppen' : label}
       onClick={() => {
         if (on) {
           stopSpeaking();
@@ -20,7 +22,7 @@ export function ReadAloud({ text, label = 'Vorlesen' }: { text: string; label?: 
         }
       }}
     >
-      {on ? '⏹ Stopp' : `🔊 ${label}`}
+      <Icon name={on ? 'pause' : 'speaker'} size={18} />
     </button>
   );
 }
