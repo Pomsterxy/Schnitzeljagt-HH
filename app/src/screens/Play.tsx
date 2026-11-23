@@ -9,7 +9,9 @@ import {
   addActivity,
   currentStop,
   nextStop,
+  reachWaypoint,
   resolveStop,
+  WAYPOINT_POINTS,
   spendHelp,
   stopCoords,
   stopKey,
@@ -26,6 +28,8 @@ import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
+import { WALK_GAMES } from '../data/walk-games';
+import { STATION_BY_ID } from '../data';
 import { FamilyGameCard } from '../components/FamilyGameCard';
 import { Lilli, LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
@@ -143,7 +147,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
         </button>
         <div className="mid">
           <span className="caption" style={night ? { color: 'rgba(255,255,255,0.7)' } : undefined}>
-            {stop.kind === 'station' ? `Station ${stationNo} von ${stationTotal}` : stop.kind === 'final' ? 'Schatz-Finale' : 'Pause'} · {game.team.avatar} {game.team.name}
+            {stop.kind === 'station' ? `Station ${stationNo} von ${stationTotal}` : stop.kind === 'final' ? 'Schatz-Finale' : stop.kind === 'waypoint' ? 'Zwischenziel' : 'Pause'} · {game.team.avatar} {game.team.name}
           </span>
           <div className="segments">
             {game.stops.map((_, i) => (
@@ -162,9 +166,10 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
       {station && !ss?.unlockedBy && <Navigate game={game} station={station} onPin={() => setPinFor('unlock')} />}
       {station && ss?.unlockedBy && <StationView game={game} station={station} hasFinal={hasFinal} />}
       {poi && stop.kind === 'pause' && <PauseView game={game} poi={poi} />}
+      {poi && stop.kind === 'waypoint' && <WaypointView key={key} game={game} poi={poi} />}
       {poi && stop.kind === 'final' && <FinalView game={game} poi={poi} onPin={() => setPinFor('unlock')} />}
 
-      {pos.simulated && <SimPanel target={stopCoords(stop)} radius={station?.radius ?? 30} />}
+      {pos.simulated && <SimPanel target={stopCoords(stop)} radius={station?.radius ?? WAYPOINT_RADIUS} />}
 
       {menu && (
         <div className="overlay" role="dialog" aria-modal="true" aria-label="Menü" onClick={() => setMenu(false)}>
@@ -668,6 +673,80 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
         {arrived ? 'Pause beendet – weiter' : 'Pause überspringen'}
       </button>
       {game.config.nav === 'adventure' && <p className="muted">Pausen sind immer auf der Karte zu sehen und kosten keine Punkte.</p>}
+    </div>
+  );
+}
+
+const WAYPOINT_RADIUS = 35;
+
+function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
+  const pos = usePosition();
+  const dist = pos.coords ? distance(pos.coords, poi.coords) : null;
+  const [arrived, setArrived] = useState(false);
+  const n = game.index;
+  const walkGame = WALK_GAMES[(n + game.config.seed) % WALK_GAMES.length];
+  // nächste Station (für die Vorschau)
+  const nextStation = game.stops.slice(game.index + 1).find((s) => s.kind === 'station');
+  const ahead = game.stops.slice(game.index + 1, game.stops.indexOf(nextStation!)).filter((s) => s.kind === 'waypoint').length;
+  const nextTitle = nextStation ? STATION_BY_ID.get(nextStation.id)?.teaser : undefined;
+
+  useEffect(() => {
+    if (!arrived && dist !== null && isWithinUnlock(dist, WAYPOINT_RADIUS, pos.accuracy)) {
+      setArrived(true);
+      play('unlock');
+    }
+  }, [dist, pos.accuracy, arrived]);
+  useEffect(() => {
+    if (!arrived) return;
+    const t = setTimeout(() => reachWaypoint(true), 1600);
+    return () => clearTimeout(t);
+  }, [arrived]);
+
+  const brg = pos.coords ? bearing(pos.coords, poi.coords) : 0;
+  return (
+    <div className="waypoint" data-testid="waypoint" data-state={arrived ? 'arrived' : undefined}>
+      {arrived ? (
+        <div className="waypoint-done pop">
+          <Lilli size={110} mood="excited" />
+          <h1 className="large-title">Zwischenziel geschafft!</h1>
+          <span className="points-pill">+{WAYPOINT_POINTS}</span>
+        </div>
+      ) : (
+        <>
+          <div className="card waypoint-head rise">
+            <span className="wp-flag" aria-hidden="true">
+              {POI_EMOJI[poi.kind]}
+            </span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="caption">Lauft zum Zwischenziel</div>
+              <strong>{poi.title}</strong>
+              {nextTitle && (
+                <small className="muted">
+                  {ahead > 0 ? `Noch ${ahead + 1} Zwischenziele` : 'Danach wartet die nächste Station'}
+                </small>
+              )}
+            </div>
+          </div>
+          {dist !== null && <Compass dist={dist} brg={brg} heading={pos.heading} />}
+          <div className="rise">
+            <MapView
+              markers={[{ id: poi.id, coords: poi.coords, emoji: POI_EMOJI[poi.kind], active: true }]}
+              me={pos.coords}
+              accuracy={pos.accuracy}
+              fit={pos.coords && dist !== null && dist < 1500 ? [pos.coords, poi.coords] : [poi.coords]}
+              onMapClick={pos.simulated ? setSimulatedPosition : undefined}
+              height={200}
+            />
+          </div>
+          <div className="card walk-game rise">
+            <div className="caption">Spiel für unterwegs</div>
+            <p>{walkGame}</p>
+          </div>
+          <button type="button" className="btn ghost small" style={{ alignSelf: 'center' }} onClick={() => { play('tap'); reachWaypoint(false); }}>
+            Zwischenziel auslassen
+          </button>
+        </>
+      )}
     </div>
   );
 }

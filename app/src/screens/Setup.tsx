@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DISTRICTS, START_POINTS } from '../data/districts';
-import { PAUSE_POIS, STATIONS } from '../data';
+import { POIS, STATIONS } from '../data';
 import type { AgeGroup, Category, DistrictId, LatLng } from '../data/types';
 import { formatDistance, distance } from '../lib/geo';
-import { generateRoute } from '../lib/route';
+import { generateRoute, MAX_LEG } from '../lib/route';
 import { speedFor, youngestGroup } from '../lib/scoring';
 import { usePosition, startTracking } from '../lib/location';
 import { play } from '../lib/feedback';
@@ -11,75 +11,88 @@ import { requestMotionPermission } from '../lib/pedometer';
 import { lastTeam, startGame, type Member, type NavMode, type Team, type TourConfig } from '../state/game';
 import { MapView } from '../components/MapView';
 import { Icon } from '../components/Icon';
-import { LilliSays } from '../components/Lilli';
+import { Lilli } from '../components/Lilli';
 
 const AVATARS = ['🦊', '🐧', '🦉', '🐙', '🦁', '🐳', '🦄', '🐢', '🐝', '🦭'];
 const AGE_LABEL: Record<AgeGroup, string> = { kids: 'Kind 6–9', tweens: 'Kind 10–13', adults: 'Teen / Erwachsen' };
-const DISTRICT_LOOK: Record<DistrictId, { letter: string; color: string; sub: string }> = {
-  winterhude: { letter: 'W', color: '#0F766E', sub: 'Stadtpark, Planetarium, Kanäle' },
-  'barmbek-nord': { letter: 'B', color: '#C2410C', sub: 'Museum der Arbeit, Bohrrad TRUDE' },
-  alsterdorf: { letter: 'A', color: '#1D4ED8', sub: 'Alsterbrücken, Feuerwache von 1914' },
-};
 const DURATIONS = [
-  { v: 45, name: '45 min', sub: '2–3 Stationen' },
-  { v: 60, name: '1 h', sub: '3–4 Stationen' },
-  { v: 90, name: '1,5 h', sub: '4–5 Stationen' },
-  { v: 120, name: '2 h', sub: 'mit Pause' },
-  { v: 180, name: '3 h', sub: 'Ausflug' },
-  { v: 240, name: '4 h', sub: 'großes Abenteuer' },
+  { v: 45, name: '45 Minuten' },
+  { v: 60, name: '1 Stunde' },
+  { v: 90, name: '1,5 Stunden' },
+  { v: 120, name: '2 Stunden' },
+  { v: 180, name: '3 Stunden' },
+  { v: 240, name: '4 Stunden' },
 ];
-const THEMES: { id: Category | 'mix'; name: string; sub: string; color: string }[] = [
-  { id: 'mix', name: 'Gemischt', sub: 'Von allem etwas', color: '#8E8E93' },
-  { id: 'architektur', name: 'Architektur', sub: 'Klinker, Kirchen, Türme', color: '#C2410C' },
-  { id: 'wasser', name: 'Wasser', sub: 'Alster, Kanäle, Brücken', color: '#1D4ED8' },
-  { id: 'technik', name: 'Technik', sub: 'TRUDE, U-Bahn, Feuerwehr', color: '#4B5563' },
-  { id: 'kultur', name: 'Kunst', sub: 'Pinguine, Fabeltier', color: '#7C3AED' },
-  { id: 'natur', name: 'Natur', sub: 'Parks und Seen', color: '#15803D' },
-  { id: 'geschichte', name: 'Geschichte', sub: 'Wie Hamburg wuchs', color: '#B45309' },
-  { id: 'erinnern', name: 'Erinnern', sub: 'Stolpersteine, Mahnmale', color: '#0F766E' },
+const THEMES: { id: Category | 'mix'; name: string }[] = [
+  { id: 'mix', name: 'Von allem etwas' },
+  { id: 'architektur', name: 'Architektur' },
+  { id: 'wasser', name: 'Wasser' },
+  { id: 'technik', name: 'Technik' },
+  { id: 'kultur', name: 'Kunst' },
+  { id: 'natur', name: 'Natur' },
+  { id: 'geschichte', name: 'Geschichte' },
+  { id: 'erinnern', name: 'Erinnern' },
 ];
-const LILLI: Record<number, string> = {
-  1: 'Moin! Wer kommt mit auf Schatzsuche? Ich passe die Rätsel an die Jüngsten an.',
-  2: 'Wo wollen wir suchen? Ihr könnt auch mehrere Stadtteile auswählen.',
-  3: 'Wie lange haben eure Beine Lust? Ich plane die Route passend dazu.',
-  4: 'Habt ihr ein Lieblingsthema? Dann suche ich passende Orte aus.',
-  5: 'Noch ein paar Extras. Mein Tipp: das Schatz-Finale!',
-  6: 'Eure Route steht! Den Schatz-Ort verrate ich natürlich noch nicht …',
-};
-const TOTAL = 6;
+const MAX_PEOPLE = 8;
 
+type Q =
+  | { id: 'team' }
+  | { id: 'count' }
+  | { id: 'member'; i: number }
+  | { id: 'avatar' }
+  | { id: 'districts' }
+  | { id: 'minutes' }
+  | { id: 'theme' }
+  | { id: 'start' }
+  | { id: 'nav' }
+  | { id: 'cache' }
+  | { id: 'pause' }
+  | { id: 'quiet' }
+  | { id: 'pin' }
+  | { id: 'route' };
+
+/** Lilli fragt der Reihe nach, wie im Chat. Ältere Antworten lassen sich antippen und ändern. */
 export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel: () => void }) {
   const prev = lastTeam();
-  const [step, setStep] = useState(1);
-  const [team, setTeam] = useState<Team>(
-    prev ?? { name: '', avatar: AVATARS[0], members: [{ name: '', age: 'adults' }, { name: '', age: 'kids' }] },
-  );
-  const [districts, setDistricts] = useState<DistrictId[]>(['winterhude']);
+  const [step, setStep] = useState(0);
+  const [team, setTeam] = useState<Team>(prev ?? { name: '', avatar: AVATARS[0], members: [] });
+  const [count, setCount] = useState(prev?.members.length ?? 0);
+  const [districts, setDistricts] = useState<DistrictId[]>([]);
   const [minutes, setMinutes] = useState(90);
   const [nav, setNav] = useState<NavMode>('map');
   const [includeQuiet, setIncludeQuiet] = useState(true);
   const [includePause, setIncludePause] = useState(true);
   const [pin, setPin] = useState('');
-  const [startId, setStartId] = useState<string>('u-borgweg');
+  const [startId, setStartId] = useState<string>('');
   const [theme, setTheme] = useState<Category | 'mix'>('mix');
   const [cache, setCache] = useState(true);
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e9));
   const pos = usePosition();
 
-  const groups = team.members.map((m) => m.age);
+  const questions: Q[] = useMemo(() => {
+    const q: Q[] = [{ id: 'team' }, { id: 'count' }];
+    for (let i = 0; i < count; i++) q.push({ id: 'member', i });
+    q.push({ id: 'avatar' }, { id: 'districts' }, { id: 'minutes' }, { id: 'theme' }, { id: 'start' }, { id: 'nav' }, { id: 'cache' });
+    if (minutes >= 60) q.push({ id: 'pause' });
+    if (theme !== 'erinnern') q.push({ id: 'quiet' });
+    q.push({ id: 'pin' }, { id: 'route' });
+    return q;
+  }, [count, minutes, theme]);
+
+  const current = questions[Math.min(step, questions.length - 1)];
+  const members = team.members.slice(0, count);
+  const groups = members.map((m) => m.age);
   const youngest = youngestGroup(groups.length ? groups : ['adults']);
 
   const start: { coords: LatLng; label: string } | null = useMemo(() => {
     if (startId === 'gps') return pos.coords ? { coords: pos.coords, label: 'Euer Standort' } : null;
-    const sp = START_POINTS.find((s) => s.id === startId)!;
-    return { coords: sp.coords, label: sp.title };
+    const sp = START_POINTS.find((s) => s.id === startId);
+    return sp ? { coords: sp.coords, label: sp.title } : null;
   }, [startId, pos.coords]);
 
-  const gpsFar = startId === 'gps' && pos.coords && Math.min(...STATIONS.map((s) => distance(s.coords, pos.coords!))) > 3000;
-
   const route = useMemo(() => {
-    if (!start || !districts.length) return null;
-    return generateRoute(STATIONS, PAUSE_POIS, {
+    if (current.id !== 'route' || !start || !districts.length) return null;
+    return generateRoute(STATIONS, POIS, {
       districts,
       start: start.coords,
       minutes,
@@ -90,364 +103,523 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
       theme,
       cache,
     });
-  }, [start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache]);
+  }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache]);
 
-  const teamValid = team.name.trim().length > 0 && team.members.length > 0;
-  const pinValid = /^\d{4}$/.test(pin);
-  const canNext = step === 1 ? teamValid : step === 2 ? districts.length > 0 : step === 5 ? pinValid && !!start : true;
+  // neue Nachricht: nach unten scrollen
+  const endRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // ganz nach unten, damit die Antwortleiste nichts verdeckt
+    const t = setTimeout(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }), 60);
+    return () => clearTimeout(t);
+  }, [step, route]);
 
-  const setMember = (i: number, m: Partial<Member>) => setTeam({ ...team, members: team.members.map((x, k) => (k === i ? { ...x, ...m } : x)) });
-  const go = (n: number) => {
+  const next = () => {
     play('tap');
-    setStep(n);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setStep((s) => s + 1);
   };
-  const toggleDistrict = (id: DistrictId) => {
-    play('select');
-    const next = districts.includes(id) ? districts.filter((x) => x !== id) : [...districts, id];
-    setDistricts(next);
-    const cur = START_POINTS.find((x) => x.id === startId);
-    if (cur && next.length && !next.includes(cur.district)) setStartId(START_POINTS.find((x) => x.district === next[0])!.id);
+  const setMember = (i: number, m: Member) => {
+    const list = team.members.slice();
+    while (list.length <= i) list.push({ name: '', age: 'kids' });
+    list[i] = m;
+    setTeam({ ...team, members: list });
   };
 
-  const stationCount = route?.stops.filter((s) => s.kind === 'station').length ?? 0;
-  const firstFar =
-    route?.stops[0] && start && distance(start.coords, route.stops[0].kind === 'station' ? route.stops[0].station.coords : route.stops[0].poi.coords) > 1200;
+  /** Frage von Lilli (Text) */
+  const ask = (q: Q): string => {
+    const n = team.name.trim() || 'ihr';
+    switch (q.id) {
+      case 'team':
+        return prev ? `Moin, ${prev.name}! Schön, dass ihr wieder da seid. Bleibt es bei eurem Teamnamen?` : 'Moin! Ich bin Lilli, eure Schatzsuch-Möwe. Wie heißt euer Team?';
+      case 'count':
+        return `${n} – klingt nach echten Entdeckern! Wie viele seid ihr?`;
+      case 'member':
+        return q.i === 0 ? 'Wer ist dabei? Verrate mir Namen und Alter. Der Name ist freiwillig.' : `Und Person ${q.i + 1}?`;
+      case 'avatar':
+        return `Ich passe die Rätsel an die Jüngsten an (${AGE_LABEL[youngest]}). Welches Maskottchen nehmt ihr mit?`;
+      case 'districts':
+        return 'Wo wollen wir suchen? Ihr könnt auch mehrere Stadtteile antippen.';
+      case 'minutes':
+        return 'Wie lange haben eure Beine Lust?';
+      case 'theme':
+        return 'Habt ihr ein Lieblingsthema?';
+      case 'start':
+        return 'Wo startet ihr?';
+      case 'nav':
+        return 'Wie wollt ihr die Orte finden? Mit Karte ist es leichter, im Abenteuer-Modus gibt es nur Rätsel und Hinweise.';
+      case 'cache':
+        return 'Soll am Ende ein Schatz-Finale warten? Dafür sammelt ihr unterwegs Zahlen und berechnet die Koordinaten wie beim Geocaching.';
+      case 'pause':
+        return 'Sollen wir eine Pause an einem Spielplatz oder einer Eisdiele einplanen?';
+      case 'quiet':
+        return 'Möchtet ihr auch Gedenkorte besuchen, zum Beispiel Stolpersteine? Dort ist es ruhig und es gibt keine Punkte.';
+      case 'pin':
+        return 'Zum Schluss: Ein Erwachsener legt eine 4-stellige Eltern-PIN fest. Damit schaltet ihr Stationen frei, wenn das GPS mal spinnt.';
+      case 'route':
+        return route && route.stops.some((s) => s.kind === 'station')
+          ? 'Eure Route steht! Kein Weg ist länger als 500 Meter. Den Schatz-Ort verrate ich natürlich noch nicht …'
+          : 'Hm, für diese Auswahl finde ich keine passende Route. Tippt oben auf eine Antwort, um etwas zu ändern.';
+    }
+  };
+
+  /** Eure Antwort (für den Chatverlauf) */
+  const answer = (q: Q): string => {
+    switch (q.id) {
+      case 'team':
+        return team.name.trim();
+      case 'count':
+        return count === 1 ? 'Nur ich' : `Wir sind ${count}`;
+      case 'member': {
+        const m = members[q.i];
+        return m ? `${m.name.trim() || `Person ${q.i + 1}`} · ${AGE_LABEL[m.age]}` : '';
+      }
+      case 'avatar':
+        return team.avatar;
+      case 'districts':
+        return districts.map((d) => DISTRICTS.find((x) => x.id === d)!.name).join(', ');
+      case 'minutes':
+        return DURATIONS.find((d) => d.v === minutes)!.name;
+      case 'theme':
+        return THEMES.find((t) => t.id === theme)!.name;
+      case 'start':
+        return start?.label ?? 'Mein Standort';
+      case 'nav':
+        return nav === 'map' ? 'Mit Karte' : 'Abenteuer';
+      case 'cache':
+        return cache ? 'Ja, mit Schatz!' : 'Nein, danke';
+      case 'pause':
+        return includePause ? 'Ja, Pause muss sein' : 'Keine Pause';
+      case 'quiet':
+        return includeQuiet ? 'Ja' : 'Lieber nicht';
+      case 'pin':
+        return '••••';
+      case 'route':
+        return '';
+    }
+  };
 
   const begin = () => {
-    const config: TourConfig = { districts, minutes, nav, includeQuiet, includePause, pin, start: start!.coords, startLabel: start!.label, seed, theme, cache };
+    if (!route || !start) return;
+    const config: TourConfig = { districts, minutes, nav, includeQuiet, includePause, pin, start: start.coords, startLabel: start.label, seed, theme, cache };
     play('found');
     // Schrittzähler: iOS fragt nur nach einem Tipp um Erlaubnis
     void requestMotionPermission();
-    startGame({ ...team, name: team.name.trim() }, config, route!);
+    startGame({ ...team, name: team.name.trim(), members }, config, route);
     onStarted();
   };
 
+  const stationCount = route?.stops.filter((s) => s.kind === 'station').length ?? 0;
+  const waypointCount = route?.stops.filter((s) => s.kind === 'waypoint').length ?? 0;
+  const firstStop = route?.stops[0];
+  const firstLeg = firstStop && start ? distance(start.coords, firstStop.kind === 'station' ? firstStop.station.coords : firstStop.poi.coords) : 0;
+  const longest = route && start
+    ? route.stops.reduce(
+        (acc, s, i) => {
+          const c = s.kind === 'station' ? s.station.coords : s.poi.coords;
+          const d = i === 0 ? 0 : distance(acc.prev, c);
+          return { prev: c, max: Math.max(acc.max, d) };
+        },
+        { prev: start.coords, max: 0 },
+      ).max
+    : 0;
+
   return (
-    <div className="screen setup">
-      <div className="wizard-head">
-        <button type="button" className="back" onClick={() => (step === 1 ? onCancel() : go(step - 1))}>
-          <Icon name="back" size={20} width={2.6} />
-          {step === 1 ? 'Start' : 'Zurück'}
+    <div className="screen chat-setup">
+      <div className="chat-head">
+        <button type="button" className="back" onClick={onCancel}>
+          <Icon name="close" size={16} width={3} /> Abbrechen
         </button>
-        <span className="caption">
-          Schritt {step} von {TOTAL}
-        </span>
-        <span style={{ width: 60 }} />
-      </div>
-      <div className="progressbar" role="progressbar" aria-valuemin={1} aria-valuemax={TOTAL} aria-valuenow={step}>
-        <div style={{ width: `${(step / TOTAL) * 100}%` }} />
+        <div className="chat-progress" role="progressbar" aria-valuemin={0} aria-valuemax={questions.length} aria-valuenow={step}>
+          <div style={{ width: `${(Math.min(step, questions.length - 1) / (questions.length - 1)) * 100}%` }} />
+        </div>
       </div>
 
-      <LilliSays key={`l${step}`}>{LILLI[step]}</LilliSays>
-
-      <div key={step} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {step === 1 && (
-          <>
-            <h1 className="large-title rise">Euer Team</h1>
-            <label className="field rise">
-              <span>Teamname</span>
-              <input value={team.name} placeholder="z. B. Die Alsterpiraten" onChange={(e) => setTeam({ ...team, name: e.target.value })} />
-            </label>
-            <div className="field rise">
-              <span>Maskottchen</span>
-              <div className="avatars">
-                {AVATARS.map((a) => (
-                  <button
-                    key={a}
-                    type="button"
-                    className={a === team.avatar ? 'avatar on' : 'avatar'}
-                    onClick={() => {
-                      play('select');
-                      setTeam({ ...team, avatar: a });
-                    }}
-                    aria-label={`Maskottchen ${a}`}
-                    aria-pressed={a === team.avatar}
-                  >
-                    {a}
-                  </button>
-                ))}
-              </div>
+      <div className="chat-log" aria-live="polite">
+        {questions.slice(0, step + 1).map((q, i) => (
+          <div key={`${q.id}${'i' in q ? q.i : ''}`} className="chat-turn">
+            <div className="msg lilli-msg">
+              {(i === 0 || i === step) && (
+                <span className="chat-avatar" aria-hidden="true">
+                  <Lilli size={40} mood={q.id === 'route' ? 'excited' : 'happy'} />
+                </span>
+              )}
+              <p className={i === step ? 'bubble typing-in' : 'bubble'}>{ask(q)}</p>
             </div>
-            <div className="field rise">
-              <span>Wer spielt mit?</span>
-              {team.members.map((m, i) => (
-                <div className="member-row" key={i}>
-                  <input value={m.name} placeholder={`Name ${i + 1} (optional)`} onChange={(e) => setMember(i, { name: e.target.value })} />
-                  <select value={m.age} onChange={(e) => setMember(i, { age: e.target.value as AgeGroup })} aria-label="Altersstufe">
-                    {(Object.keys(AGE_LABEL) as AgeGroup[]).map((a) => (
-                      <option key={a} value={a}>
-                        {AGE_LABEL[a]}
-                      </option>
-                    ))}
-                  </select>
-                  {team.members.length > 1 && (
-                    <button type="button" className="icon-btn plain" aria-label="Person entfernen" onClick={() => setTeam({ ...team, members: team.members.filter((_, k) => k !== i) })}>
-                      <Icon name="close" size={14} width={3} />
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button type="button" className="btn tinted small" style={{ alignSelf: 'flex-start' }} onClick={() => setTeam({ ...team, members: [...team.members, { name: '', age: 'kids' }] })}>
-                <Icon name="plus" size={16} /> Person
-              </button>
-              <p className="muted">
-                Die Rätsel richten sich nach der jüngsten Person: <strong>{AGE_LABEL[youngest]}</strong>.
-              </p>
-            </div>
-          </>
-        )}
-
-        {step === 2 && (
-          <>
-            <h1 className="large-title rise">Wo sucht ihr?</h1>
-            {DISTRICTS.map((d) => {
-              const on = districts.includes(d.id);
-              const look = DISTRICT_LOOK[d.id];
-              return (
-                <button key={d.id} type="button" className={`choice rise${on ? ' on' : ''}`} aria-pressed={on} onClick={() => toggleDistrict(d.id)}>
-                  <span className="badge-letter" style={{ background: look.color }}>
-                    {look.letter}
-                  </span>
-                  <span className="txt">
-                    <strong>{d.name}</strong>
-                    <small>
-                      {look.sub} · {STATIONS.filter((s) => s.district === d.id).length} Stationen
-                    </small>
-                  </span>
-                  <span className="tick">
-                    <Icon name="check" size={14} color="#fff" width={3.4} />
-                  </span>
-                </button>
-              );
-            })}
-          </>
-        )}
-
-        {step === 3 && (
-          <>
-            <h1 className="large-title rise">Wie lange?</h1>
-            <div className="grid2">
-              {DURATIONS.map((d) => (
-                <button
-                  key={d.v}
-                  type="button"
-                  className={`choice tile rise${minutes === d.v ? ' on' : ''}`}
-                  aria-pressed={minutes === d.v}
-                  onClick={() => {
-                    play('select');
-                    setMinutes(d.v);
-                  }}
-                >
-                  <span style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em' }}>{d.name}</span>
-                  <small className="muted">{d.sub}</small>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {step === 4 && (
-          <>
-            <h1 className="large-title rise">Welches Thema?</h1>
-            <div className="grid2">
-              {THEMES.map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  className={`choice tile rise${theme === t.id ? ' on' : ''}`}
-                  aria-pressed={theme === t.id}
-                  onClick={() => {
-                    play('select');
-                    setTheme(t.id);
-                  }}
-                >
-                  <span className="swatch" style={{ background: t.color }} />
-                  <strong style={{ fontSize: 16 }}>{t.name}</strong>
-                  <small className="muted" style={{ fontSize: 13 }}>
-                    {t.sub}
-                  </small>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {step === 5 && (
-          <>
-            <h1 className="large-title rise">Extras</h1>
-            <label className="field rise">
-              <span>Startpunkt</span>
-              <select
-                aria-label="Startpunkt"
-                value={startId}
-                onChange={(e) => {
-                  setStartId(e.target.value);
-                  if (e.target.value === 'gps') startTracking();
+            {i < step && answer(q) && (
+              <button
+                type="button"
+                className="msg me-msg"
+                aria-label={`Antwort ändern: ${answer(q)}`}
+                onClick={() => {
+                  play('tap');
+                  setStep(i);
                 }}
               >
-                <option value="gps">Mein aktueller Standort</option>
-                {DISTRICTS.map((d) => (
-                  <optgroup key={d.id} label={d.name}>
-                    {START_POINTS.filter((s) => s.district === d.id).map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.title}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
-              {startId === 'gps' && !pos.coords && <small className="muted">Standort wird gesucht …</small>}
-              {gpsFar && <small className="error">Ihr seid weit weg vom Spielgebiet. Wählt besser eine Haltestelle.</small>}
-            </label>
-            <div className="field rise">
-              <span>Navigation</span>
-              <div className="segmented" role="group" aria-label="Navigation">
-                <div className="thumb" style={{ width: 'calc(50% - 2px)', left: nav === 'map' ? 2 : '50%' }} />
-                <button type="button" aria-pressed={nav === 'map'} onClick={() => { play('select'); setNav('map'); }}>
-                  Mit Karte
-                </button>
-                <button type="button" aria-pressed={nav === 'adventure'} onClick={() => { play('select'); setNav('adventure'); }}>
-                  Abenteuer
-                </button>
-              </div>
-              <small className="muted" style={{ paddingLeft: 4 }}>
-                {nav === 'map'
-                  ? 'Karte, Kompass und Entfernung helfen beim Finden. Ideal für kleine Kinder.'
-                  : 'Nur Rätsel und Wegbeschreibung. Heiß/Kalt kostet Punkte, ohne Hilfe gibt es einen Bonus.'}
-              </small>
-            </div>
-            <div className="grouped rise">
-              {[
-                { on: cache, set: setCache, name: 'Schatz-Finale', sub: 'Koordinaten berechnen wie beim Geocaching', test: 'cache-toggle' },
-                { on: includePause, set: setIncludePause, name: 'Pause einplanen', sub: 'Spielplatz oder Eisdiele (ab 1 Stunde)' },
-                { on: includeQuiet, set: setIncludeQuiet, name: 'Gedenkorte', sub: 'Ruhige Stationen ohne Punkte' },
-              ].map((t) => (
-                <button
-                  key={t.name}
-                  type="button"
-                  className="switch-row"
-                  role="switch"
-                  aria-checked={t.on}
-                  data-testid={t.test}
-                  onClick={() => {
-                    play('select');
-                    t.set(!t.on);
-                  }}
-                >
-                  <span className="txt">
-                    <strong>{t.name}</strong>
-                    <small>{t.sub}</small>
-                  </span>
-                  <span className={`switch${t.on ? ' on' : ''}`} />
-                </button>
-              ))}
-            </div>
-            <label className="field rise">
-              <span>Eltern-PIN (4 Ziffern)</span>
-              <input inputMode="numeric" maxLength={4} value={pin} placeholder="z. B. 1234" onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))} />
-              <small className="muted" style={{ paddingLeft: 4 }}>
-                Damit schaltet ihr Stationen frei, wenn das GPS spinnt.
-              </small>
-            </label>
-          </>
-        )}
-
-        {step === 6 && (
-          <>
-            <h1 className="large-title rise">Eure Route</h1>
-            {route && stationCount > 0 ? (
-              <>
-                {nav === 'map' ? (
-                  <div className="rise">
-                    <MapView
-                      markers={[
-                        { id: 'start', coords: start!.coords, emoji: '🚩', label: start!.label },
-                        ...route.stops
-                          .map((s, i) =>
-                            s.kind === 'station'
-                              ? { id: s.station.id, coords: s.station.coords, emoji: s.station.mode === 'quiet' ? '🕯️' : String(i + 1), label: `${i + 1}. ${s.station.title}` }
-                              : s.kind === 'pause'
-                                ? { id: s.poi.id, coords: s.poi.coords, emoji: s.poi.kind === 'eis' ? '🍦' : '🛝', label: `Pause: ${s.poi.title}` }
-                                : null,
-                          )
-                          .filter((m) => m !== null),
-                      ]}
-                      path={[start!.coords, ...route.stops.filter((s) => s.kind !== 'final').map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
-                      fit={[start!.coords, ...route.stops.filter((s) => s.kind !== 'final').map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
-                      height={250}
-                    />
-                  </div>
-                ) : (
-                  <div className="card teal rise">Im Abenteuer-Modus bleibt die Route geheim. Ihr erfahrt immer nur das nächste Rätsel!</div>
-                )}
-                <div className="route-stats rise summary">
-                  <div>
-                    <strong>{stationCount}</strong>
-                    <span>Stationen</span>
-                  </div>
-                  <div>
-                    <strong>{formatDistance(route.meters)}</strong>
-                    <span>zu Fuß</span>
-                  </div>
-                  <div>
-                    <strong>{Math.round(route.minutes)} min</strong>
-                    <span>Dauer</span>
-                  </div>
-                </div>
-                {firstFar && <p className="error rise">Die erste Station ist weit vom Start entfernt. Ein Startpunkt im Stadtteil spart Zeit.</p>}
-                {nav === 'map' && (
-                  <ol className="stop-list grouped rise">
-                    {route.stops.map((s, i) => (
-                      <li key={s.kind === 'station' ? s.station.id : s.poi.id + s.kind}>
-                        {s.kind === 'station' ? (
-                          <>
-                            <span className={`num${s.station.mode === 'quiet' ? ' quiet' : ''}`}>{i + 1}</span>
-                            {s.station.title}
-                          </>
-                        ) : s.kind === 'pause' ? (
-                          <>
-                            <span className="num extra">{s.poi.kind === 'eis' ? '🍦' : '🛝'}</span>Pause: {s.poi.title}
-                          </>
-                        ) : (
-                          <>
-                            <span className="num extra">💎</span>Schatz-Finale (Ort bleibt geheim)
-                          </>
-                        )}
-                      </li>
-                    ))}
-                  </ol>
-                )}
-                <button
-                  type="button"
-                  className="btn tinted rise"
-                  onClick={() => {
-                    play('select');
-                    setSeed(Math.floor(Math.random() * 1e9));
-                  }}
-                >
-                  Andere Route würfeln
-                </button>
-                <p className="muted rise">Texte und Bilder sind gespeichert, ihr braucht unterwegs kein Netz. Kartenausschnitte werden beim Ansehen zwischengespeichert.</p>
-              </>
-            ) : (
-              <p className="error">Für diese Auswahl passt keine Station in die Zeit. Wählt mehr Zeit oder einen anderen Startpunkt.</p>
+                <span className="bubble">{answer(q)}</span>
+              </button>
             )}
-          </>
+          </div>
+        ))}
+
+        {current.id === 'route' && route && stationCount > 0 && start && (
+          <div className="chat-route rise">
+            {nav === 'map' ? (
+              <MapView
+                markers={[
+                  { id: 'start', coords: start.coords, emoji: '🚩', label: start.label },
+                  ...route.stops
+                    .map((s, i) =>
+                      s.kind === 'station'
+                        ? { id: s.station.id, coords: s.station.coords, emoji: s.station.mode === 'quiet' ? '🕯️' : String(route.stops.slice(0, i + 1).filter((x) => x.kind === 'station').length), label: s.station.title }
+                        : s.kind === 'pause'
+                          ? { id: s.poi.id, coords: s.poi.coords, emoji: s.poi.kind === 'eis' ? '🍦' : '🛝', label: `Pause: ${s.poi.title}` }
+                          : s.kind === 'waypoint'
+                            ? { id: `${s.poi.id}-${i}`, coords: s.poi.coords, emoji: '·', label: `Zwischenziel: ${s.poi.title}` }
+                            : null,
+                    )
+                    .filter((m) => m !== null),
+                ]}
+                path={[start.coords, ...route.stops.filter((s) => s.kind !== 'final').map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
+                fit={[start.coords, ...route.stops.filter((s) => s.kind !== 'final').map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords))]}
+                height={230}
+              />
+            ) : (
+              <p className="dark-caption" style={{ padding: '4px 4px 0' }}>
+                Im Abenteuer-Modus bleibt die Route geheim. Ihr erfahrt immer nur das nächste Rätsel!
+              </p>
+            )}
+            <div className="route-stats summary">
+              <div>
+                <strong>{stationCount}</strong>
+                <span>Stationen</span>
+              </div>
+              <div>
+                <strong>{formatDistance(route.meters)}</strong>
+                <span>zu Fuß</span>
+              </div>
+              <div>
+                <strong>{Math.round(route.minutes)} min</strong>
+                <span>Dauer</span>
+              </div>
+            </div>
+            <p className="dark-caption" data-testid="leg-info">
+              {waypointCount === 1 ? 'Ein Zwischenziel hält die Wege kurz. ' : waypointCount > 1 ? `${waypointCount} Zwischenziele halten die Wege kurz. ` : ''}
+              Längste Etappe: {formatDistance(longest)}
+              {firstLeg > MAX_LEG ? ` · Der erste Weg vom Start ist ${formatDistance(firstLeg * 1.3)} lang.` : ''}
+            </p>
+            {nav === 'map' && (
+              <ol className="chat-stops">
+                {route.stops.map((s, i) =>
+                  s.kind === 'waypoint' ? null : (
+                    <li key={i}>
+                      {s.kind === 'station' ? (
+                        <>
+                          <span className={`num${s.station.mode === 'quiet' ? ' quiet' : ''}`}>{route.stops.slice(0, i + 1).filter((x) => x.kind === 'station').length}</span>
+                          {s.station.title}
+                        </>
+                      ) : s.kind === 'pause' ? (
+                        <>
+                          <span className="num extra">{s.poi.kind === 'eis' ? '🍦' : '🛝'}</span>Pause: {s.poi.title}
+                        </>
+                      ) : (
+                        <>
+                          <span className="num extra">💎</span>Schatz-Finale (Ort bleibt geheim)
+                        </>
+                      )}
+                    </li>
+                  ),
+                )}
+              </ol>
+            )}
+          </div>
         )}
+        <div ref={endRef} />
       </div>
 
-      <div className="bottom-bar">
-        {step < TOTAL ? (
-          <button type="button" className="btn big dark" disabled={!canNext} onClick={() => go(step + 1)}>
-            {step === TOTAL - 1 ? 'Route planen' : 'Weiter'}
-          </button>
-        ) : (
-          <button type="button" className="btn big primary" disabled={!route || stationCount === 0} onClick={begin}>
-            Los geht's!
-          </button>
-        )}
+      <div className="composer" key={step}>
+        {composer()}
       </div>
     </div>
+  );
+
+  // Eingabebereich passend zur aktuellen Frage
+  function composer() {
+    const q = current;
+    switch (q.id) {
+      case 'team':
+        return (
+          <TextAnswer
+            initial={team.name}
+            placeholder="Teamname, z. B. Die Alsterpiraten"
+            chips={prev ? [prev.name] : ['Die Alsterpiraten', 'Team Möwe', 'Die Klinker-Detektive']}
+            onSend={(v) => {
+              setTeam({ ...team, name: v });
+              next();
+            }}
+          />
+        );
+      case 'count':
+        return (
+          <Chips
+            options={Array.from({ length: MAX_PEOPLE }, (_, i) => ({ id: String(i + 1), label: i === 0 ? 'Nur ich' : String(i + 1) }))}
+            selected={count ? [String(count)] : []}
+            onPick={(id) => {
+              const c = Number(id);
+              setCount(c);
+              const list = team.members.slice(0, c);
+              while (list.length < c) list.push({ name: '', age: list.length === 0 ? 'adults' : 'kids' });
+              setTeam({ ...team, members: list });
+              next();
+            }}
+          />
+        );
+      case 'member':
+        return (
+          <MemberAnswer
+            i={q.i}
+            m={team.members[q.i] ?? { name: '', age: q.i === 0 ? 'adults' : 'kids' }}
+            onPick={(m) => {
+              setMember(q.i, m);
+              next();
+            }}
+          />
+        );
+      case 'avatar':
+        return (
+          <Chips
+            options={AVATARS.map((a) => ({ id: a, label: a }))}
+            selected={[team.avatar]}
+            big
+            onPick={(a) => {
+              setTeam({ ...team, avatar: a });
+              next();
+            }}
+          />
+        );
+      case 'districts':
+        return (
+          <>
+            <Chips
+              options={DISTRICTS.map((d) => ({ id: d.id, label: `${d.name} · ${STATIONS.filter((s) => s.district === d.id).length}` }))}
+              selected={districts}
+              onPick={(id) => {
+                play('select');
+                const d = id as DistrictId;
+                setDistricts(districts.includes(d) ? districts.filter((x) => x !== d) : [...districts, d]);
+              }}
+            />
+            <button type="button" className="btn pill big primary" disabled={!districts.length} onClick={next}>
+              Passt so
+            </button>
+          </>
+        );
+      case 'minutes':
+        return (
+          <Chips
+            options={DURATIONS.map((d) => ({ id: String(d.v), label: d.name }))}
+            selected={[String(minutes)]}
+            onPick={(v) => {
+              setMinutes(Number(v));
+              next();
+            }}
+          />
+        );
+      case 'theme':
+        return (
+          <Chips
+            options={THEMES.map((t) => ({ id: t.id, label: t.name }))}
+            selected={[theme]}
+            onPick={(v) => {
+              setTheme(v as Category | 'mix');
+              next();
+            }}
+          />
+        );
+      case 'start': {
+        const spots = START_POINTS.filter((s) => districts.includes(s.district));
+        return (
+          <>
+            <Chips
+              options={[{ id: 'gps', label: '📍 Mein Standort' }, ...spots.map((s) => ({ id: s.id, label: s.title }))]}
+              selected={startId ? [startId] : []}
+              onPick={(id) => {
+                setStartId(id);
+                if (id === 'gps') startTracking();
+                else next();
+              }}
+            />
+            {startId === 'gps' && (
+              <button type="button" className="btn pill big primary" disabled={!pos.coords} onClick={next}>
+                {pos.coords ? 'Hier starten' : 'Standort wird gesucht …'}
+              </button>
+            )}
+          </>
+        );
+      }
+      case 'nav':
+        return (
+          <Chips
+            options={[
+              { id: 'map', label: '🗺️ Mit Karte' },
+              { id: 'adventure', label: '🧭 Abenteuer' },
+            ]}
+            selected={[nav]}
+            onPick={(v) => {
+              setNav(v as NavMode);
+              next();
+            }}
+          />
+        );
+      case 'cache':
+        return <YesNo yes="Ja, mit Schatz!" no="Nein, danke" value={cache} testId="cache-toggle" onPick={(v) => { setCache(v); next(); }} />;
+      case 'pause':
+        return <YesNo yes="Ja, Pause muss sein" no="Keine Pause" value={includePause} onPick={(v) => { setIncludePause(v); next(); }} />;
+      case 'quiet':
+        return <YesNo yes="Ja" no="Lieber nicht" value={includeQuiet} onPick={(v) => { setIncludeQuiet(v); next(); }} />;
+      case 'pin':
+        return (
+          <TextAnswer
+            initial={pin}
+            placeholder="4 Ziffern, z. B. 1234"
+            numeric
+            valid={(v) => /^\d{4}$/.test(v)}
+            onSend={(v) => {
+              setPin(v);
+              next();
+            }}
+          />
+        );
+      case 'route':
+        return (
+          <>
+            {route && stationCount > 0 && (
+              <button type="button" className="btn pill big primary" onClick={begin}>
+                Los geht's!
+              </button>
+            )}
+            <button
+              type="button"
+              className="btn pill outline"
+              onClick={() => {
+                play('select');
+                setSeed(Math.floor(Math.random() * 1e9));
+              }}
+            >
+              Andere Route würfeln
+            </button>
+          </>
+        );
+    }
+  }
+
+}
+
+function MemberAnswer({ i, m, onPick }: { i: number; m: Member; onPick: (m: Member) => void }) {
+  const [name, setName] = useState(m.name);
+  return (
+    <>
+      <input className="chat-input" data-testid="chat-input" value={name} placeholder={`Name ${i + 1} (freiwillig)`} onChange={(e) => setName(e.target.value)} />
+      <Chips
+        options={(Object.keys(AGE_LABEL) as AgeGroup[]).map((a) => ({ id: a, label: AGE_LABEL[a] }))}
+        selected={[m.age]}
+        onPick={(a) => onPick({ name, age: a as AgeGroup })}
+      />
+    </>
+  );
+}
+
+function Chips({
+  options,
+  selected,
+  onPick,
+  big,
+}: {
+  options: { id: string; label: string }[];
+  selected: string[];
+  onPick: (id: string) => void;
+  big?: boolean;
+}) {
+  return (
+    <div className={`chips${big ? ' big' : ''}`}>
+      {options.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          className={`chip${selected.includes(o.id) ? ' on' : ''}`}
+          aria-pressed={selected.includes(o.id)}
+          onClick={() => {
+            play('select');
+            onPick(o.id);
+          }}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function YesNo({ yes, no, value, onPick, testId }: { yes: string; no: string; value: boolean; onPick: (v: boolean) => void; testId?: string }) {
+  return (
+    <div className="chips" data-testid={testId}>
+      <button type="button" className={`chip${value ? ' on' : ''}`} onClick={() => { play('select'); onPick(true); }}>
+        {yes}
+      </button>
+      <button type="button" className="chip" onClick={() => { play('select'); onPick(false); }}>
+        {no}
+      </button>
+    </div>
+  );
+}
+
+function TextAnswer({
+  initial,
+  placeholder,
+  chips,
+  numeric,
+  valid = (v) => v.trim().length > 0,
+  onSend,
+}: {
+  initial: string;
+  placeholder: string;
+  chips?: string[];
+  numeric?: boolean;
+  valid?: (v: string) => boolean;
+  onSend: (v: string) => void;
+}) {
+  const [v, setV] = useState(initial);
+  const ok = valid(v);
+  return (
+    <>
+      {chips && (
+        <div className="chips">
+          {chips.map((c) => (
+            <button key={c} type="button" className="chip" onClick={() => onSend(c)}>
+              {c}
+            </button>
+          ))}
+        </div>
+      )}
+      <form
+        className="chat-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (ok) onSend(v.trim());
+        }}
+      >
+        <input
+          className="chat-input"
+          data-testid="chat-input"
+          value={v}
+          placeholder={placeholder}
+          inputMode={numeric ? 'numeric' : undefined}
+          maxLength={numeric ? 4 : 40}
+          autoComplete="off"
+          onChange={(e) => setV(numeric ? e.target.value.replace(/\D/g, '') : e.target.value)}
+        />
+        <button type="submit" className="send-btn" aria-label="Senden" disabled={!ok}>
+          <Icon name="play" size={18} color="#fff" />
+        </button>
+      </form>
+    </>
   );
 }

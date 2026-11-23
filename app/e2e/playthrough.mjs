@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 import { mkdirSync } from 'node:fs';
+import { planTour } from './chat.mjs';
 
 const URL = process.argv[2] ?? 'http://localhost:4173/';
 const NAV = process.argv[3] ?? 'map';
@@ -35,42 +36,16 @@ const snap = async (name) => page.screenshot({ path: `${SHOTS}/${String(++shot).
 
 await page.goto(URL);
 await snap('home');
-await page.getByTestId('new-tour').click();
-
-// 1. Team
-await page.getByPlaceholder('z. B. Die Alsterpiraten').fill('Die Testpiraten');
-await page.getByPlaceholder('Name 1 (optional)').fill('Mama');
-await page.getByPlaceholder('Name 2 (optional)').fill('Lotta');
-await snap('team');
-await page.getByRole('button', { name: 'Weiter' }).click();
-
-// 2. Stadtteile
-for (const [id, name] of Object.entries(NAMES)) {
-  const b = page.locator('button.choice', { hasText: name });
-  const on = (await b.getAttribute('aria-pressed')) === 'true';
-  if (DISTRICTS.includes(id) !== on) await b.click();
-}
-await snap('districts');
-await page.getByRole('button', { name: 'Weiter' }).click();
-// 3. Dauer
-await page.locator('button.choice', { hasText: '2 h' }).click();
-await page.getByRole('button', { name: 'Weiter' }).click();
-// 4. Thema
-const THEME_NAME = { mix: 'Gemischt', architektur: 'Architektur', wasser: 'Wasser', technik: 'Technik', erinnern: 'Erinnern' };
-await page.locator('button.choice', { hasText: THEME_NAME[THEME] }).click();
-await snap('theme');
-await page.getByRole('button', { name: 'Weiter' }).click();
-// 5. Extras
-const START = { winterhude: 'u-borgweg', 'barmbek-nord': 'bf-barmbek', alsterdorf: 'u-alsterdorf' };
-await page.getByLabel('Startpunkt', { exact: true }).selectOption(START[DISTRICTS[0]]);
-await page.getByRole('button', { name: NAV === 'map' ? 'Mit Karte' : 'Abenteuer' }).click();
-await page.getByPlaceholder('z. B. 1234').fill('1234');
-await snap('tour');
-await page.getByRole('button', { name: 'Route planen' }).click();
-await snap('route');
-const summary = await page.locator('.summary').innerText();
-console.log('Route:', summary);
-await page.getByRole('button', { name: "Los geht's!" }).click();
+const THEME_NAME = { mix: 'Von allem etwas', architektur: 'Architektur', wasser: 'Wasser', technik: 'Technik', erinnern: 'Erinnern' };
+const START = { winterhude: 'U Borgweg (Stadtpark)', 'barmbek-nord': 'U/S Barmbek', alsterdorf: 'U Alsterdorf' };
+const plan = await planTour(page, {
+  districts: DISTRICTS.map((d) => NAMES[d]),
+  theme: THEME_NAME[THEME],
+  start: START[DISTRICTS[0]],
+  nav: NAV === 'map' ? 'Mit Karte' : 'Abenteuer',
+  snap,
+});
+console.log('Route:', plan.summary.replace(/\s+/g, ' '), '|', plan.legs);
 // Gehen simulieren: 10 s Beschleunigungsdaten mit 1,8 Schritten/s (wie ein echter Bewegungssensor)
 await page.evaluate(
   () =>
@@ -103,6 +78,7 @@ let clues = 0;
 let families = 0;
 let treasure = false;
 let pauses = 0;
+let waypoints = 0;
 let guard = 0;
 while (guard++ < 40) {
   const state = await coordsOf();
@@ -141,6 +117,22 @@ while (guard++ < 40) {
     treasure = true;
     await snap('final-found');
     await page.getByRole('button', { name: /Tour abschließen/ }).click();
+    continue;
+  }
+  if (state.stop.kind === 'waypoint') {
+    waypoints++;
+    const leg = await page.evaluate(() => {
+      const g = JSON.parse(localStorage.getItem('hh-hunt:game'));
+      return g.index;
+    });
+    await context.setGeolocation({ latitude: coords[0] - 0.002, longitude: coords[1], accuracy: 10 });
+    await page.getByTestId('waypoint').waitFor();
+    if (waypoints === 1) await snap('waypoint');
+    await context.setGeolocation({ latitude: coords[0], longitude: coords[1], accuracy: 8 });
+    await page.locator('[data-testid=waypoint][data-state=arrived]').waitFor({ timeout: 8000 });
+    await page.waitForFunction((i) => JSON.parse(localStorage.getItem('hh-hunt:game')).index > i, leg, { timeout: 8000 });
+    // weggehen, damit das nächste Ziel nicht sofort freischaltet
+    await context.setGeolocation({ latitude: coords[0] - 0.01, longitude: coords[1], accuracy: 10 });
     continue;
   }
   if (state.stop.kind === 'pause') {
@@ -229,7 +221,7 @@ if (photoUploaded && !(await page.locator('.photo-grid img').count())) errors.pu
 const score = await page.getByTestId('final-score').innerText();
 const walk = (await page.getByTestId('steps').innerText()).replace(/\s+/g, ' ');
 console.log('Auswertung:', walk, '|', await page.getByTestId('walk-distance').innerText(), '|', await page.getByTestId('walk-time').innerText());
-console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Familien-Momente: ${families}, Schatz: ${treasure ? 'gefunden' : 'nein'}`);
+console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Familien-Momente: ${families}, Zwischenziele: ${waypoints}, Schatz: ${treasure ? 'gefunden' : 'nein'}`);
 if (!treasure) errors.push('Schatz-Finale wurde nicht gespielt');
 if (THEME === 'architektur') {
   const arch = await page.evaluate(() => {

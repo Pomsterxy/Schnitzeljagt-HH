@@ -61,8 +61,10 @@ export interface StopState {
 }
 
 export interface StopRef {
-  kind: 'station' | 'pause' | 'final';
+  kind: 'station' | 'pause' | 'waypoint' | 'final';
   id: string;
+  /** Position in der Tour (nur Zwischenziele, damit derselbe Ort zweimal vorkommen darf) */
+  n?: number;
 }
 
 export interface Game {
@@ -152,7 +154,7 @@ function emptyStop(): StopState {
 }
 
 export function stopKey(s: StopRef) {
-  return `${s.kind}:${s.id}`;
+  return s.n !== undefined ? `${s.kind}:${s.id}:${s.n}` : `${s.kind}:${s.id}`;
 }
 
 export function resolveStop(s: StopRef): { station?: Station; poi?: Poi } {
@@ -191,8 +193,8 @@ export function startGame(team: Team, config: TourConfig, route: Route): void {
     startedAt: Date.now(),
     team,
     config,
-    stops: route.stops.map((s): StopRef =>
-      s.kind === 'station' ? { kind: 'station', id: s.station.id } : { kind: s.kind, id: s.poi.id },
+    stops: route.stops.map((s, n): StopRef =>
+      s.kind === 'station' ? { kind: 'station', id: s.station.id } : s.kind === 'waypoint' ? { kind: 'waypoint', id: s.poi.id, n } : { kind: s.kind, id: s.poi.id },
     ),
     cacheLetters: [],
     steps: 0,
@@ -363,6 +365,23 @@ export function nextStop(skipped = false): void {
     g.index += 1;
     const newly = computeBadges(g).filter((b) => !g.earnedBadges.includes(b));
     g.earnedBadges.push(...newly);
+  });
+}
+
+/** Punkte für ein erreichtes Zwischenziel */
+export const WAYPOINT_POINTS = 2;
+
+/** Zwischenziel erreicht (per GPS mit Punkten) oder übersprungen */
+export function reachWaypoint(reached: boolean): void {
+  mutate((g) => {
+    const s = currentStop(g);
+    if (!s || s.kind !== 'waypoint') return;
+    const ss = st(g, stopKey(s));
+    if (ss.done) return;
+    ss.done = true;
+    ss.skipped = !reached;
+    if (reached) g.points += WAYPOINT_POINTS;
+    g.index += 1;
   });
 }
 

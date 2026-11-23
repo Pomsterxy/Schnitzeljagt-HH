@@ -1,5 +1,5 @@
 import type { Category, DistrictId, LatLng, Poi, Station } from '../data/types';
-import { walkDistance, walkMinutes } from './geo';
+import { DETOUR, distance, walkDistance, walkMinutes } from './geo';
 
 export interface RouteOptions {
   districts: DistrictId[];
@@ -21,6 +21,7 @@ export interface RouteOptions {
 export type RouteStop =
   | { kind: 'station'; station: Station }
   | { kind: 'pause'; poi: Poi }
+  | { kind: 'waypoint'; poi: Poi }
   | { kind: 'final'; poi: Poi };
 
 export interface Route {
@@ -42,6 +43,12 @@ export function rng(seed: number) {
 }
 
 export const PAUSE_MINUTES = 15;
+/** Längste Etappe zwischen zwei Zielpunkten (Luftlinie) */
+export const MAX_LEG = 500;
+/** Ein Weg über Zwischenziele darf höchstens so viel länger sein als die Luftlinie */
+export const MAX_DETOUR = 1.3;
+/** Kurzer Halt an einem Zwischenziel */
+export const WAYPOINT_MINUTES = 1;
 /** Koordinaten berechnen + Schatz suchen */
 export const FINAL_MINUTES = 10;
 
@@ -49,7 +56,7 @@ function stopCoords(s: RouteStop): LatLng {
   return s.kind === 'station' ? s.station.coords : s.poi.coords;
 }
 function stopDwell(s: RouteStop): number {
-  return s.kind === 'station' ? s.station.dwell : s.kind === 'pause' ? PAUSE_MINUTES : FINAL_MINUTES;
+  return s.kind === 'station' ? s.station.dwell : s.kind === 'pause' ? PAUSE_MINUTES : s.kind === 'waypoint' ? WAYPOINT_MINUTES : FINAL_MINUTES;
 }
 
 export function measure(start: LatLng, stops: RouteStop[], kmh: number): { meters: number; minutes: number } {
@@ -65,139 +72,302 @@ export function measure(start: LatLng, stops: RouteStop[], kmh: number): { meter
   return { meters, minutes: walkMinutes(meters, kmh) + dwell };
 }
 
-function pathMeters(start: LatLng, pts: LatLng[]): number {
-  let m = 0;
-  let prev = start;
-  for (const p of pts) {
-    m += walkDistance(prev, p);
-    prev = p;
-  }
-  return m;
+/** Ein Knoten im Wegenetz: Start, Station oder Zwischenziel (Spielplatz, Eisdiele, WC …) */
+interface Node {
+  coords: LatLng;
+  station?: Station;
+  poi?: Poi;
 }
 
-/** 2-opt: dreht Teilstücke um, solange die Strecke kürzer wird (offener Weg ab Start) */
-function twoOpt(start: LatLng, list: Station[]): Station[] {
-  let best = list.slice();
+/** Weg zwischen zwei Stationen: Zwischenziele dazwischen, Meter (geschätzter Fußweg) und Minuten */
+interface Leg {
+  via: Poi[];
+  meters: number;
+  minutes: number;
+}
+
+/** Aufschlag pro Zwischenziel, damit Etappen eher lang (bis 500 m) statt kleinteilig werden */
+const HOP_PENALTY = 140;
+
+/**
+ * Wegenetz: Kanten nur zwischen Punkten, die höchstens MAX_LEG auseinander liegen.
+ * Dijkstra liefert pro Station die kürzeste Kette von Zwischenzielen.
+ */
+class Network {
+  nodes: Node[];
+  private adj: { to: number; d: number }[][];
+  private cache = new Map<number, { dist: number[]; prev: number[] }>();
+
+  constructor(start: LatLng, stations: Station[], pois: Poi[]) {
+    this.nodes = [{ coords: start }, ...stations.map((station) => ({ coords: station.coords, station })), ...pois.map((poi) => ({ coords: poi.coords, poi }))];
+    const n = this.nodes.length;
+    this.adj = this.nodes.map(() => []);
+    for (let i = 0; i < n; i++) {
+      for (let k = i + 1; k < n; k++) {
+        const d = distance(this.nodes[i].coords, this.nodes[k].coords);
+        if (d <= MAX_LEG) {
+          this.adj[i].push({ to: k, d });
+          this.adj[k].push({ to: i, d });
+        }
+      }
+    }
+    // Liegt der Start abseits (z. B. GPS oder eine Haltestelle am Rand), darf der erste Weg
+    // länger sein. Diese Kanten sind "teuer" und werden nur genommen, wenn es anders nicht geht.
+    for (let i = 1; i < n; i++) {
+      const d = distance(start, this.nodes[i].coords);
+      if (d > MAX_LEG && d < 2500) this.adj[0].push({ to: i, d: d * 4 });
+    }
+    if (!this.adj[0].length) {
+      const near = this.nodes
+        .map((nd, i) => ({ i, d: distance(start, nd.coords) }))
+        .filter((x) => x.i > 0)
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 6);
+      for (const x of near) this.adj[0].push({ to: x.i, d: x.d * 4 });
+    }
+  }
+
+  private run(src: number) {
+    let r = this.cache.get(src);
+    if (r) return r;
+    const n = this.nodes.length;
+    const dist = new Array<number>(n).fill(Infinity);
+    const prev = new Array<number>(n).fill(-1);
+    const done = new Uint8Array(n);
+    dist[src] = 0;
+    for (;;) {
+      let u = -1;
+      for (let i = 0; i < n; i++) if (!done[i] && dist[i] < Infinity && (u < 0 || dist[i] < dist[u])) u = i;
+      if (u < 0) break;
+      done[u] = 1;
+      // Start und Stationen sind keine Durchgangspunkte, nur Zwischenziele (POIs)
+      if (u !== src && (u === 0 || this.nodes[u].station)) continue;
+      for (const e of this.adj[u]) {
+        const w = dist[u] + e.d + HOP_PENALTY;
+        if (w < dist[e.to]) {
+          dist[e.to] = w;
+          prev[e.to] = u;
+        }
+      }
+    }
+    r = { dist, prev };
+    this.cache.set(src, r);
+    return r;
+  }
+
+  /** Weg von Knoten a nach b oder null, wenn kein direkter Weg mit kurzen Etappen existiert */
+  leg(a: number, b: number, kmh: number): Leg | null {
+    const { dist, prev } = this.run(a);
+    if (dist[b] === Infinity) return null;
+    const chain: number[] = [];
+    for (let v = b; v !== a; v = prev[v]) chain.unshift(v);
+    let straight = 0;
+    let p = this.nodes[a].coords;
+    for (const v of chain) {
+      straight += distance(p, this.nodes[v].coords);
+      p = this.nodes[v].coords;
+    }
+    const direct = distance(this.nodes[a].coords, this.nodes[b].coords);
+    // "Direkt": kein Zickzack über Zwischenziele (der Start darf weiter weg liegen)
+    if (chain.length > 1 && a !== 0 && straight > direct * MAX_DETOUR + 60) return null;
+    const via = chain.slice(0, -1).map((v) => this.nodes[v].poi!);
+    const meters = straight * DETOUR;
+    return { via, meters, minutes: walkMinutes(meters, kmh) + via.length * WAYPOINT_MINUTES };
+  }
+}
+
+/**
+ * Routenplanung mit kurzen Etappen: Stationen werden nach "Spannung pro Zusatzminute"
+ * eingefügt, bis das Zeitbudget voll ist. Liegen zwei Ziele weiter als 500 m auseinander,
+ * führt der Weg über Zwischenziele, sodass keine Etappe länger als 500 m ist.
+ */
+export function generateRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
+  const r = planRoute(all, pois, opt);
+  const count = (x: Route) => x.stops.filter((s) => s.kind === 'station').length;
+  // Ließ sich keine Pause einplanen, die reservierte Zeit lieber für Stationen nutzen
+  if (opt.includePause && !r.stops.some((s) => s.kind === 'pause')) {
+    const r2 = planRoute(all, pois, { ...opt, includePause: false });
+    if (count(r2) > count(r)) return r2;
+  }
+  return r;
+}
+
+function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
+  const rand = rng(opt.seed);
+  const pauseBudget = opt.includePause && opt.minutes >= 60 ? PAUSE_MINUTES : 0;
+  // Finale: Rechnen/Suchen + ca. 250 m Weg zum Schatz
+  const finalBudget = opt.cache ? FINAL_MINUTES + walkMinutes(250 * DETOUR, opt.kmh) : 0;
+  const budget = opt.minutes - pauseBudget - finalBudget;
+
+  const pool = all.filter((s) => opt.districts.includes(s.district) && (opt.includeQuiet || s.mode === 'normal'));
+  const net = new Network(opt.start, pool, pois);
+  const idx = new Map(pool.map((s, i) => [s.id, i + 1]));
+  const legCache = new Map<string, Leg | null>();
+  const leg = (a: number, b: number): Leg | null => {
+    const k = a + '>' + b;
+    if (!legCache.has(k)) legCache.set(k, net.leg(a, b, opt.kmh));
+    return legCache.get(k)!;
+  };
+
+  const jitter = new Map(pool.map((s) => [s.id, 0.6 + rand() * 0.8]));
+  const themed = opt.theme && opt.theme !== 'mix' ? opt.theme : null;
+  const value = (s: Station) => s.appeal * (jitter.get(s.id) ?? 1) * (themed ? (s.categories.includes(themed) ? 4 : 0.35) : 1);
+
+  /** Dauer einer Stationsfolge (Infinity, wenn ein Weg nicht mit kurzen Etappen geht) */
+  const cost = (list: Station[]): number => {
+    let m = 0;
+    let prev = 0;
+    for (const s of list) {
+      const l = leg(prev, idx.get(s.id)!);
+      if (!l) return Infinity;
+      m += l.minutes + s.dwell;
+      prev = idx.get(s.id)!;
+    }
+    return m;
+  };
+
+  /** Gierig auffüllen, ausgehend von einer ersten Station */
+  const greedy = (first: Station | null): Station[] => {
+    let list: Station[] = first ? [first] : [];
+    const remaining = new Set(pool.filter((s) => s !== first));
+    for (;;) {
+      let best: { list: Station[]; ratio: number; s: Station } | null = null;
+      const base = cost(list);
+      for (const s of remaining) {
+        for (let pos = 0; pos <= list.length; pos++) {
+          const cand = list.slice(0, pos).concat([s], list.slice(pos));
+          const c = cost(cand);
+          if (c > budget) continue;
+          const ratio = value(s) / Math.max(c - base, 1);
+          if (!best || ratio > best.ratio) best = { list: cand, ratio, s };
+        }
+      }
+      if (!best) break;
+      list = best.list;
+      remaining.delete(best.s);
+    }
+    return list;
+  };
+  // Mehrere Anfänge probieren, damit die Route nicht in einer Sackgasse endet
+  const total = (l: Station[]) => l.reduce((a, s) => a + value(s), 0);
+  let chosen = greedy(null);
+  const firsts = pool
+    .filter((s) => cost([s]) <= budget)
+    .sort((a, b) => value(b) / cost([b]) - value(a) / cost([a]))
+    .slice(0, 8);
+  for (const f of firsts) {
+    const l = greedy(f);
+    if (total(l) > total(chosen) + 0.01) chosen = l;
+  }
+
+  // 2-opt: Teilstücke umdrehen, solange es kürzer wird
   let improved = true;
   let guard = 0;
   while (improved && guard++ < 50) {
     improved = false;
-    for (let i = 0; i < best.length - 1; i++) {
-      for (let k = i + 1; k < best.length; k++) {
-        const cand = best.slice(0, i).concat(best.slice(i, k + 1).reverse(), best.slice(k + 1));
-        if (
-          pathMeters(start, cand.map((s) => s.coords)) + 0.5 <
-          pathMeters(start, best.map((s) => s.coords))
-        ) {
-          best = cand;
+    for (let i = 0; i < chosen.length - 1; i++) {
+      for (let k = i + 1; k < chosen.length; k++) {
+        const cand = chosen.slice(0, i).concat(chosen.slice(i, k + 1).reverse(), chosen.slice(k + 1));
+        if (cost(cand) + 0.05 < cost(chosen)) {
+          chosen = cand;
           improved = true;
         }
       }
     }
   }
-  return best;
-}
 
-/** Zwei Gedenkorte nicht direkt hintereinander, wenn es sich vermeiden lässt */
-function spreadQuiet(list: Station[]): Station[] {
-  const out = list.slice();
-  for (let i = 1; i < out.length; i++) {
-    if (out[i].mode === 'quiet' && out[i - 1].mode === 'quiet') {
-      const j = out.findIndex((s, idx) => idx > i && s.mode !== 'quiet');
+  // Zwei Gedenkorte nicht direkt hintereinander, wenn es sich vermeiden lässt
+  for (let i = 1; i < chosen.length; i++) {
+    if (chosen[i].mode === 'quiet' && chosen[i - 1].mode === 'quiet') {
+      const j = chosen.findIndex((s, n) => n > i && s.mode !== 'quiet');
       if (j > 0) {
-        const [s] = out.splice(j, 1);
-        out.splice(i, 0, s);
+        const cand = chosen.slice();
+        const [s] = cand.splice(j, 1);
+        cand.splice(i, 0, s);
+        if (cost(cand) <= budget) chosen = cand;
       }
     }
   }
-  return out;
-}
 
-/**
- * Orienteering-Heuristik: Stationen werden nach "Spannung pro Zusatzminute"
- * eingefügt, bis das Zeitbudget voll ist. Danach wird die Reihenfolge optimiert.
- */
-export function generateRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
-  const rand = rng(opt.seed);
-  const pauseBudget = opt.includePause && opt.minutes >= 60 ? PAUSE_MINUTES : 0;
-  // Finale: Rechnen/Suchen + ca. 250 m Weg zum Schatz
-  const finalBudget = opt.cache ? FINAL_MINUTES + walkMinutes(250 * 1.3, opt.kmh) : 0;
-  const budget = opt.minutes - pauseBudget - finalBudget;
+  const candidates = pois.filter((p) => opt.districts.includes(p.district) && p.kind !== 'wc');
+  const pauseList = candidates.length ? candidates : pois.filter((p) => p.kind !== 'wc');
 
-  const pool = all.filter(
-    (s) => opt.districts.includes(s.district) && (opt.includeQuiet || s.mode === 'normal'),
-  );
-  const jitter = new Map(pool.map((s) => [s.id, 0.6 + rand() * 0.8]));
-  const themed = opt.theme && opt.theme !== 'mix' ? opt.theme : null;
-  const value = (s: Station) =>
-    s.appeal * (jitter.get(s.id) ?? 1) * (themed ? (s.categories.includes(themed) ? 4 : 0.35) : 1);
-
-  let chosen: Station[] = [];
-  const cost = (list: Station[]) =>
-    walkMinutes(pathMeters(opt.start, list.map((s) => s.coords)), opt.kmh) +
-    list.reduce((a, s) => a + s.dwell, 0);
-
-  const remaining = new Set(pool);
-  for (;;) {
-    let best: { list: Station[]; ratio: number; s: Station } | null = null;
-    const base = cost(chosen);
-    for (const s of remaining) {
-      // günstigste Einfügeposition
-      for (let pos = 0; pos <= chosen.length; pos++) {
-        const list = chosen.slice(0, pos).concat([s], chosen.slice(pos));
-        const c = cost(list);
-        if (c > budget) continue;
-        const ratio = value(s) / Math.max(c - base, 1);
-        if (!best || ratio > best.ratio) best = { list, ratio, s };
+  /** Ziel-Folge (Stationen + Pause + Finale) zu fertigen Stopps mit Zwischenzielen ausbauen */
+  type Target = { kind: 'station'; station: Station } | { kind: 'pause' | 'final'; poi: Poi };
+  const coordsOf = (t: Target) => (t.kind === 'station' ? t.station.coords : t.poi.coords);
+  const expand = (targets: Target[]): RouteStop[] | null => {
+    const out: RouteStop[] = [];
+    let prevNode = 0;
+    let prevCoords = opt.start;
+    let afterPoi = false;
+    for (const t of targets) {
+      if (t.kind === 'station') {
+        const to = idx.get(t.station.id)!;
+        if (afterPoi) {
+          // nach einer Pause: die liegt höchstens 500 m vor der Station
+          if (distance(prevCoords, t.station.coords) > MAX_LEG) return null;
+        } else {
+          const l = leg(prevNode, to);
+          if (!l) return null;
+          for (const p of l.via) out.push({ kind: 'waypoint', poi: p });
+        }
+        out.push(t);
+        prevNode = to;
+        afterPoi = false;
+      } else {
+        // Pause und Schatz liegen höchstens MAX_LEG vom vorigen Ziel entfernt
+        if (distance(prevCoords, t.poi.coords) > MAX_LEG) return null;
+        out.push(t);
+        afterPoi = true;
       }
+      prevCoords = coordsOf(t);
     }
-    if (!best) break;
-    chosen = best.list;
-    remaining.delete(best.s);
-  }
-
-  chosen = spreadQuiet(twoOpt(opt.start, chosen));
-
-  const stops: RouteStop[] = chosen.map((station) => ({ kind: 'station', station }));
-
-  const candidates = pois.filter((p) => opt.districts.includes(p.district));
-  const list = candidates.length ? candidates : pois;
-
-  // Pause etwa in der Mitte: Ort mit dem kleinsten Umweg zwischen zwei Stationen
-  const insertPause = (base: RouteStop[]): RouteStop[] => {
-    if (!pauseBudget || base.length < 2 || !list.length) return base;
-    const mid = Math.floor(base.length / 2);
-    const a = stopCoords(base[mid - 1]);
-    const b = stopCoords(base[mid]);
-    let bestPoi = list[0];
-    let bestScore = Infinity;
-    for (const p of list) {
-      const d = walkDistance(a, p.coords) + walkDistance(p.coords, b) - walkDistance(a, b);
-      // Eisdielen und Spielplätze mit Namen leicht bevorzugen
-      const score = d - (p.kind === 'eis' ? 60 : 0) - (p.kind === 'spielplatz' && p.title !== 'Spielplatz' ? 40 : 0);
-      if (score < bestScore) {
-        bestScore = score;
-        bestPoi = p;
-      }
-    }
-    const out = base.slice();
-    out.splice(mid, 0, { kind: 'pause', poi: bestPoi });
     return out;
   };
 
-  // Schatz-Finale: ein öffentlicher Spielplatz 100–800 m nach der letzten Station (ideal ~250 m)
-  const addFinal = (base: RouteStop[]): RouteStop[] => {
+  // Pause: Ort, der von einer Station aus höchstens 500 m entfernt liegt und vom dem es
+  // höchstens 500 m zur nächsten Station sind – möglichst in der Mitte der Tour
+  const withPause = (base: Target[]): Target[] => {
+    if (!pauseBudget || base.length < 2 || !pauseList.length) return base;
+    const order = base.map((_, i) => i).sort((a, b) => Math.abs(a - base.length / 2) - Math.abs(b - base.length / 2));
+    for (const i of order) {
+      if (i === 0) continue;
+      const a = coordsOf(base[i - 1]);
+      const b = coordsOf(base[i]);
+      let bestPoi: Poi | null = null;
+      let bestScore = Infinity;
+      for (const p of pauseList) {
+        const da = distance(a, p.coords);
+        const db = distance(p.coords, b);
+        if (da > MAX_LEG || db > MAX_LEG) continue;
+        const score = da + db - distance(a, b) - (p.kind === 'eis' ? 60 : 0) - (p.kind === 'spielplatz' && p.title !== 'Spielplatz' ? 40 : 0);
+        if (score < bestScore) {
+          bestScore = score;
+          bestPoi = p;
+        }
+      }
+      if (bestPoi) {
+        const out = base.slice();
+        out.splice(i, 0, { kind: 'pause', poi: bestPoi });
+        return out;
+      }
+    }
+    return base;
+  };
+
+  // Schatz-Finale: ein öffentlicher Spielplatz 100–500 m nach dem letzten Ziel (ideal ~250 m)
+  const withFinal = (base: Target[]): Target[] => {
     if (!opt.cache || !base.length) return base;
-    const last = stopCoords(base[base.length - 1]);
+    const last = coordsOf(base[base.length - 1]);
     const used = new Set(base.map((s) => (s.kind === 'station' ? s.station.id : s.poi.id)));
-    const spots = list.filter((p) => p.kind === 'spielplatz' && !used.has(p.id));
     let best: Poi | null = null;
     let bestScore = Infinity;
-    for (const p of spots) {
-      const d = walkDistance(last, p.coords);
-      if (d < 100) continue;
+    for (const p of pauseList) {
+      if (p.kind !== 'spielplatz' || used.has(p.id)) continue;
+      const d = distance(last, p.coords);
+      if (d < 100 || d > MAX_LEG) continue;
       const score = Math.abs(d - 250) + rand() * 60;
-      if (d < 800 && score < bestScore) {
+      if (score < bestScore) {
         bestScore = score;
         best = p;
       }
@@ -205,28 +375,43 @@ export function generateRoute(all: Station[], pois: Poi[], opt: RouteOptions): R
     return best ? [...base, { kind: 'final', poi: best }] : base;
   };
 
-  const build = (base: RouteStop[], withPause: boolean, withFinal: boolean) => {
-    let r = base;
-    if (withPause) r = insertPause(r);
-    if (withFinal) r = addFinal(r);
+  const build = (stations: Station[], pause: boolean, fin: boolean): RouteStop[] => {
+    let t: Target[] = stations.map((station) => ({ kind: 'station', station }));
+    if (pause) t = withPause(t);
+    if (fin) t = withFinal(t);
+    const r = expand(t) ?? expand(stations.map((station) => ({ kind: 'station', station })))!;
+    // Keine Pause zwischen zwei Stationen möglich? Dann wird ein Zwischenziel zur Pause.
+    if (pause && pauseBudget && !r.some((x) => x.kind === 'pause')) {
+      const mid = r.length / 2;
+      let bi = -1;
+      r.forEach((x, i) => {
+        if (x.kind === 'waypoint' && x.poi.kind !== 'wc' && (bi < 0 || Math.abs(i - mid) < Math.abs(bi - mid))) bi = i;
+      });
+      if (bi >= 0) r[bi] = { kind: 'pause', poi: (r[bi] as { poi: Poi }).poi };
+    }
     return r;
   };
+  const fits = (r: RouteStop[]) => measure(opt.start, r, opt.kmh).minutes <= opt.minutes;
 
-  // Wenn Pause oder Finale das Budget sprengen: am wenigsten spannende Station streichen
-  const base = stops.slice();
+  // Wenn Pause oder Finale das Budget sprengen: Station streichen (die Kette muss dabei erhalten bleiben)
+  const base = chosen.slice();
   let result = build(base, true, true);
-  while (measure(opt.start, result, opt.kmh).minutes > opt.minutes && base.length > 1) {
-    let worst = 0;
+  while (!fits(result) && base.length > 1) {
+    let drop = base.length - 1;
+    let worst = Infinity;
     base.forEach((s, i) => {
-      if (s.kind === 'station' && value(s.station) < value((base[worst] as { station: Station }).station)) worst = i;
+      const cand = base.slice(0, i).concat(base.slice(i + 1));
+      if (cost(cand) < Infinity && value(s) < worst) {
+        worst = value(s);
+        drop = i;
+      }
     });
-    base.splice(worst, 1);
+    base.splice(drop, 1);
     result = build(base, true, true);
   }
-  if (measure(opt.start, result, opt.kmh).minutes > opt.minutes) result = build(base, false, true);
-  if (measure(opt.start, result, opt.kmh).minutes > opt.minutes) result = build(base, false, false);
-  stops.splice(0, stops.length, ...result);
+  if (!fits(result)) result = build(base, false, true);
+  if (!fits(result)) result = build(base, false, false);
 
-  const m = measure(opt.start, stops, opt.kmh);
-  return { stops, meters: m.meters, minutes: m.minutes };
+  const m = measure(opt.start, result, opt.kmh);
+  return { stops: result, meters: m.meters, minutes: m.minutes };
 }

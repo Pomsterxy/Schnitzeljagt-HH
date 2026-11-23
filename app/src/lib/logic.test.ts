@@ -11,7 +11,7 @@ import pois from '../data/pois.json';
 import credits from '../../public/img/credits.json';
 import type { Poi, Station } from '../data/types';
 import { distance, isWithinUnlock, temperature } from './geo';
-import { generateRoute, measure } from './route';
+import { generateRoute, measure, MAX_LEG } from './route';
 import { evaluate, normalize, scoreTask, tasksFor } from './scoring';
 
 const RAW: Station[] = [...STATIONS_WINTERHUDE, ...STATIONS_BARMBEK, ...STATIONS_ALSTERDORF, ...STATIONS_ARCHITEKTUR];
@@ -139,6 +139,40 @@ describe('Routengenerator', () => {
         .join();
     const sigs = new Set([1, 2, 3, 4, 5].map(sig));
     expect(sigs.size).toBeGreaterThan(1);
+  });
+  it('hält jede Etappe zwischen zwei Zielpunkten unter 500 m und läuft ohne Zickzack', () => {
+    const coords = (s: (typeof r)['stops'][number]) => (s.kind === 'station' ? s.station.coords : s.poi.coords);
+    let r = generateRoute(STATIONS, POIS, { ...base, minutes: 60 });
+    let checked = 0;
+    for (const sp of START_POINTS) {
+      for (const minutes of [45, 120, 240]) {
+        for (const seed of [1, 7]) {
+          r = generateRoute(STATIONS, POIS, { ...base, districts: [sp.district], start: sp.coords, minutes, seed, cache: true });
+          let prev = sp.coords;
+          r.stops.forEach((s, i) => {
+            const d = distance(prev, coords(s));
+            // erste Etappe vom Startpunkt darf (wenn kein Ziel in der Nähe liegt) länger sein
+            if (i > 0) expect(d, `${sp.id}/${minutes}/${seed} Stopp ${i}`).toBeLessThanOrEqual(MAX_LEG + 0.5);
+            prev = coords(s);
+            checked++;
+          });
+          // Zwischenziele führen ungefähr geradeaus zur nächsten Station
+          let lastStation = sp.coords;
+          let walked = 0;
+          prev = sp.coords;
+          for (const s of r.stops) {
+            walked += distance(prev, coords(s));
+            prev = coords(s);
+            if (s.kind !== 'waypoint') {
+              if (s.kind === 'station' && lastStation !== sp.coords) expect(walked).toBeLessThanOrEqual(distance(lastStation, coords(s)) * 1.3 + 61);
+              lastStation = coords(s);
+              walked = 0;
+            }
+          }
+        }
+      }
+    }
+    expect(checked).toBeGreaterThan(100);
   });
   it('misst konsistent', () => {
     const r = generateRoute(STATIONS, POIS, { ...base, minutes: 90 });
