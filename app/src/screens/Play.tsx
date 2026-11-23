@@ -31,6 +31,7 @@ import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { ReportButton } from '../components/ReportButton';
 import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effects';
 import { WALK_GAMES } from '../data/walk-games';
 import { TalkCard } from '../components/TalkCard';
@@ -655,6 +656,7 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
       )}
 
       {!quiet && <NearbyCaches center={station.coords} />}
+      <ReportButton station={station} />
       <details className="sources">
         <summary>Quellen</summary>
         <ul>

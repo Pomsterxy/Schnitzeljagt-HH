@@ -5,6 +5,7 @@ import { loadJSON, saveJSON } from '../lib/storage';
 import { setSoundOn, useSoundOn } from '../lib/feedback';
 import { OC_KEY_STORAGE } from '../components/NearbyCaches';
 import { resetCareer } from '../state/game';
+import { clearReports, reportsText, useReports } from '../state/reports';
 
 function SwitchRow({ on, onToggle, title, sub, testId }: { on: boolean; onToggle: () => void; title: string; sub: string; testId?: string }) {
   return (
@@ -89,6 +90,8 @@ export function Settings() {
         </details>
       </div>
 
+      <Reports />
+
       <button
         type="button"
         className="btn warn rise"
@@ -101,6 +104,49 @@ export function Settings() {
       <p className="muted" style={{ textAlign: 'center', fontSize: 13 }} data-testid="version">
         Version vom {new Date(__BUILD_TIME__).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}
       </p>
+    </div>
+  );
+}
+
+/** Gemeldete Probleme ansehen und teilen (z. B. per WhatsApp an die Person, die die App pflegt) */
+function Reports() {
+  const list = useReports();
+  const [copied, setCopied] = useState(false);
+  if (!list.length) return null;
+  const share = async () => {
+    const text = reportsText(list);
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Schnitzeljagd – Meldungen', text });
+        return;
+      }
+    } catch {
+      /* abgebrochen: dann kopieren */
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+    } catch {
+      /* kein Zugriff */
+    }
+  };
+  return (
+    <div className="card rise reports" data-testid="reports">
+      <div className="caption">Gemeldete Probleme ({list.length})</div>
+      <ul>
+        {list.map((r) => (
+          <li key={r.id}>
+            <strong>{r.stationTitle}</strong> · {r.kind}
+            {r.text && <div className="muted">{r.text}</div>}
+          </li>
+        ))}
+      </ul>
+      <button type="button" className="btn primary" onClick={() => void share()}>
+        {copied ? 'Kopiert!' : 'Meldungen teilen'}
+      </button>
+      <button type="button" className="btn ghost small" onClick={() => { if (confirm('Alle Meldungen löschen?')) clearReports(); }}>
+        Meldungen löschen
+      </button>
     </div>
   );
 }

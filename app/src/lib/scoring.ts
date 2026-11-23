@@ -38,11 +38,22 @@ export function evaluate(task: Task, value: string | number): Evaluation {
     }
     case 'number': {
       const n = Number(String(value).replace(',', '.'));
-      const ok = Math.abs(n - task.answer) <= (task.tolerance ?? 0);
+      const diff = Math.abs(n - task.answer);
+      const exact = diff <= (task.tolerance ?? 0);
+      // Zählen vor Ort: Es kann ein Stein dazugekommen oder ein Fenster verdeckt sein.
+      // Kleine Zahlen (keine Jahreszahlen) werten wir deshalb großzügig.
+      const generous = task.answer <= 100 ? Math.max(task.tolerance ?? 0, task.answer >= 5 ? 1 : 0, Math.round(task.answer * 0.1)) : task.tolerance ?? 0;
+      const ok = exact || diff <= generous;
       return {
         correct: ok,
         quality: ok ? 1 : 0,
-        message: ok ? 'Genau!' : n < task.answer ? 'Es sind mehr.' : 'Es sind weniger.',
+        message: exact
+          ? 'Genau!'
+          : ok
+            ? `Gilt! In unseren Unterlagen steht ${task.answer}. Vor Ort kann sich etwas verändert haben.`
+            : n < task.answer
+              ? 'Es sind mehr.'
+              : 'Es sind weniger.',
       };
     }
     case 'text': {
