@@ -531,9 +531,10 @@ body:has(.chat-setup) { background: var(--navy); }
 .chip.on { background: #fff; color: var(--navy); border-color: #fff; }
 .chips.big .chip { font-size: 24px; padding: 6px 12px; }
 .chat-form { display: flex; gap: 8px; align-items: center; }
-.chat-input { flex: 1; min-width: 0; height: 52px; border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.18); background: var(--navy-2); color: #fff; font: inherit; font-size: 17px; font-weight: 700; padding: 0 20px; outline: none; }
-.chat-input::placeholder { color: rgba(255, 255, 255, 0.45); font-weight: 600; }
-.chat-input:focus { border-color: #ff8a3d; }
+.chat-setup .chat-input { flex: 1; width: auto; box-shadow: none; -webkit-text-fill-color: #fff; caret-color: #ff8a3d; min-width: 0; height: 52px; border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.18); background: var(--navy-2); color: #fff; font: inherit; font-size: 17px; font-weight: 700; padding: 0 20px; outline: none; }
+.chat-setup .chat-input::placeholder { -webkit-text-fill-color: rgba(255, 255, 255, 0.45); color: rgba(255, 255, 255, 0.45); font-weight: 600; }
+.chat-setup .chat-input:focus { border-color: #ff8a3d; box-shadow: none; }
+.chat-setup .chat-input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px var(--navy-2) inset; }
 .send-btn { width: 52px; height: 52px; border-radius: 26px; border: none; background: #ff6a1f; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.2s, transform 0.15s; }
 .send-btn:disabled { opacity: 0.35; }
 .send-btn:active { transform: scale(0.92); }
