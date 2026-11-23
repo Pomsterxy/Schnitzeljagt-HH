@@ -662,7 +662,8 @@ body:has(.chat-setup), body:has(.home-dark) { background: #101b33; }
 .night .segments > div.done { background: #fff; }
 
 /* Dunkle Flächen mit Farbwolken */
-.home-dark, .chat-setup { background: var(--mesh-navy); background-attachment: fixed; }
+.home-dark, .chat-setup { background: var(--mesh-navy); }
+html[data-dark] body { background: #101b33; }
 .chat-head { background: rgba(16, 27, 51, 0.72); }
 .composer { background: linear-gradient(to top, rgba(16, 27, 51, 0.96) 70%, rgba(16, 27, 51, 0)); }
 .dark-card, .chat-route { background: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.035) 100%); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
@@ -705,3 +706,15 @@ body:has(.chat-setup), body:has(.home-dark) { background: #101b33; }
 .talk-card.quiet .talk-kind { background: #8a8f98; }
 .talk-card.quiet .talk-text { color: var(--quiet-ink); font-weight: 700; }
 .talk-card.quiet .talk-nudge { color: var(--quiet-2); }
+
+/* Abbrechen / Löschen */
+.btn.danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.28); }
+.sheet-list button.danger-row { color: #dc2626; }
+.confirm-sheet { display: flex; flex-direction: column; gap: 10px; }
+.confirm-sheet h3 { margin: 0; }
+.reroll-note { color: #fdba74; }
+/* iOS: Formularfelder im Chat ausdrücklich dunkel darstellen */
+:root { color-scheme: light; }
+.chat-setup, .home-dark { color-scheme: dark; color: #fff; }
+.chat-setup input, .chat-setup button { color: inherit; }
+.chat-setup .chip:not(.on) { color: #fff; -webkit-text-fill-color: #fff; }

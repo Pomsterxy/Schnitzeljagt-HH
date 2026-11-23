@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { STATIONS, STATION_BY_ID } from '../data';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { BADGES, rankFor } from '../data/badges';
 import { abandonGame, useGame } from '../state/game';
 import { Icon } from '../components/Icon';
@@ -26,6 +28,7 @@ export function Home({
 }) {
   const { game, career } = useGame();
   const sound = useSoundOn();
+  const [quit, setQuit] = useState(false);
   const running = game && !game.finishedAt && game.index < game.stops.length;
   const rank = rankFor(career.points);
   const total = game?.stops.length ?? 1;
@@ -117,12 +120,20 @@ export function Home({
             type="button"
             className="btn ghost small rise"
             style={{ alignSelf: 'center', color: '#FDBA74' }}
-            onClick={() => {
-              if (confirm('Laufende Tour wirklich abbrechen? Punkte und Fotos dieser Tour gehen verloren.')) abandonGame();
-            }}
+            data-testid="home-quit"
+            onClick={() => setQuit(true)}
           >
             Tour abbrechen
           </button>
+        )}
+
+        {quit && (
+          <ConfirmSheet
+            title="Tour löschen?"
+            text="Die laufende Tour wird gelöscht, mit ihren Punkten und Fotos. Euer Album und eure Abzeichen bleiben."
+            onClose={() => setQuit(false)}
+            actions={[{ label: 'Tour löschen', tone: 'danger', testId: 'home-quit-delete', onClick: () => { setQuit(false); abandonGame(); } }]}
+          />
         )}
 
         <div className="divider-or rise">

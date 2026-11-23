@@ -6,7 +6,9 @@ import { POINTS, tasksFor, youngestGroup } from '../lib/scoring';
 import { play, setSoundOn, useSoundOn } from '../lib/feedback';
 import { estimateSteps, formatSteps, startPedometer, strideFor } from '../lib/pedometer';
 import {
+  abandonGame,
   addActivity,
+  finishGame,
   currentStop,
   nextStop,
   reachWaypoint,
@@ -28,6 +30,7 @@ import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effects';
 import { WALK_GAMES } from '../data/walk-games';
 import { TalkCard } from '../components/TalkCard';
@@ -67,6 +70,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
   const pos = usePosition();
   const sound = useSoundOn();
   const [menu, setMenu] = useState(false);
+  const [quit, setQuit] = useState(false);
   const [pinFor, setPinFor] = useState<null | 'unlock' | 'skip'>(null);
   const [notebook, setNotebook] = useState(false);
   useWakeLock();
@@ -187,12 +191,45 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
               <button type="button" onClick={onHome}>
                 <Icon name="pause" size={20} color="var(--accent)" /> Pause – zum Hauptmenü (Spielstand bleibt)
               </button>
+              <button type="button" className="danger-row" data-testid="quit-tour" onClick={() => { setMenu(false); setQuit(true); }}>
+                <Icon name="close" size={20} color="#DC2626" /> Tour abbrechen oder löschen
+              </button>
             </div>
             <button type="button" className="btn" onClick={() => setMenu(false)}>
               Schließen
             </button>
           </div>
         </div>
+      )}
+
+      {quit && (
+        <ConfirmSheet
+          title="Tour abbrechen?"
+          text={`Ihr habt ${game.points} Punkte gesammelt. Ihr könnt die Tour jetzt beenden und die Punkte behalten oder sie komplett löschen.`}
+          onClose={() => setQuit(false)}
+          actions={[
+            {
+              label: 'Jetzt beenden, Punkte behalten',
+              tone: 'primary',
+              testId: 'quit-keep',
+              onClick: () => {
+                setQuit(false);
+                finishGame();
+                onFinish();
+              },
+            },
+            {
+              label: 'Tour löschen',
+              tone: 'danger',
+              testId: 'quit-delete',
+              onClick: () => {
+                setQuit(false);
+                abandonGame();
+                onHome();
+              },
+            },
+          ]}
+        />
       )}
 
       {notebook && (

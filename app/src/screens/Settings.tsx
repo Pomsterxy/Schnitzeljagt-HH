@@ -98,6 +98,9 @@ export function Settings() {
       >
         Album & Abzeichen zurücksetzen
       </button>
+      <p className="muted" style={{ textAlign: 'center', fontSize: 13 }} data-testid="version">
+        Version vom {new Date(__BUILD_TIME__).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}
+      </p>
     </div>
   );
 }

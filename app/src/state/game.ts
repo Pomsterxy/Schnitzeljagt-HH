@@ -127,7 +127,8 @@ const listeners = new Set<() => void>();
 let snapshot = { game, career };
 
 function commit() {
-  saveJSON(GAME_KEY, game);
+  if (game) saveJSON(GAME_KEY, game);
+  else removeKey(GAME_KEY);
   saveJSON(CAREER_KEY, career);
   snapshot = { game, career };
   listeners.forEach((l) => l());

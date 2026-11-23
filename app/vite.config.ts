@@ -7,6 +7,9 @@ const base = process.env.BASE ?? '/';
 
 export default defineConfig({
   base,
+  define: {
+    __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+  },
   plugins: [
     react(),
     VitePWA({
@@ -30,6 +33,10 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // neue Version sofort übernehmen
+        skipWaiting: true,
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
         // Alle Texte und Stationsbilder sind sofort offline verfügbar
         globPatterns: ['**/*.{js,css,html,svg,png,jpg,json,webmanifest,woff2}'],
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
