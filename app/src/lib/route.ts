@@ -18,6 +18,8 @@ export interface RouteOptions {
   cache?: boolean;
   /** Längste erlaubte Etappe in Metern (Luftlinie); Standard 500, Infinity = egal */
   maxLeg?: number;
+  /** Stationen der vorigen Route ("Neu würfeln"): werden seltener gewählt */
+  avoid?: string[];
 }
 
 export type RouteStop =
@@ -214,7 +216,9 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
 
   const jitter = new Map(pool.map((s) => [s.id, 0.6 + rand() * 0.8]));
   const themed = opt.theme && opt.theme !== 'mix' ? opt.theme : null;
-  const value = (s: Station) => s.appeal * (jitter.get(s.id) ?? 1) * (themed ? (s.categories.includes(themed) ? 4 : 0.35) : 1);
+  const avoid = new Set(opt.avoid ?? []);
+  const value = (s: Station) =>
+    s.appeal * (jitter.get(s.id) ?? 1) * (themed ? (s.categories.includes(themed) ? 4 : 0.35) : 1) * (avoid.has(s.id) ? 0.3 : 1);
 
   /** Dauer einer Stationsfolge (Infinity, wenn ein Weg nicht mit kurzen Etappen geht) */
   const cost = (list: Station[]): number => {

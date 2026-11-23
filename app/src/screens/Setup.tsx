@@ -99,21 +99,47 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     return sp ? { coords: sp.coords, label: sp.title } : null;
   }, [startId, pos.coords]);
 
-  const route = useMemo(() => {
-    if (current.id !== 'route' || !start || !districts.length) return null;
-    return generateRoute(STATIONS, POIS, {
+  const [avoid, setAvoid] = useState<string[]>([]);
+  const [noOther, setNoOther] = useState(false);
+  const plan = (sd: number, av: string[]) =>
+    generateRoute(STATIONS, POIS, {
       districts,
-      start: start.coords,
+      start: start!.coords,
       minutes,
       kmh: speedFor(youngest),
       includeQuiet: includeQuiet || theme === 'erinnern',
       includePause,
-      seed,
+      seed: sd,
       theme,
       cache,
       maxLeg: maxLeg || Infinity,
+      avoid: av,
     });
-  }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache, maxLeg]);
+  const route = useMemo(() => {
+    if (current.id !== 'route' || !start || !districts.length) return null;
+    return plan(seed, avoid);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache, maxLeg, avoid]);
+
+  /** Neu würfeln: so lange probieren, bis eine wirklich andere Route herauskommt */
+  const sig = (r: NonNullable<typeof route>) => r.stops.map((x) => (x.kind === 'station' ? x.station.id : x.kind)).join('>');
+  const reroll = () => {
+    if (!route || !start) return;
+    const now = sig(route);
+    const used = route.stops.flatMap((x) => (x.kind === 'station' ? [x.station.id] : []));
+    for (let i = 0; i < 14; i++) {
+      const sd = Math.floor(Math.random() * 1e9);
+      const av = i < 10 ? used : [];
+      const r = plan(sd, av);
+      if (r.stops.some((x) => x.kind === 'station') && sig(r) !== now) {
+        setNoOther(false);
+        setAvoid(av);
+        setSeed(sd);
+        return;
+      }
+    }
+    setNoOther(true);
+  };
 
   // neue Nachricht: nach unten scrollen
   const endRef = useRef<HTMLDivElement>(null);
@@ -140,6 +166,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
 
   const next = () => {
     play('tap');
+    setNoOther(false);
     setStep((s) => s + 1);
   };
   const setMember = (i: number, m: Member) => {
@@ -298,7 +325,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
         ))}
 
         {current.id === 'route' && route && stationCount > 0 && start && (
-          <div ref={routeRef} className="chat-route rise">
+          <div ref={routeRef} key={seed} className="chat-route rise">
             {nav === 'map' ? (
               <MapView
                 markers={[
@@ -343,6 +370,11 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
               Längste Etappe: {formatDistance(longest)}
               {maxLeg && firstLeg > maxLeg ? ` · Der erste Weg vom Start ist ${formatDistance(firstLeg * 1.3)} lang.` : ''}
             </p>
+            {noOther && (
+              <p className="dark-caption reroll-note" data-testid="no-other-route">
+                Hier passt gerade keine andere Route in die Zeit. Nehmt einen weiteren Stadtteil dazu oder ändert die Dauer.
+              </p>
+            )}
             {nav === 'map' && (
               <ol className="chat-stops">
                 {route.stops.map((s, i) =>
@@ -547,9 +579,10 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             <button
               type="button"
               className="btn pill outline"
+              data-testid="reroll"
               onClick={() => {
                 play('select');
-                setSeed(Math.floor(Math.random() * 1e9));
+                reroll();
               }}
             >
               Andere Route würfeln

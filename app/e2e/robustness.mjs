@@ -124,5 +124,56 @@ async function context_check(page) {
   }
 }
 
+// 6) Chat lesbar, neu würfeln, Tour abbrechen (behalten) und löschen
+{
+  const ctx = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    permissions: ['geolocation'],
+    geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 },
+  });
+  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+  const page = await ctx.newPage();
+  const errs = [];
+  page.on('pageerror', (e) => errs.push(e.message));
+  await page.goto(URL);
+  await page.getByTestId('new-tour').click();
+  const colors = await page.getByTestId('chat-input').evaluate((e) => [getComputedStyle(e).backgroundColor, getComputedStyle(e).color]);
+  if (colors[0] === colors[1] || /255, 255, 255\)$/.test(colors[0])) fail('Chat-Eingabe unlesbar: ' + colors.join(' / '));
+  await page.getByRole('button', { name: 'Abbrechen' }).click();
+  // bis zur Routenübersicht planen, aber noch nicht starten
+  const sig = () => page.locator('.chat-stops').innerText();
+  await planTour(page, {
+    team: 'Würfel',
+    snap: async (n) => {
+      if (n !== 'chat-route') return;
+      const before = await sig();
+      await page.getByTestId('reroll').click();
+      await page.waitForTimeout(300);
+      const after = await sig();
+      if (before === after && !(await page.getByTestId('no-other-route').count())) fail('Neu würfeln ändert nichts');
+      console.log('✓ Neu würfeln liefert eine andere Route');
+    },
+  });
+  // Mitten in der Tour: beenden und Punkte behalten
+  await page.getByLabel('Menü').click();
+  await page.getByTestId('quit-tour').click();
+  await page.getByTestId('quit-keep').click();
+  await page.getByTestId('final-score').waitFor();
+  console.log('✓ Tour vorzeitig beenden (Punkte behalten) funktioniert');
+  // Neue Tour starten und löschen
+  await page.getByRole('button', { name: 'Zum Hauptmenü' }).click();
+  await planTour(page, { team: 'Löscher' });
+  await page.getByLabel('Menü').click();
+  await page.getByTestId('quit-tour').click();
+  await page.getByTestId('quit-delete').click();
+  await page.getByTestId('new-tour').waitFor();
+  const left = await page.evaluate(() => localStorage.getItem('hh-hunt:game'));
+  if (left) fail('Tour wurde nicht gelöscht');
+  if (await page.getByRole('button', { name: /Weiterspielen/ }).count()) fail('Gelöschte Tour wird noch angeboten');
+  console.log('✓ Tour mittendrin löschen funktioniert');
+  if (errs.length) fail('Seitenfehler: ' + errs.join(' / '));
+  await ctx.close();
+}
+
 await browser.close();
 console.log('OK – alle Sonderfälle bestanden');

@@ -30,6 +30,10 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Dunkle Bildschirme: Seitenhintergrund und Statusleiste ebenfalls dunkel (nicht auf :has() verlassen)
+    const dark = screen === 'home' || screen === 'setup';
+    document.documentElement.toggleAttribute('data-dark', dark);
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', dark ? '#101b33' : '#f2f2f7');
   }, [screen]);
 
   const tab = screen === 'home' || screen === 'album' || screen === 'badges' || screen === 'settings' ? screen : null;
