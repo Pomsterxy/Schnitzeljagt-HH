@@ -734,3 +734,14 @@ html[data-dark] body { background: #101b33; }
 .legal summary { font-weight: 800; cursor: pointer; padding: 6px 0; }
 .legal ul { margin: 6px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
 .legal p { margin: 6px 0; }
+
+/* Akku-Hinweis */
+.battery-banner { position: sticky; top: calc(64px + env(safe-area-inset-top)); z-index: 40; background: linear-gradient(135deg, #fff7ed, #fef3c7); border-radius: 22px; padding: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px; }
+.battery-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* Rückgängig-Leiste */
+.undo-toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 1200; width: min(520px, calc(100vw - 32px)); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px 16px 18px; border-radius: 18px; background: linear-gradient(135deg, #1f2a44, #101b33); color: #fff; font-weight: 700; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); overflow: hidden; animation: toastIn 0.4s var(--spring) both; }
+.undo-toast button { appearance: none; border: none; background: none; color: #ffb547; font: inherit; font-weight: 900; font-size: 16px; padding: 6px 4px; cursor: pointer; }
+.undo-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--grad-primary); transform-origin: left; animation: undoShrink linear both; }
+@keyframes undoShrink { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@keyframes toastIn { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }

@@ -26,7 +26,7 @@ const context = await browser.newContext({
   locale: 'de-DE',
 });
 // Kartenkacheln im Test nicht laden (kein Netz nötig)
-await context.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+await context.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '', headers: { 'Access-Control-Allow-Origin': '*' } }));
 const page = await context.newPage();
 page.on('pageerror', (e) => { errors.push('pageerror: ' + e.message); console.log('PAGEERROR', e.message, (e.stack||'').split('\n').slice(0,6).join(' | ')); });
 page.on('console', (m) => m.type() === 'error' && !/204|tile/.test(m.text()) && errors.push('console: ' + m.text()));

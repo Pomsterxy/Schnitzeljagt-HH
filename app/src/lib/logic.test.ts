@@ -382,3 +382,17 @@ describe('Großzügiges Zählen', () => {
     expect(evaluate(small, 4).correct).toBe(false);
   });
 });
+
+describe('Offline-Karten', () => {
+  it('berechnet Kacheln entlang der Route und bleibt sparsam', async () => {
+    const { tileOf, tilesForRoute } = await import('./prefetch');
+    expect(tileOf([53.55, 9.99], 15)).toEqual([17293, 10590]);
+    const start = START_POINTS[0].coords;
+    const r = generateRoute(STATIONS, POIS, { districts: ['winterhude'], start, minutes: 240, kmh: 3.5, includeQuiet: true, includePause: true, seed: 5, cache: true });
+    const urls = tilesForRoute(start, r.stops.map((s) => (s.kind === 'station' ? s.station.coords : s.poi.coords)));
+    expect(urls.length).toBeGreaterThan(30);
+    expect(urls.length).toBeLessThanOrEqual(260);
+    expect(new Set(urls).size).toBe(urls.length);
+    expect(urls.every((u) => /^https:\/\/tile\.openstreetmap\.org\/1[5-7]\/\d+\/\d+\.png$/.test(u))).toBe(true);
+  });
+});

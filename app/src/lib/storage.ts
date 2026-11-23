@@ -74,3 +74,73 @@ export async function compressImage(file: Blob, maxSide = 1600, quality = 0.82):
     return file;
   }
 }
+
+// ---------- Sicherung ----------
+
+/** Alle eigenen Schlüssel im localStorage */
+const BACKUP_KEYS = ['hh-hunt:game', 'hh-hunt:career', 'hh-hunt:lastTeam', 'hh-hunt:reports'];
+const MIRROR = 'backup:mirror';
+let mirrorTimer: ReturnType<typeof setTimeout> | null = null;
+
+/** Zweite Kopie in IndexedDB (falls localStorage verloren geht). Gebündelt, höchstens alle 1,5 s. */
+export function mirrorState(): void {
+  if (mirrorTimer) clearTimeout(mirrorTimer);
+  mirrorTimer = setTimeout(() => {
+    const data: Record<string, string | null> = {};
+    try {
+      for (const k of BACKUP_KEYS) data[k] = localStorage.getItem(k);
+    } catch {
+      return;
+    }
+    void set(MIRROR, { at: Date.now(), data }).catch(() => {});
+  }, 1500);
+}
+
+/**
+ * Nur wenn der localStorage komplett leer ist (z. B. vom Browser geleert), die Kopie zurückholen.
+ * Liefert true, wenn etwas wiederhergestellt wurde.
+ */
+export async function restoreMirrorIfEmpty(): Promise<boolean> {
+  try {
+    if (BACKUP_KEYS.some((k) => localStorage.getItem(k) !== null)) return false;
+    const m = await get<{ at: number; data: Record<string, string | null> }>(MIRROR);
+    if (!m) return false;
+    let restored = false;
+    for (const [k, v] of Object.entries(m.data)) {
+      if (v !== null && BACKUP_KEYS.includes(k)) {
+        localStorage.setItem(k, v);
+        restored = true;
+      }
+    }
+    return restored;
+  } catch {
+    return false;
+  }
+}
+
+/** Browser bitten, unsere Daten nicht automatisch zu löschen */
+export function askPersistentStorage(): void {
+  try {
+    void navigator.storage?.persist?.();
+  } catch {
+    /* nicht unterstützt */
+  }
+}
+
+/** Sicherungsdatei erstellen (ohne Fotos) */
+export function exportBackup(): string {
+  const data: Record<string, unknown> = {};
+  for (const k of BACKUP_KEYS) data[k] = loadJSON(k, null);
+  return JSON.stringify({ app: 'schnitzeljagd-hh', version: 1, at: new Date().toISOString(), data }, null, 1);
+}
+
+/** Sicherungsdatei einspielen; wirft bei ungültiger Datei */
+export function importBackup(text: string): void {
+  const parsed = JSON.parse(text) as { app?: string; data?: Record<string, unknown> };
+  if (parsed.app !== 'schnitzeljagd-hh' || !parsed.data) throw new Error('Keine Sicherung dieser App');
+  for (const k of BACKUP_KEYS) {
+    const v = parsed.data[k];
+    if (v === null || v === undefined) removeKey(k);
+    else saveJSON(k, v);
+  }
+}

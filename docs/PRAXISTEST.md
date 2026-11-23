@@ -10,7 +10,9 @@ Dort liegen die Stationen am dichtesten.
 - [ ] Zum Home-Bildschirm hinzufügen (Safari: Teilen → „Zum Home-Bildschirm“)
 - [ ] Unter „Mehr“ prüfen: Steht ganz unten die Version von heute?
 - [ ] Einmal die App im WLAN öffnen und kurz durch die Startseite tippen (lädt Bilder für offline)
-- [ ] Akku voll laden, ggf. Powerbank mitnehmen (Bildschirm bleibt während der Tour an)
+- [ ] Akku voll laden, ggf. Powerbank mitnehmen (Bildschirm bleibt während der Tour an; für lange Touren unter „Mehr“ den Stromsparmodus einschalten)
+- [ ] Auf dem iPhone die App unbedingt **vom Home-Bildschirm** starten: Safari löscht Website-Daten nach einigen Tagen ohne Nutzung, Home-Bildschirm-Apps sind davon ausgenommen
+- [ ] Tour im WLAN starten und kurz warten: Im Menü steht dann „Offline-Karten für diese Tour gespeichert“
 - [ ] Ton an, Lautstärke mittel
 - [ ] Ein Erwachsener merkt sich die Eltern-PIN
 

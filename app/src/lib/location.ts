@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import type { LatLng } from '../data/types';
 import { loadJSON, saveJSON } from './storage';
+import { getPowerSave, subscribePowerSave } from './power';
 
 export interface PositionState {
   coords: LatLng | null;
@@ -67,9 +68,18 @@ export function startTracking(): void {
       if (state.simulated) return;
       emit({ status: err.code === err.PERMISSION_DENIED ? 'denied' : 'unavailable' });
     },
-    { enableHighAccuracy: true, maximumAge: 5000, timeout: 30000 },
+    // Stromsparmodus: ohne Höchstgenauigkeit und mit älteren Werten zufrieden
+    getPowerSave() ? { enableHighAccuracy: false, maximumAge: 15000, timeout: 30000 } : { enableHighAccuracy: true, maximumAge: 5000, timeout: 30000 },
   );
 }
+
+// Sparmodus umgeschaltet: laufende Ortung mit neuen Einstellungen neu starten
+subscribePowerSave(() => {
+  if (watchId !== null && !state.simulated) {
+    stopTracking();
+    startTracking();
+  }
+});
 
 export function stopTracking(): void {
   if (watchId !== null && typeof navigator !== 'undefined') navigator.geolocation.clearWatch(watchId);
@@ -95,6 +105,8 @@ export function setSimulatedPosition(coords: LatLng): void {
   emit({ coords, accuracy: 5, status: 'ok', simulated: true, updatedAt: Date.now() });
 }
 
+let compassOn = false;
+
 /** Gerätekompass (für den Richtungspfeil), iOS braucht eine Erlaubnis per Tipp */
 export async function enableCompass(): Promise<boolean> {
   type DOE = typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> };
@@ -108,8 +120,17 @@ export async function enableCompass(): Promise<boolean> {
   } catch {
     return false;
   }
+  if (compassOn) return true;
+  compassOn = true;
+  // Android liefert absolute (nordbezogene) und relative Werte: Sobald absolute kommen, die relativen ignorieren
+  let absolute = false;
   const handler = (e: DeviceOrientationEvent & { webkitCompassHeading?: number }) => {
-    const h = e.webkitCompassHeading ?? (e.alpha != null ? (360 - e.alpha) % 360 : null);
+    if (e.type === 'deviceorientationabsolute') absolute = true;
+    else if (absolute && e.webkitCompassHeading == null) return;
+    // iOS: webkitCompassHeading ist bereits nordbezogen. Sonst nur absolute Werte verwenden.
+    let h: number | null = null;
+    if (e.webkitCompassHeading != null) h = e.webkitCompassHeading;
+    else if ((e.absolute || e.type === 'deviceorientationabsolute') && e.alpha != null) h = (360 - e.alpha) % 360;
     if (h != null) emit({ heading: h });
   };
   window.addEventListener('deviceorientationabsolute', handler as EventListener, true);
