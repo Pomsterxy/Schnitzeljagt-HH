@@ -29,6 +29,14 @@ export async function planTour(page, o = {}) {
     const mm = time.map((_, i) => (o.rain && i === 1 ? 1.2 : 0));
     return r.fulfill({ contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ hourly: { time, precipitation_probability: p, precipitation: mm } }) });
   });
+  // Straßenbaumkataster im Test nachstellen: ein Baum direkt am angefragten Ort
+  await page.route(/api\.hamburg\.de\/datasets\/v1\/strassenbaumkataster/, (r) => {
+    const bbox = new URL(r.request().url()).searchParams.get('bbox').split(',').map(Number);
+    const lon = (bbox[0] + bbox[2]) / 2;
+    const lat = (bbox[1] + bbox[3]) / 2;
+    const f = { type: 'Feature', geometry: { type: 'MultiPoint', coordinates: [[lon, lat]] }, properties: { art_deutsch: 'Winter-Linde', art_latein: 'Tilia cordata', pflanzjahr: 1975, stammumfang: 180, strasse: 'Teststraße' } };
+    return r.fulfill({ contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ type: 'FeatureCollection', features: [f] }) });
+  });
   await page.getByTestId('new-tour').click();
   // 1. Team
   await page.getByTestId('chat-input').fill(team);

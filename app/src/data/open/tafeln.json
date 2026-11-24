@@ -1,0 +1,90 @@
+[
+ {
+  "id": "tafel-490",
+  "title": "Villa Troplowitz",
+  "text": "Erbaut 1908/09 als Wohnhaus für den Gründer der Beiersdorf AG und Mitglied der Baudeputation Dr. Oscar Troplowitz. Repräsentative, zweigeschossige Villa des Berliner Architekten William Müller in barocken und klassizistischen Formen, Fassaden aus Muschelkalk und Rauputz.",
+  "coords": [
+   53.580819,
+   10.000063
+  ],
+  "district": "winterhude",
+  "nearExisting": false
+ },
+ {
+  "id": "tafel-59",
+  "title": "Ev.-Luth. Auferstehungskirche",
+  "text": "Dieses Gemeindezentrum wurde 1913 von Camillo Günther entworfen und von 1916 bis 1927 errichtet. Die Kirche konnte 1920 eingeweiht werden. Sie ist eine Betonkonstruktion, die Außenhaut besteht aus Klinkern. In Innern des Kuppelbaues umfangen freitragende Emporen den Raum, ein eigener Altarbereich ist angefügt, die Kanzel ist in die Gemeinde gerückt. Das Mosaik an der Altarwand sowie das hölzerne Abendmahlrelief schufen Axel Bünz bzw. Richard Kuöhl.",
+  "coords": [
+   53.5918,
+   10.051634
+  ],
+  "district": "barmbek-nord",
+  "nearExisting": true
+ },
+ {
+  "id": "tafel-363",
+  "title": "Jarrestadt",
+  "text": "Zwischen Jarrestraße, Semperstraße, Glindeweg und Großheidestraße entstand 1926-29 eine Siedlung mit preiswerten Kleinwohnungen als Teil eines Wohnungsbauprogramms, das unter der Leitung des Oberbaudirektors Fritz Schumacher für Hamburg entwickelt wurde. Schumacher entwarf eine einheitliche Anlage: große, kubische Baublöcke mit Klinkerfassaden und Sprossenfenstern, weiträumige Höfe und Grünanlagen. Führende, durch einen Wettbewerb ausgewählte Hamburger Architekten gaben den Gebäuden ihre individuelle Gestalt.",
+  "coords": [
+   53.584649,
+   10.023149
+  ],
+  "district": "winterhude",
+  "nearExisting": false
+ },
+ {
+  "id": "tafel-373",
+  "title": "Gesamtschule Winterhude",
+  "text": "Das Gebäude wurde 1929-30 nach Entwürfen von Fritz Schumacher erbaut. Die Volksschule war als baulicher und kultureller Mittelpunkt der neuen Siedlung Jarrestadt gedacht. Der symmetrische, kubische Bau ist klar gegliedert. Die sichtbare Eisenbetonkonstruktion bestimmt die großflächig durchfensterten Klinkerfassaden. Die ehem. Knaben- und Mädchenschule wurde nach zukunftsweisenden pädagogischen Erkenntnissen mit Fachräumen für die Naturwissenschaften, die künstlerischen Fächer und den Werkunterricht ausgestattet.",
+  "coords": [
+   53.58741,
+   10.027443
+  ],
+  "district": "winterhude",
+  "nearExisting": true
+ },
+ {
+  "id": "tafel-112",
+  "title": "Ev.-Luth. Matthäuskirche",
+  "text": "Dieser Kirchenbau entstand 1911-12 nach Entwürfen von Julius Faulwasser. Ein erstes Pastorat bestand seit 1908, entworfen von Fernando Lorenzen, das zweite Pastorat folgte 1924. Das Gemeindehaus von 1956 machte die Anlage zum Gemeindezentrum. Die Kirche nimmt mit dem Grundriss des griechischen Kreuzes und dem Turm Formen der St. Michaeliskirche auf. Kriegsschäden behob man vereinfachend. Anlässlich der Neuausstattung 1960-71 schuf Charles Crodel die Glasfenster.",
+  "coords": [
+   53.588956,
+   10.010799
+  ],
+  "district": "winterhude",
+  "nearExisting": true
+ },
+ {
+  "id": "tafel-372",
+  "title": "Gelehrtenschule des Johanneums",
+  "text": "1912-14 als Neubau für das altsprachliche Gymnasium nach Entwürfen von Fritz Schumacher errichtet. Das Johanneum ist seit 1529 von Johannes Bugenhagen als Gelehrtenschule im ehemaligen St. Johanniskloster (auf dem heutigen Rathausmarkt) gegründet worden. Schumacher zählte das jetzige Gebäude zu seinen besonders gelungenen Werken. Das Motiv der Arkade, die eine Dreiflügelanlage schließt, erinnert an den zweiten Bau des Johanneums, der 1837-40 im spätklassizistischen Stil am Speersort erbaut wurde (1943 zerstört).",
+  "coords": [
+   53.589888,
+   10.006031
+  ],
+  "district": "winterhude",
+  "nearExisting": true
+ },
+ {
+  "id": "tafel-389",
+  "title": "Stationsgebäude Rübenkamp",
+  "text": "Errichtet 1913 vom Hamburgischen Ingenieurwesen für die Hamburg-Altonaer Stadt- und Vorortbahn. Architekt: Ernst Schmidt. Mit dem an die heimische Barockarchitektur anknüpfenden Reformstil wurde der Versuch unternommen, die in Hamburg entstehenden Verkehrsbauten als öffentliche Gebäude architektonisch und städtebaulich anspruchsvoll zu gestalten. Nach der Aufgabe durch die Bundesbahn 1985 erwarb der Verein \"Unser Bahnhof\" e.V. das Gebäude, stellte es wieder her und übergab es der Öffentlichkeit als Kommunikationszentrum.",
+  "coords": [
+   53.606732,
+   10.03337
+  ],
+  "district": "barmbek-nord",
+  "nearExisting": false
+ },
+ {
+  "id": "tafel-358",
+  "title": "Ehem. Fabrik Rieck & Melzian",
+  "text": "Diese Anlage der metallverarbeitenden Industrie, 1908 erbaut, gehört zu den typischen Fabrikbauten, die seit 1860 in Winterhude entstanden. Zur Erleichterung des Rohstoff- und Warentransports waren sie an das Wasserstraßensystem angeschlossen. Das Fertigungsgebäude am Kanal mit den geräumigen Hallen in mehreren Geschossen ist eine mit Backstein verkleidete Skelettkonstruktion aus Eisenbeton, das Verwaltungsgebäude ein Mauerwerksbau. 1994 wurde die Anlage umgebaut und dient jetzt als Bürohaus.",
+  "coords": [
+   53.583934,
+   10.009134
+  ],
+  "district": "winterhude",
+  "nearExisting": false
+ }
+]

@@ -28,6 +28,7 @@ ruhigen Modus ohne Punkte.
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert; beim Start einer Tour werden die Kartenausschnitte entlang der Route vorgeladen (sparsam, Zoom 15–17)
 - **Stabilität**: Stromsparmodus und Akku-Warnung (Android), „Rückgängig“ nach Löschen oder Überspringen, automatische Sicherungskopie des Spielstands und Sicherung als Datei unter „Mehr“
+- **Offene Daten aus Hamburg**: blaue Denkmaltafeln als neue Stationen (mit Jahres-Quiz, Alters-Schätzen und Foto-Detektiv) und als Infokarte an bestehenden Stationen; Stolpersteine als stille Gedenkstationen (höchstens zwei pro Tour) und als Hinweis an Zwischenzielen; Kunstwerke im öffentlichen Raum und Trinkbrunnen als Zwischenziele; Spielplatz-Beschreibungen, Baudenkmale in der Nähe und der **Baum-Detektiv** (nächster Straßenbaum mit Art und Pflanzjahr, online) an Zwischenzielen
 - **Datenschutz**: kein Konto, kein Server, alles bleibt auf dem Handy; Impressum und Datenschutzhinweis unter „Mehr“ (Angaben in `app/src/data/impressum.ts`)
 
 ## Starten
@@ -73,6 +74,7 @@ Bei jeder Änderung auf `main` laufen Lint, Unit-Tests, Spieldurchläufe, Sonder
 ## Projektstruktur
 
 - `app/src/data/`: Stationen, Stadtteile, Startpunkte, Pausenorte (OSM), Abzeichen
+- `app/src/data/open/`: offene Daten (Denkmaltafeln, Kunstwerke, Stolpersteine, Trinkbrunnen, Zusatzinfos), erzeugt mit `node app/scripts/import-open-data.mjs` (hinter einem Proxy mit `NODE_USE_ENV_PROXY=1`)
 - `app/src/lib/`: Geo-Berechnung, Routengenerator, Punkteauswertung, GPS, Speicher, Vorlesen
 - `app/src/state/game.ts`: Spielstand (lokal gespeichert)
 - `app/src/screens/`: Start, Tour-Planung, Spiel, Abschluss, Album, Einstellungen
@@ -82,4 +84,4 @@ Bei jeder Änderung auf `main` laufen Lint, Unit-Tests, Spieldurchläufe, Sonder
 ## Lizenzen
 
 Texte basieren auf der deutschsprachigen Wikipedia (CC BY-SA 4.0). Fotos stammen von Wikimedia Commons, Urheber und Lizenz je
-Bild stehen in `app/public/img/credits.json` und in der App. Pausenorte und Karte: © OpenStreetMap-Mitwirkende (ODbL).
+Bild stehen in `app/public/img/credits.json` und in der App. Pausenorte und Karte: © OpenStreetMap-Mitwirkende (ODbL). Denkmaltafeln, Baudenkmale, Spielplätze, Trinkwasserbrunnen und Straßenbäume: Freie und Hansestadt Hamburg (Urban Data Platform, api.hamburg.de), Datenlizenz Deutschland – Namensnennung 2.0. Kunstwerke und Stolpersteine: Wikidata (CC0).

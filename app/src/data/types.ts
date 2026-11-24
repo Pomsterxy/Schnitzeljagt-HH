@@ -92,9 +92,11 @@ export interface Station {
   /** Bild-IDs → public/img/stations/<id>.jpg, Lizenz in credits.json */
   images: string[];
   sources: string[];
+  /** Aus offenen Daten erzeugt (Denkmaltafel, Stolpersteine): nicht im Album */
+  origin?: 'tafel' | 'stolperstein';
 }
 
-export type PoiKind = 'spielplatz' | 'eis' | 'wc' | 'cafe';
+export type PoiKind = 'spielplatz' | 'eis' | 'wc' | 'cafe' | 'kunst' | 'trinkwasser';
 
 export interface Poi {
   id: string;
@@ -103,6 +105,11 @@ export interface Poi {
   coords: LatLng;
   district: DistrictId;
   note?: string;
+  /** Kunstwerke (Wikidata) */
+  creator?: string;
+  year?: number;
+  type?: string;
+  wikidata?: string;
 }
 
 export interface StartPoint {

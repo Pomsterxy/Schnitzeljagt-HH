@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { STATIONS, STATION_BY_ID } from '../data';
+import { ALBUM_IDS, STATIONS, STATION_BY_ID } from '../data';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { BADGES, rankFor } from '../data/badges';
 import { abandonGame, useGame } from '../state/game';
@@ -142,7 +142,7 @@ export function Home({
 
         <div className="dark-card collection rise">
           <button type="button" className="btn pill outline" onClick={onAlbum}>
-            <Icon name="album" size={18} /> Album {career.collected.length}/{STATIONS.length}
+            <Icon name="album" size={18} /> Album {career.collected.filter((id) => ALBUM_IDS.has(id)).length}/{STATIONS.length}
           </button>
           <button type="button" className="btn pill outline" onClick={onBadges}>
             <Icon name="medal" size={18} /> {career.badges.length}/{BADGES.length}
