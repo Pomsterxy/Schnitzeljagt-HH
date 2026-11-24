@@ -28,7 +28,6 @@ import { Gallery } from '../components/Gallery';
 import { PinDialog } from '../components/PinDialog';
 import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
-import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
 import { DotLoader, RollingNumber } from '../components/Micro';
 import { ConfirmSheet } from '../components/ConfirmSheet';
@@ -212,7 +211,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
             <div className="sheet-list">
               {hasFinal && (
                 <button type="button" onClick={() => { setMenu(false); setNotebook(true); }}>
-                  <Icon name="notebook" size={20} color="var(--accent)" /> Cache-Notizbuch ({(game.cacheLetters ?? []).length})
+                  <Icon name="notebook" size={20} color="var(--accent)" /> Schatz-Notizbuch ({(game.cacheLetters ?? []).length})
                 </button>
               )}
               {station && !ss?.unlockedBy && (
@@ -280,7 +279,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
         <div className="overlay" role="dialog" aria-modal="true" onClick={() => setNotebook(false)}>
           <div className="dialog light" onClick={(e) => e.stopPropagation()}>
             <div className="grabber" />
-            <h3>Cache-Notizbuch</h3>
+            <h3>Schatz-Notizbuch</h3>
             <p className="muted">Diese Zahlen braucht ihr am Ende, um die Koordinaten des Schatzes zu berechnen.</p>
             <Notebook game={game} />
             <button type="button" className="btn" onClick={() => setNotebook(false)}>
@@ -721,7 +720,6 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         />
       )}
 
-      {!quiet && allDone && (!familyGame || familyState) && <NearbyCaches center={station.coords} />}
       <ReportButton station={station} />
       <details className="sources">
         <summary>Quellen</summary>

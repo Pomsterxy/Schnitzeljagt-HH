@@ -8,13 +8,12 @@ import { play } from '../lib/feedback';
 import { celebrateTreasure, celebrateUnlock } from '../lib/effects';
 import { FINAL_POINTS, finalState, nextStop, revealCoords, submitCoords, treasureFound, type Game } from '../state/game';
 import { MapView } from '../components/MapView';
-import { NearbyCaches } from '../components/NearbyCaches';
 import { LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
 
 export function Notebook({ game }: { game: Game }) {
   const letters = game.cacheLetters ?? [];
-  if (!letters.length) return <p className="muted">Noch keine Cache-Zahlen gesammelt. Löst Stationen, dann füllt sich das Notizbuch!</p>;
+  if (!letters.length) return <p className="muted">Noch keine Geheimzahlen gesammelt. Löst Stationen, dann füllt sich das Notizbuch!</p>;
   return (
     <ul className="notebook" data-testid="notebook">
       {letters.map((l) => (
@@ -128,14 +127,11 @@ export function FinalView({ game, poi, onPin }: { game: Game; poi: Poi; onPin: (
           +{FINAL_POINTS.found} Punkte{f.attempts === 1 && !f.revealed ? ` · +${FINAL_POINTS.firstTry} fürs Rechnen` : ''}
         </p>
         <LilliSays mood="excited" variant="dark">
-          Ihr seid echte Geocacher! Bei einem echten Cache läge hier eine Dose mit Logbuch. Euer Schatz ist das Abzeichen „Schatzfinder“. Tipp für nächstes Mal: Eltern können hier vorher eine kleine Überraschung verstecken.
+          Ihr habt den Schatz geknackt! Euer Schatz ist das Abzeichen „Schatzfinder“. Tipp für nächstes Mal: Eltern können hier vorher eine kleine Überraschung verstecken.
         </LilliSays>
         <p className="muted rise">
           {poi.title} · {formatDegMin(target)}
         </p>
-        <div style={{ alignSelf: 'stretch', color: 'var(--label)' }}>
-          <NearbyCaches center={target} title="Lust auf mehr? Echte Geocaches in der Nähe" />
-        </div>
         <button type="button" className="btn big white" onClick={() => { play('unlock'); nextStop(); }}>
           Tour abschließen
         </button>
@@ -151,12 +147,12 @@ export function FinalView({ game, poi, onPin }: { game: Game; poi: Poi; onPin: (
         {stars}
         <div className="rise">
           <div className="overline" style={{ color: '#FDBA74' }}>
-            Multi-Cache · Finale
+            Schatz-Finale
           </div>
           <h1 className="large-title">Knackt den Schatz</h1>
         </div>
         <LilliSays mood="night" variant="dark">
-          Wie bei einem echten Multi-Cache habt ihr an jeder Station eine Cache-Zahl gesammelt. Setzt sie in die Formel ein: Jede Klammer ergibt genau eine Ziffer.
+          An jeder Station habt ihr eine Geheimzahl gesammelt. Setzt sie in die Formel ein: Jede Klammer ergibt genau eine Ziffer.
         </LilliSays>
         <div className="glass rise">
           <div className="caption" style={{ color: 'rgba(255,255,255,0.7)', marginBottom: 8 }}>
@@ -231,7 +227,7 @@ export function FinalView({ game, poi, onPin }: { game: Game; poi: Poi; onPin: (
         {formatDegMin(target)}
       </p>
       <LilliSays mood="night" variant="dark">
-        Wie echte Geocacher findet ihr den Schatz nur mit Richtung und Entfernung. Ich fliege schon mal vor!
+        Den Schatz findet ihr nur mit Richtung und Entfernung. Ich fliege schon mal vor!
       </LilliSays>
       {dist !== null && (
         <div className="compass-wrap rise">
