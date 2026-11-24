@@ -205,7 +205,8 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
 
   const pool = all.filter((s) => opt.districts.includes(s.district) && (opt.includeQuiet || s.mode === 'normal'));
   const maxLeg = opt.maxLeg ?? MAX_LEG;
-  const net = new Network(opt.start, pool, pois, maxLeg);
+  // Toiletten sind als Zwischenziel für Kinder wenig spannend (und kaum nötig): nur Spielplätze, Eisdielen u. Ä.
+  const net = new Network(opt.start, pool, pois.filter((p) => p.kind !== 'wc'), maxLeg);
   const idx = new Map(pool.map((s, i) => [s.id, i + 1]));
   const legCache = new Map<string, Leg | null>();
   const leg = (a: number, b: number): Leg | null => {

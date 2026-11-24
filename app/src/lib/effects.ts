@@ -32,7 +32,7 @@ export interface FloatOptions {
   color?: string;
 }
 
-type Listener = { burst: (o: BurstOptions) => void; float: (o: FloatOptions) => void; flash: (color: string) => void };
+type Listener = { burst: (o: BurstOptions) => void; float: (o: FloatOptions) => void; flash: (color: string) => void; clear: () => void };
 let listener: Listener | null = null;
 
 export function registerEffects(l: Listener | null) {
@@ -55,6 +55,11 @@ export function centerOf(el: Element | null | undefined): { x: number; y: number
   if (!el) return { x: window.innerWidth / 2, y: window.innerHeight * 0.35 };
   const r = el.getBoundingClientRect();
   return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+}
+
+/** Alle laufenden Effekte sofort beenden (z. B. beim Wechsel auf einen anderen Bildschirm) */
+export function clearEffects() {
+  listener?.clear();
 }
 
 export function burst(o: BurstOptions = {}) {

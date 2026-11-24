@@ -10,6 +10,7 @@ import { getGame } from './state/game';
 import { setSimulated } from './lib/location';
 import { Intro, shouldShowIntro } from './components/Intro';
 import { EffectsLayer } from './components/EffectsLayer';
+import { clearEffects } from './lib/effects';
 import { UndoToast } from './components/UndoToast';
 
 type Screen = Tab | 'setup' | 'play' | 'finish';
@@ -31,6 +32,7 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    clearEffects();
     // Dunkle Bildschirme: Seitenhintergrund und Statusleiste ebenfalls dunkel (nicht auf :has() verlassen)
     const dark = screen === 'home' || screen === 'setup';
     document.documentElement.toggleAttribute('data-dark', dark);
