@@ -58,7 +58,8 @@ let handler: ((e: DeviceMotionEvent) => void) | null = null;
 
 /** Startet das Zählen; onSteps bekommt die Anzahl neuer Schritte (gebündelt) */
 export function startPedometer(onSteps: (n: number) => void): () => void {
-  if (running || typeof window === 'undefined' || typeof DeviceMotionEvent === 'undefined' || permission === 'denied') return () => {};
+  // Auch bei "verweigert" lauschen: kommen keine Daten, zählt die App die Schritte aus der Strecke
+  if (running || typeof window === 'undefined' || typeof DeviceMotionEvent === 'undefined') return () => {};
   running = true;
   const det = new StepDetector();
   let pending = 0;

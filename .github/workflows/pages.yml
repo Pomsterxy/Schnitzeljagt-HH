@@ -1,6 +1,6 @@
 name: App veröffentlichen (GitHub Pages)
 
-# Baut die App bei jeder Änderung auf main, testet sie und legt das Ergebnis
+# Baut die App bei jeder Änderung auf main, testet sie (Unit- und Browser-Tests) und legt das Ergebnis
 # in den Zweig gh-pages. GitHub Pages zeigt diesen Zweig unter
 # https://<benutzer>.github.io/<repo>/ an.
 on:
@@ -29,10 +29,25 @@ jobs:
           cache: npm
           cache-dependency-path: app/package-lock.json
       - run: npm ci
+      - run: npx eslint src e2e --quiet
       - run: npm test
       - run: npm run build
         env:
           BASE: /${{ github.event.repository.name }}/
+      # Browser-Tests: erst wenn alle grün sind, wird veröffentlicht
+      - name: Browser für die Tests
+        run: |
+          npm i --no-save playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Spieldurchläufe, Sonderfälle und Tastatur-Test
+        run: |
+          BASE=/${{ github.event.repository.name }}/ npx vite preview --port 4173 --strictPort &
+          URL=http://localhost:4173/${{ github.event.repository.name }}/
+          for i in $(seq 1 30); do curl -sf "$URL" > /dev/null && break; sleep 1; done
+          node e2e/playthrough.mjs $URL map winterhude
+          node e2e/playthrough.mjs $URL adventure alsterdorf,barmbek-nord
+          node e2e/robustness.mjs $URL
+          node e2e/keyboard.mjs $URL
       - name: Für GitHub Pages vorbereiten
         run: |
           touch dist/.nojekyll

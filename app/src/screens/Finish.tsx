@@ -10,6 +10,7 @@ import { youngestGroup } from '../lib/scoring';
 import { LilliSays } from '../components/Lilli';
 import { TalkCard } from '../components/TalkCard';
 import { StarRating } from '../components/Micro';
+import { shareGame } from './Play';
 import { Icon } from '../components/Icon';
 import { celebrateFinish } from '../lib/effects';
 
@@ -108,6 +109,9 @@ export function Finish({ onHome }: { onHome: () => void }) {
         {rank.next ? ` Noch ${rank.next.min - career.points} Punkte bis „${rank.next.title}“.` : ''}
       </LilliSays>
       <StarRating id={game.id} />
+      <button type="button" className="btn" data-testid="finish-share" onClick={() => void shareGame(game)}>
+        Diese Tour an Freunde weitergeben
+      </button>
       <TalkCard pools={['finish']} seed={game.config.seed} youngest={youngestGroup(game.team.members.map((m) => m.age))} title="Zum Nachklang" />
       <section className="card walk-stats rise" aria-label="Eure Tour in Zahlen">
         <div className="caption">Eure Tour in Zahlen</div>

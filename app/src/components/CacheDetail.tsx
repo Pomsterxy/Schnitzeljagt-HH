@@ -5,11 +5,12 @@ import { bearing, distance } from '../lib/geo';
 import { startTracking, usePosition } from '../lib/location';
 import { play } from '../lib/feedback';
 import { celebrateUnlock } from '../lib/effects';
-import { loadJSON, saveJSON } from '../lib/storage';
+import { saveJSON } from '../lib/storage';
 import { Compass } from './Compass';
 import { MapView } from './MapView';
 import { DotLoader } from './Micro';
 import { Icon } from './Icon';
+import { FOUND_KEY, TYPE_ICON, foundCaches } from './cache-shared';
 
 export interface OcCacheDetail {
   code: string;
@@ -36,18 +37,6 @@ export interface OcCacheDetail {
   req_passwd: boolean;
 }
 
-export const TYPE_ICON: Record<string, string> = {
-  Traditional: '📦',
-  Multi: '🧩',
-  Quiz: '❓',
-  Virtual: '👻',
-  Event: '🎉',
-  Webcam: '📷',
-  Moving: '🚲',
-  Math: '🧮',
-  Drive_In: '🚗',
-  Other: '📍',
-};
 const TYPE_DE: Record<string, string> = {
   Traditional: 'Traditioneller Cache',
   Multi: 'Multi-Cache',
@@ -99,10 +88,6 @@ export function cleanHtml(html: string): string {
   });
 }
 
-const FOUND_KEY = 'hh-hunt:foundCaches';
-export function foundCaches(): string[] {
-  return loadJSON<string[]>(FOUND_KEY, []);
-}
 
 /** Ein echter Geocache ganz in der App: Navigation, Beschreibung, Hinweis, Bilder, Logbuch */
 export function CacheDetail({ code, apiKey, onClose }: { code: string; apiKey: string; onClose: () => void }) {

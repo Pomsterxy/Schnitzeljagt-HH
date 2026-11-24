@@ -33,6 +33,8 @@ import { Breath } from '../components/Breath';
 import { Compass } from '../components/Compass';
 import { DotLoader, RollingNumber } from '../components/Micro';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { encodeTour, shareLink, tourLink } from '../lib/share';
+import type { RouteStop } from '../lib/route';
 import { backdropClose } from '../lib/backdrop';
 import { setPowerSave, usePowerSave, watchBattery } from '../lib/power';
 import { prefetchTour, useTilePrefetch } from '../lib/prefetch';
@@ -236,6 +238,9 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
               </button>
               <button type="button" onClick={onHome}>
                 <Icon name="pause" size={20} color="var(--accent)" /> Pause – zum Hauptmenü (Spielstand bleibt)
+              </button>
+              <button type="button" data-testid="menu-share" onClick={() => void shareGame(game)}>
+                <Icon name="route" size={20} color="var(--accent)" /> Diese Tour mit Freunden teilen
               </button>
               <button type="button" className="danger-row" data-testid="quit-tour" onClick={() => { setMenu(false); setQuit(true); }}>
                 <Icon name="close" size={20} color="#DC2626" /> Tour abbrechen oder löschen
@@ -840,6 +845,30 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
 }
 
 const WAYPOINT_RADIUS = 35;
+
+/** Laufende Tour als Einladungs-Link teilen (gleiche Stationen, gleiche Reihenfolge) */
+export async function shareGame(game: Game) {
+  const stops: RouteStop[] = game.stops.flatMap((s): RouteStop[] => {
+    const r = resolveStop(s);
+    if (s.kind === 'station' && r.station) return [{ kind: 'station', station: r.station }];
+    if (s.kind !== 'station' && r.poi) return [{ kind: s.kind, poi: r.poi }];
+    return [];
+  });
+  const c = game.config;
+  const code = encodeTour({ d: c.districts, m: c.minutes, s: c.startLabel, c: c.start, stops, n: c.nav, sd: c.seed, t: c.theme ?? 'mix', ml: c.maxLeg ?? 500 });
+  const r = await shareLink(tourLink(code), `Wir haben die Schatzsuche „${game.team.name}“ gespielt – schafft ihr mehr als ${game.points} Punkte?`);
+  if (r === 'copied') alertToast('Link kopiert – jetzt z. B. in WhatsApp einfügen.');
+}
+
+/** Kleine Bestätigung ohne eigenen Zustand */
+function alertToast(text: string) {
+  const el = document.createElement('div');
+  el.className = 'mini-toast';
+  el.setAttribute('role', 'status');
+  el.textContent = text;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+}
 
 /** Themen-Pools für den Gesprächsstoff einer Station */
 function talkPools(s: Station): TalkPool[] {

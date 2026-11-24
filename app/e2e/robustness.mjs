@@ -308,5 +308,45 @@ async function context_check(page) {
   await ctx.close();
 }
 
+// 7) Tour per Link teilen: Freunde bekommen genau dieselbe Route
+{
+  const ctx = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    permissions: ['geolocation', 'clipboard-read', 'clipboard-write'],
+    geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 },
+  });
+  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+  const page = await ctx.newPage();
+  await page.goto(URL);
+  let link = '';
+  let stopsA = [];
+  await planTour(page, {
+    team: 'Einlader',
+    snap: async (n) => {
+      if (n !== 'chat-route') return;
+      stopsA = await page.locator('.chat-stops li').allInnerTexts();
+      await page.evaluate(() => { delete navigator.share; });
+      await page.getByTestId('share-tour').click();
+      await page.getByTestId('share-msg').waitFor();
+      link = (await page.evaluate(() => navigator.clipboard.readText())).split(' ').pop();
+    },
+  });
+  if (!link.includes('?tour=')) fail('Kein Einladungslink erzeugt: ' + link);
+  const friend = await (await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ['geolocation'], geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 } })).newPage();
+  await friend.goto(link);
+  await friend.getByTestId('chat-input').fill('Eingeladene');
+  await friend.getByRole('button', { name: 'Senden' }).click();
+  await friend.getByRole('button', { name: 'Passt so' }).click();
+  await friend.getByTestId('chat-input').fill('1111');
+  await friend.getByRole('button', { name: 'Senden' }).click();
+  await friend.getByRole('button', { name: "Los geht's!" }).waitFor();
+  if (await friend.getByTestId('reroll').count()) fail('Eingeladene sollen die Route nicht neu würfeln');
+  const stopsB = await friend.locator('.chat-stops li').allInnerTexts();
+  if (JSON.stringify(stopsA) !== JSON.stringify(stopsB)) fail(`Andere Route beim Freund:\n${stopsA}\n${stopsB}`);
+  if (friend.url().includes('tour=')) fail('Einladungscode bleibt in der Adresse stehen');
+  console.log(`✓ Tour per Link geteilt: Freunde bekommen dieselben ${stopsB.length} Ziele`);
+  await ctx.close();
+}
+
 await browser.close();
 console.log('OK – alle Sonderfälle bestanden');

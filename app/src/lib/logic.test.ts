@@ -402,3 +402,17 @@ describe('Offline-Karten', () => {
     expect(urls.every((u) => /^https:\/\/tile\.openstreetmap\.org\/1[5-7]\/\d+\/\d+\.png$/.test(u))).toBe(true);
   });
 });
+
+describe('Tour teilen', () => {
+  it('kodiert eine Route als Link und baut sie identisch wieder auf', async () => {
+    const { encodeTour, decodeTour } = await import('./share');
+    const start = START_POINTS[0].coords;
+    const r = generateRoute(STATIONS, POIS, { districts: ['winterhude'], start, minutes: 120, kmh: 3.5, includeQuiet: true, includePause: true, seed: 9, cache: true });
+    const code = encodeTour({ d: ['winterhude'], m: 120, s: 'U Borgweg', c: start, stops: r.stops, n: 'map', sd: 9, t: 'mix', ml: 500 });
+    expect(code).toMatch(/^[A-Za-z0-9_-]+$/);
+    const back = decodeTour(code)!;
+    expect(back.tour.sd).toBe(9);
+    expect(back.stops.map((s) => s.kind + (s.kind === 'station' ? s.station.id : s.poi.id))).toEqual(r.stops.map((s) => s.kind + (s.kind === 'station' ? s.station.id : s.poi.id)));
+    expect(decodeTour('kaputt')).toBeNull();
+  });
+});

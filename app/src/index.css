@@ -1052,3 +1052,6 @@ input, textarea, select { font-size: max(16px, 1em); }
 .report-kind.on { background: var(--accent); box-shadow: 0 3px 0 var(--accent-edge); }
 /* Bei offener Tastatur unten Platz schaffen, damit Felder nach oben in die Mitte rutschen können */
 .kb-open .screen { padding-bottom: calc(var(--kb) + 40px); }
+.mini-toast { position: fixed; left: 50%; bottom: calc(110px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 1300; background: var(--label); color: #fff; padding: 12px 16px; border-radius: 16px; font-weight: 800; font-size: 15px; max-width: calc(100vw - 32px); text-align: center; animation: toastIn 0.35s var(--spring) both; }
+.map-loading { background: var(--fill); border-radius: var(--r-card); }
+.screen-loading { min-height: 100dvh; }
