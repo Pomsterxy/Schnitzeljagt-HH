@@ -11,6 +11,7 @@ import { setSimulated } from './lib/location';
 import { EffectsLayer } from './components/EffectsLayer';
 import { clearEffects } from './lib/effects';
 import { UndoToast } from './components/UndoToast';
+import { useRipple } from './components/Micro';
 
 type Screen = Tab | 'setup' | 'play' | 'finish';
 
@@ -35,6 +36,8 @@ export default function App() {
     document.documentElement.toggleAttribute('data-dark', dark);
     document.querySelector('meta[name=theme-color]')?.setAttribute('content', dark ? '#101b33' : '#f2f2f7');
   }, [screen]);
+
+  useRipple();
 
   const tab = screen === 'home' || screen === 'album' || screen === 'badges' || screen === 'settings' ? screen : null;
 

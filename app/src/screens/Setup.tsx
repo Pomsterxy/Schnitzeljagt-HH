@@ -13,6 +13,7 @@ import { lastTeam, startGame, type Member, type NavMode, type Team, type TourCon
 import { MapView } from '../components/MapView';
 import { Icon } from '../components/Icon';
 import { Lilli } from '../components/Lilli';
+import { DotLoader } from '../components/Micro';
 
 const AVATARS = ['🦊', '🐧', '🦉', '🐙', '🦁', '🐳', '🦄', '🐢', '🐝', '🦭'];
 const DURATIONS = [
@@ -435,7 +436,9 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
                   >
                     −
                   </button>
-                  <strong data-testid={`count-${age}`}>{counts[age]}</strong>
+                  <strong key={counts[age]} className="pop-num" data-testid={`count-${age}`}>
+                    {counts[age]}
+                  </strong>
                   <button
                     type="button"
                     aria-label={`${AGE_ROW[age]}: eins mehr`}
@@ -498,7 +501,13 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             />
             {startId === 'gps' && (
               <button type="button" className="btn pill big primary" disabled={!pos.coords} onClick={next}>
-                {pos.coords ? 'Hier starten' : 'Standort wird gesucht …'}
+                {pos.coords ? (
+                  'Hier starten'
+                ) : (
+                  <>
+                    Standort wird gesucht <DotLoader />
+                  </>
+                )}
               </button>
             )}
           </>

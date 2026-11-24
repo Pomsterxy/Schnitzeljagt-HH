@@ -3,12 +3,25 @@ import { CREDITS, imageUrl } from '../data';
 
 export function Gallery({ ids, alt }: { ids: string[]; alt: string }) {
   const [i, setI] = useState(0);
+  // Skeleton-Schimmer, bis das Bild geladen ist
+  const [loaded, setLoaded] = useState<Record<string, boolean>>({});
   if (!ids.length) return null;
   const id = ids[Math.min(i, ids.length - 1)];
   const c = CREDITS[id];
   return (
     <figure className="gallery">
-      <img key={id} className="fade" src={imageUrl(id)} alt={alt} loading="lazy" onClick={() => setI((i + 1) % ids.length)} />
+      <div className={`img-wrap${loaded[id] ? '' : ' skeleton'}`}>
+        <img
+          key={id}
+          className="fade"
+          src={imageUrl(id)}
+          alt={alt}
+          loading="lazy"
+          onLoad={() => setLoaded((l) => ({ ...l, [id]: true }))}
+          onError={() => setLoaded((l) => ({ ...l, [id]: true }))}
+          onClick={() => setI((i + 1) % ids.length)}
+        />
+      </div>
       {ids.length > 1 && (
         <div className="gallery-dots">
           {ids.map((x, k) => (
