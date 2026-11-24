@@ -8,7 +8,6 @@ import { Settings } from './screens/Settings';
 import { TabBar, type Tab } from './components/TabBar';
 import { getGame } from './state/game';
 import { setSimulated } from './lib/location';
-import { Intro, shouldShowIntro } from './components/Intro';
 import { EffectsLayer } from './components/EffectsLayer';
 import { clearEffects } from './lib/effects';
 import { UndoToast } from './components/UndoToast';
@@ -20,8 +19,6 @@ export default function App() {
     const g = getGame();
     return g && !g.finishedAt && g.index < g.stops.length ? 'play' : 'home';
   });
-
-  const [intro, setIntro] = useState(shouldShowIntro);
 
   useEffect(() => {
     // ?test=1 schaltet den Testmodus ein (Standort simulieren)
@@ -75,7 +72,6 @@ export default function App() {
       {tab && <TabBar active={tab} onChange={setScreen} dark={tab === 'home'} />}
       <EffectsLayer />
       <UndoToast onUndone={(label) => label === 'Tour gelöscht' && setScreen('play')} />
-      {intro && <Intro onDone={() => setIntro(false)} />}
     </>
   );
 }

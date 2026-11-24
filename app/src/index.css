@@ -481,19 +481,6 @@ h1, h2, h3, .large-title, .title2 { font-weight: 900; letter-spacing: -0.015em; 
 .tabbar.dark button { color: rgba(255, 255, 255, 0.55); }
 .tabbar.dark button.on { color: #ff8a3d; }
 
-/* Intro: Lilli steigt wie ein Atemzug auf */
-.intro { position: fixed; inset: 0; z-index: 2000; background: var(--navy); color: #fff; overflow: hidden; cursor: pointer; transition: opacity 0.6s ease; }
-.intro.leaving { opacity: 0; }
-.intro-text { position: absolute; top: calc(18vh + env(safe-area-inset-top)); left: 0; right: 0; text-align: center; font-size: 28px; font-weight: 900; animation: fade 0.9s var(--ease) both; }
-.intro-hill { position: absolute; left: -10%; right: -10%; height: 70vh; bottom: 0; transform: translateY(62%); transition: transform 2.1s cubic-bezier(0.45, 0, 0.25, 1); }
-.intro-hill > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.intro-hill.phase-0 { transform: translateY(22%); }
-.intro-hill.phase-1 { transform: translateY(48%); }
-.intro-hill.phase-2 { transform: translateY(30%); }
-.intro-lilli { position: absolute; left: 0; right: 0; top: -118px; display: flex; justify-content: center; z-index: 1; }
-.intro-skip { position: absolute; bottom: calc(24px + env(safe-area-inset-bottom)); left: 0; right: 0; text-align: center; font-size: 13px; font-weight: 700; color: rgba(255, 255, 255, 0.75); z-index: 2; }
-@keyframes hillIn { from { transform: translateY(62%); } }
-.intro-hill.phase-0 { animation: hillIn 2.1s cubic-bezier(0.45, 0, 0.25, 1) both; }
 
 /* Atemübung am Gedenkort */
 .breath { position: relative; height: 260px; border-radius: 26px; overflow: hidden; background: #2b3036; color: #f7f6f3; }
@@ -668,7 +655,6 @@ html[data-dark] body { background: #101b33; }
 .composer { background: linear-gradient(to top, rgba(16, 27, 51, 0.96) 70%, rgba(16, 27, 51, 0)); }
 .dark-card, .chat-route { background: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.035) 100%); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .lilli-msg .bubble { background: linear-gradient(160deg, #23315a 0%, #1a2747 100%); border: 1px solid rgba(255, 255, 255, 0.06); }
-.intro { background: radial-gradient(120% 70% at 50% 0%, #2a2160 0%, #101b33 60%); }
 
 /* Erfolg in Grün-Blau, Punkte in Gold */
 .check-badge .disc, .check-badge .burst { background: var(--grad-mint); }
