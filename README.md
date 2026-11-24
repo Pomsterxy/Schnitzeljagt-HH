@@ -7,7 +7,7 @@ ruhigen Modus ohne Punkte.
 - **51 Stationen** mit echten Fakten, 56 Fotos und Lizenzangaben, darunter 10 Gedenkorte und 24 Architektur-Stationen
 - **Planung im Chat**: nur 6 Fragen (Team, wer ist dabei, Stadtteile, Dauer, Start, Eltern-PIN); Thema, Weglänge, Navigation und Extras haben gute Standards und lassen sich bei der Route unter „Anpassen“ ändern
 - **Kurze, direkte Wege**: Im Chat legt ihr fest, ob Wege über 500 m okay sind (höchstens 500 m, bis 1 km oder egal). Bei kurzen Wegen ist keine Etappe länger als gewählt. Liegen Stationen weiter auseinander, führt der Weg ohne Zickzack über Zwischenziele (Spielplätze, Eisdielen u. a., keine Toiletten) mit kleinen Spielen für unterwegs; auf Wunsch mit Spielplatz- oder Eis-Pause
-- **Geocaching**: Schatz-Finale wie ein Multi-Cache. Jede Station liefert eine Cache-Zahl fürs Notizbuch, am Ende berechnet ihr die Koordinaten und sucht den Schatz nur mit Kompass und Entfernung. Dazu kommen Links zu echten Geocaches (Geocaching.com, Opencaching.de); mit eigenem Opencaching-Schlüssel zeigt die App Caches in der Nähe direkt an
+- **Schatz-Finale**: Jede Station liefert eine Geheimzahl fürs Notizbuch, am Ende berechnet ihr die Koordinaten am Zahlenschloss und sucht den Schatz nur mit Kompass und Entfernung
 - **GPS-Freischaltung**: Aufgaben erscheinen erst am Ort; wenn das GPS spinnt, hilft die Eltern-PIN
 - **Zwei Navigationsmodi**: Karte mit Richtungspfeil oder Abenteuer (nur Rätsel, Heiß/Kalt kostet Punkte)
 - **Altersstufen**: Kinder 6–9, Kinder 10–13, Teens/Erwachsene

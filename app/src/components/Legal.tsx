@@ -74,10 +74,7 @@ export function Legal() {
             <strong>OpenStreetMap</strong> (OpenStreetMap Foundation, UK) liefert die Kartenbilder, wenn ihr die Karte anseht. Dabei werden IP-Adresse und
             der angezeigte Kartenausschnitt übertragen.
           </li>
-          <li>
-            <strong>Opencaching.de</strong> wird nur abgefragt, wenn ihr dafür selbst einen Schlüssel eintragt.
-          </li>
-          <li>Links zu Wikipedia, Geocaching.com oder Quellen öffnen sich nur, wenn ihr sie antippt.</li>
+          <li>Links zu Wikipedia oder anderen Quellen öffnen sich nur, wenn ihr sie antippt.</li>
         </ul>
         <p>Schriften und Bilder der Stationen sind in der App enthalten und werden nicht von fremden Servern geladen.</p>
       </details>
