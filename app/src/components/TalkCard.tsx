@@ -3,6 +3,7 @@ import { pickTalk, type Talk, type TalkPool } from '../data/talk';
 import type { AgeGroup } from '../data/types';
 import { play } from '../lib/feedback';
 import { ReadAloud } from './ReadAloud';
+import { heartBurst } from './Micro';
 
 const VOTES = [
   { id: 'ja', label: '👍 Stimmt' },
@@ -51,8 +52,9 @@ export function TalkCard({
               type="button"
               className={`talk-vote${vote === v.id ? ' on' : ''}`}
               aria-pressed={vote === v.id}
-              onClick={() => {
+              onClick={(e) => {
                 play('select');
+                if (vote !== v.id) heartBurst(e.currentTarget);
                 setVote(v.id);
               }}
             >

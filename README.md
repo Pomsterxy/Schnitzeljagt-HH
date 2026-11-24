@@ -16,6 +16,7 @@ ruhigen Modus ohne Punkte.
 - **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 23 Abzeichen, Ränge, Sammelalbum, Urkunde
 - **Problem melden**: An jeder Station „Stimmt hier etwas nicht?“; Meldungen bleiben auf dem Handy und lassen sich unter „Mehr“ teilen. Zählaufgaben werten kleine Abweichungen großzügig
 - **Gesprächsstoff**: An jeder Station, an Zwischenzielen, in der Pause und am Ende eine Frage oder These zum gemeinsamen Diskutieren (passend zum Thema und Alter, ohne Wiederholung; an Gedenkorten nachdenkliche Fragen)
+- **Mikro-Animationen**: Welle beim Antippen, selbstzeichnendes Häkchen, rollende Punktzahl, Herz-Burst beim Abstimmen, Schimmer beim Laden der Fotos, Ladepunkte und Sterne-Bewertung am Ende
 - **Effekte**: Konfetti-Kanonen bei jeder gefundenen Station, fliegende Punkte bei richtigen Antworten, Herzen bei Familien-Momenten, Goldregen beim Schatz, großes Finale am Ende (bei „Bewegung reduzieren“ aus)
 - **Ruhig & verspielt**: ein heller, einheitlicher Look mit runder Schrift (Fredoka/Nunito), Knöpfen mit kleiner Drück-Kante und der Sticker-Möwe **Lilli**; Stationen laufen Schritt für Schritt (Rätsel, Info, Gespräch, Familie) statt als lange Liste; Töne und Vibration abschaltbar
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte

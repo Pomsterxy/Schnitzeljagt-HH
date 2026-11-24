@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import type { Task } from '../data/types';
 import { celebrateCorrect } from '../lib/effects';
+import { CheckDraw } from './Micro';
 import { answerTask, completePhotoTask, completeReflection, takeTaskHint, type TaskState } from '../state/game';
 import { POINTS, taskMaxPoints } from '../lib/scoring';
 import { compressImage, savePhoto } from '../lib/storage';
@@ -232,6 +233,7 @@ export function TaskCard({
             </div>
           ) : !quiet && state?.points ? (
             <div className="result ok">
+              <CheckDraw />
               <span className="big">+{state.points}</span>
               <p>{feedback?.msg ?? 'Richtig!'}</p>
             </div>

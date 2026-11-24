@@ -9,6 +9,7 @@ import { formatDuration, formatSteps, strideFor } from '../lib/pedometer';
 import { youngestGroup } from '../lib/scoring';
 import { LilliSays } from '../components/Lilli';
 import { TalkCard } from '../components/TalkCard';
+import { StarRating } from '../components/Micro';
 import { Icon } from '../components/Icon';
 import { celebrateFinish } from '../lib/effects';
 
@@ -106,6 +107,7 @@ export function Finish({ onHome }: { onHome: () => void }) {
         Was für eine Tour! {game.final?.found ? 'Und den Schatz habt ihr auch geknackt. ' : ''}Ihr seid jetzt „{rank.title}“.
         {rank.next ? ` Noch ${rank.next.min - career.points} Punkte bis „${rank.next.title}“.` : ''}
       </LilliSays>
+      <StarRating id={game.id} />
       <TalkCard pools={['finish']} seed={game.config.seed} youngest={youngestGroup(game.team.members.map((m) => m.age))} title="Zum Nachklang" />
       <section className="card walk-stats rise" aria-label="Eure Tour in Zahlen">
         <div className="caption">Eure Tour in Zahlen</div>

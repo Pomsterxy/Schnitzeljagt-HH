@@ -30,6 +30,7 @@ import { ReadAloud } from '../components/ReadAloud';
 import { TaskCard } from '../components/TaskCard';
 import { NearbyCaches } from '../components/NearbyCaches';
 import { Breath } from '../components/Breath';
+import { DotLoader, RollingNumber } from '../components/Micro';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { setPowerSave, usePowerSave, watchBattery } from '../lib/power';
 import { prefetchTour, useTilePrefetch } from '../lib/prefetch';
@@ -161,7 +162,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
         <span className="points-pill" data-testid="score">
           <Icon name="star" size={15} color="var(--gold)" />
           <span key={game.points} className="bump">
-            {game.points}
+            <RollingNumber value={game.points} />
           </span>
         </span>
       </header>
@@ -353,7 +354,7 @@ function Compass({ dist, brg, heading }: { dist: number; brg: number; heading: n
       : compass === 'off'
         ? 'Antippen: Handy-Kompass einschalten'
         : compass === 'asking' || compass === 'waiting'
-          ? 'Kompass wird eingeschaltet …'
+          ? 'Kompass wird eingeschaltet'
           : compass === 'denied'
             ? 'Kompass nicht erlaubt. Norden ist oben, dreht euch mit der Karte.'
             : 'Dieses Gerät hat keinen Kompass. Norden ist oben.';
@@ -394,6 +395,7 @@ function Compass({ dist, brg, heading }: { dist: number; brg: number; heading: n
             </svg>
           )}
           {hint}
+          {(compass === 'asking' || compass === 'waiting') && <DotLoader />}
         </p>
       )}
       <div className="big-dist" data-testid="distance">
@@ -520,7 +522,11 @@ function Navigate({ game, station, onPin }: { game: Game; station: Station; onPi
       )}
 
       <div className="gps-note">
-        {pos.status === 'waiting' && <p>Suche GPS-Signal …</p>}
+        {pos.status === 'waiting' && (
+          <p>
+            Suche GPS-Signal <DotLoader />
+          </p>
+        )}
         {gpsBroken && (
           <p className="error">
             Kein GPS ({pos.status === 'denied' ? 'Zugriff verweigert' : 'nicht verfügbar'}). Erlaubt den Standort in den Einstellungen oder nutzt die
