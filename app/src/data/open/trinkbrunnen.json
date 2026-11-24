@@ -1,0 +1,24 @@
+[
+ {
+  "id": "trink-9",
+  "kind": "trinkwasser",
+  "title": "Trinkwasserbrunnen",
+  "note": "Ecke Südring/Otto-Wels-Straße",
+  "coords": [
+   53.592229,
+   10.015285
+  ],
+  "district": "winterhude"
+ },
+ {
+  "id": "trink-15",
+  "kind": "trinkwasser",
+  "title": "Trinkwasserbrunnen",
+  "note": "Südring/Stadthallenbrücke",
+  "coords": [
+   53.591665,
+   10.030197
+  ],
+  "district": "winterhude"
+ }
+]

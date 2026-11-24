@@ -1,0 +1,5448 @@
+[
+ {
+  "id": "stein-Q63807820",
+  "address": "Hudtwalckerstraße 20",
+  "coords": [
+   53.594169,
+   9.996981
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Frank Siegmund Hildesheim",
+    "inscription": "Hier wohnte Frank Siegmund Hildesheim Jg. 1876 Flucht 1939 Dänemark, England 1940 Kanada SS Arandora Star torpediert/versenkt tot 2.7.1940"
+   }
+  ],
+  "wikidata": [
+   "Q63807820"
+  ],
+  "idx": 0
+ },
+ {
+  "id": "stein-Q63807871",
+  "address": "Hudtwalckerstraße 23",
+  "coords": [
+   53.594417,
+   9.997061
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Fritz Nathansen",
+    "inscription": "Hier wohnte Fritz Nathansen Jg. 1909 Flucht 1937 Holland interniert Westerbork deportiert 1942 Auschwitz ermordet 31.8.1942"
+   },
+   {
+    "name": "Martha Nathansen",
+    "inscription": "Hier wohnte Martha Nathansen geb. Eisenmann Jg. 1879 Flucht 1939 Holland interniert Westerbork deportiert 1942 Auschwitz ermordet 24.9.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63807871",
+   "Q63807902"
+  ],
+  "idx": 1
+ },
+ {
+  "id": "stein-Q63807920",
+  "address": "Hudtwalckerstraße 27",
+  "coords": [
+   53.594464,
+   9.997219
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Eva Kahn",
+    "inscription": "Hier wohnte Eva Kahn geb. Lipschitz Jg. 1895 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Ingrid Kahn",
+    "inscription": "Hier wohnte Ingrid Kahn Jg. 1924 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Marie Kahn",
+    "inscription": "Hier wohnte Marie Kahn geb. Helbing Jg. 1865 deportiert 1943 Theresienstadt ermordet 27.3.1943"
+   },
+   {
+    "name": "Ruth Kahn",
+    "inscription": "Hier wohnte Ruth Kahn Jg. 1922 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63807920",
+   "Q63807953",
+   "Q63807977",
+   "Q97610333"
+  ],
+  "idx": 2
+ },
+ {
+  "id": "stein-Q63894745",
+  "address": "Leinpfad 72",
+  "coords": [
+   53.587814,
+   9.997764
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Selma Baum",
+    "inscription": "Hier wohnte Selma Baum geb. Guttmann Jg. 1867 deportiert 1942 Theresienstadt ermordet 15.11.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63894745"
+  ],
+  "idx": 3
+ },
+ {
+  "id": "stein-Q64176522",
+  "address": "Sierichstraße 152",
+  "coords": [
+   53.592797,
+   9.998333
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Ignatz Stern",
+    "inscription": "Hier wohnte Dr. Ignatz Stern Jg. 1864 deportiert 1942 Theresienstadt ermordet 15.8.1942"
+   },
+   {
+    "name": "Emmy Stern",
+    "inscription": "Hier wohnte Emmy Stern geb. Jacoby Jg. 1874 deportiert 1942 Theresienstadt ermordet 20.2.1943"
+   },
+   {
+    "name": "Felix Rosenberg",
+    "inscription": "Hier wohnte Felix Rosenberg Jg. 1878 Flucht 1939 Frankreich interniert Drancy deportiert 1943 ermordet in Auschwitz"
+   },
+   {
+    "name": "Paula Rosenberg",
+    "inscription": "Hier wohnte Paula Rosenberg geb. Kauffmann Jg. 1892 Flucht 1939 Frankreich interniert Drancy deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q64176522",
+   "Q64176541",
+   "Q64176547",
+   "Q64176557"
+  ],
+  "idx": 4
+ },
+ {
+  "id": "stein-Q64224581",
+  "address": "Sierichstraße 156",
+  "coords": [
+   53.592847,
+   9.998089
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Lydia Zadik",
+    "inscription": "Hier wohnte Lydia Zadik Jg. 1895 deportiert 1941 Łodz ermordet 6.7.1942"
+   }
+  ],
+  "wikidata": [
+   "Q64224581"
+  ],
+  "idx": 5
+ },
+ {
+  "id": "stein-Q97064003",
+  "address": "Sierichstraße 172",
+  "coords": [
+   53.593617,
+   9.996478
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Wilhelm Ahrnke",
+    "inscription": "Hier wohnte Wilhelm Ahrnke Jg. 1903 eingewiesen 1938 Alsterdorfer Anstalten ‚verlegt‘ 27.11.1941 Heilanstalt Tiegenhof ermordet 15.8.1942"
+   }
+  ],
+  "wikidata": [
+   "Q97064003"
+  ],
+  "idx": 6
+ },
+ {
+  "id": "stein-Q63894357",
+  "address": "Leinpfad 10",
+  "coords": [
+   53.581408,
+   9.997914
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dora David",
+    "inscription": "Hier wohnte Dora David geb. Rosenbaum Jg. 1867 deportiert 1942 Theresienstadt ermordet 7.12.1942"
+   },
+   {
+    "name": "Heinemann David",
+    "inscription": "Hier wohnte Heinemann David Jg. 1854 deportiert 1942 Theresienstadt ermordet 11.9.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63894357",
+   "Q63894469"
+  ],
+  "idx": 7
+ },
+ {
+  "id": "stein-Q63894522",
+  "address": "Leinpfad 14",
+  "coords": [
+   53.581822,
+   9.997094
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Elsa Rosenstern",
+    "inscription": "Hier wohnte Elsa Rosenstern geb. Lewandowsky Jg. 1886 Flucht 1937 Holland deportiert 1944 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Ferdinand Rosenstern",
+    "inscription": "Hier wohnte Ferdinand Rosenstern Jg. 1880 Flucht 1937 Holland deportiert 1944 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Otto Edgar Rosenstern",
+    "inscription": "Hier wohnte Otto Edgar Rosenstern Jg. 1922 Flucht 1937 Holland deportiert 1941 Mauthausen ermordet 18.9.1941"
+   }
+  ],
+  "wikidata": [
+   "Q63894522",
+   "Q63894583",
+   "Q63894617"
+  ],
+  "idx": 8
+ },
+ {
+  "id": "stein-Q44200307",
+  "address": "Leinpfad 58",
+  "coords": [
+   53.585882,
+   9.996774
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Charlotte Rappolt",
+    "inscription": "Hier wohnte Charlotte Rappolt geb. Ehrlich Jg. 1878 entrechtet/gedemütigt Flucht in den Tod 6.3.1941"
+   },
+   {
+    "name": "Franz Max Rappolt",
+    "inscription": "Hier wohnte Franz Max Rappolt Jg. 1870 deportiert 1942 Theresienstadt ermordet 25.11.1943"
+   },
+   {
+    "name": "Fritz Rappolt",
+    "inscription": "Hier wohnte Fritz Rappolt Jg. 1900 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q44200307",
+   "Q63894665",
+   "Q63894741"
+  ],
+  "idx": 9
+ },
+ {
+  "id": "stein-Q63183339",
+  "address": "Agnesstraße 30",
+  "coords": [
+   53.582644,
+   9.998767
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. John Rittmeister",
+    "inscription": "Hier wohnte Dr. John Rittmeister Jg. 1898 inhaftiert hingerichtet 13.5.1943 Bln-Plötzensee"
+   }
+  ],
+  "wikidata": [
+   "Q63183339"
+  ],
+  "idx": 10
+ },
+ {
+  "id": "stein-Q63183345",
+  "address": "Agnesstraße 36",
+  "coords": [
+   53.582936,
+   9.998489
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Mathilde Ascher",
+    "inscription": "Hier wohnte Mathilde Ascher Jg. 1877 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63183345"
+  ],
+  "idx": 11
+ },
+ {
+  "id": "stein-Q63183346",
+  "address": "Agnesstraße 39",
+  "coords": [
+   53.582992,
+   9.998253
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Brunhilde Olschewitz",
+    "inscription": "Hier wohnte Brunhilde Olschewitz geb. Henner Jg. 1912 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Charlotte Rosenbacher",
+    "inscription": "Hier wohnte Charlotte Rosenbacher geb. Bendix Jg. 1874 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Manfred Olschewitz",
+    "inscription": "Hier wohnte Manfred Olschewitz Jg. 1908 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Richard Carl Abraham",
+    "inscription": "Hier wohnte Richard Carl Abraham Jg. 1871 gedemütigt/entrechtet Flucht in den Tod 8.4.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63183346",
+   "Q63183351",
+   "Q63183353",
+   "Q63183355"
+  ],
+  "idx": 12
+ },
+ {
+  "id": "stein-Q63183376",
+  "address": "Agnesstraße 46",
+  "coords": [
+   53.583469,
+   9.998192
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Daniel Münden",
+    "inscription": "Hier wohnte Daniel Münden Jg. 1866 Flucht Holland deportiert 1943 ermordet in Sobibor"
+   },
+   {
+    "name": "Gerhard Münden",
+    "inscription": "Hier wohnte Gerhard Münden Jg. 1909 Flucht Holland deportiert 1943 ermordet in Auschwitz"
+   },
+   {
+    "name": "Rike Martha Münden",
+    "inscription": "Hier wohnte Rike Martha Münden geb. Heymann Jg. 1876 Flucht Holland deportiert 1943 ermordet in Sobibor"
+   }
+  ],
+  "wikidata": [
+   "Q63183376",
+   "Q63183379",
+   "Q63183383"
+  ],
+  "idx": 13
+ },
+ {
+  "id": "stein-Q63183384",
+  "address": "Agnesstraße 55",
+  "coords": [
+   53.583764,
+   9.997706
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Elsbet Flora Götz",
+    "inscription": "Hier wohnte Elsbet Flora Götz Jg. 1901 deportiert 1942 Theresienstadt 1944 Auschwitz ???"
+   },
+   {
+    "name": "Friederike Agnes Götz",
+    "inscription": "Hier wohnte Friederike Agnes Götz geb. Falk Jg. 1869 deportiert 1942 Theresienstadt ermordet 11.6.1944"
+   }
+  ],
+  "wikidata": [
+   "Q63183384",
+   "Q63183389"
+  ],
+  "idx": 14
+ },
+ {
+  "id": "stein-Q63183391",
+  "address": "Agnesstraße 62",
+  "coords": [
+   53.584261,
+   9.997572
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Anna Hertz",
+    "inscription": "Hier wohnte Anna Hertz geb. Seligmann Jg. 1876 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Elisabeth Liebrecht",
+    "inscription": "Hier wohnte Elisabeth Liebrecht geb. Hertz Jg. 1903 gedemütigt/entrechtet Flucht in den Tod 6.8.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63183391",
+   "Q63183395"
+  ],
+  "idx": 15
+ },
+ {
+  "id": "stein-Q63894639",
+  "address": "Leinpfad 30",
+  "coords": [
+   53.584414,
+   9.996156
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Olga Schindler",
+    "inscription": "Hier wohnte Olga Schindler geb. Cohen Jg. 1886 deportiert 1941 ermordet in Łodz/Litzmannstadt"
+   }
+  ],
+  "wikidata": [
+   "Q63894639"
+  ],
+  "idx": 16
+ },
+ {
+  "id": "stein-Q63894751",
+  "address": "Maria-Louisen-Straße 2",
+  "coords": [
+   53.583836,
+   9.996122
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Clara Nordheim",
+    "inscription": "Hier wohnte Clara Nordheim Jg. 1891 Freitod 19.8.1938"
+   },
+   {
+    "name": "Herbert Gustav Specht",
+    "inscription": "Hier wohnte Herbert Gustav Specht Jg. 1923 Flucht Holland interniert Westerbork deportiert 1943 Auschwitz ermordet 3.9.1943"
+   },
+   {
+    "name": "Moritz Nordheim",
+    "inscription": "Hier wohnte Moritz Nordheim Jg. 1873 Freitod 18.8.1938"
+   },
+   {
+    "name": "Walther Henry Specht",
+    "inscription": "Hier wohnte Walther Henry Specht Jg. 1884 Flucht Holland interniert Westerbork deportiert 1943 Sobibor ermordet 3.7.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63894751",
+   "Q63894798",
+   "Q63894837",
+   "Q63894884"
+  ],
+  "idx": 17
+ },
+ {
+  "id": "stein-Q43676204",
+  "address": "Sierichstraße 66",
+  "coords": [
+   53.5835,
+   10.005664
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Anita Ledermann",
+    "inscription": "Hier wohnte Anita Ledermann Jg. 1921 deportiert 1943 Theresienstadt ermordet in Auschwitz"
+   },
+   {
+    "name": "Hanne Mertens",
+    "inscription": "Hier wohnte Hanna Mertens Jg. 1909 Schauspielerin gehenkt 1945 im KZ Neuengamme"
+   },
+   {
+    "name": "Hanne Mertens",
+    "inscription": "Hier wohnte Hanne Mertens Jg. 1909 verhaftet 6.2.1945 ‚Wehrkraftzersetzung‘ Gefängnis Fuhlsbüttel KZ Neuengamme ermordet 22.4.1945"
+   },
+   {
+    "name": "Herbert Ledermann",
+    "inscription": "Hier wohnte Herbert Ledermann Jg. 1890 1943 KZ Fuhlsbüttel deportiert 1943 Theresienstadt ermordet in Auschwitz"
+   },
+   {
+    "name": "Leah May Ledermann",
+    "inscription": "Hier wohnte Leah May Ledermann geb. Luria Jg. 1895 deportiert 1943 Theresienstadt ermordet in Auschwitz"
+   },
+   {
+    "name": "Margarita Ledermann",
+    "inscription": "Hier wohnte Margarita Ledermann Jg. 1920 deportiert 1943 Theresienstadt ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q43676204",
+   "Q63975886",
+   "Q63975902",
+   "Q63975933",
+   "Q63975963",
+   "Q137168594"
+  ],
+  "idx": 18
+ },
+ {
+  "id": "stein-Q43676439",
+  "address": "Geibelstraße 24",
+  "coords": [
+   53.583447,
+   10.016453
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "August Schmidt",
+    "inscription": "Hier wohnte August Schmidt Jg. 1884 Gestapohaft tot an Haftfolgen 3.8.1939"
+   }
+  ],
+  "wikidata": [
+   "Q43676439"
+  ],
+  "idx": 19
+ },
+ {
+  "id": "stein-Q44200438",
+  "address": "Blumenstraße 37",
+  "coords": [
+   53.582278,
+   10.001139
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Adolf Maass",
+    "inscription": "Hier wohnte Adolf Maass Jg. 1875 deportiert 1942 Theresienstadt ermordet in Auschwitz"
+   },
+   {
+    "name": "Emma Goldberg",
+    "inscription": "Hier wohnte Emma Goldberg geb. Maass Jg. 1877 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Hugo Goldberg",
+    "inscription": "Hier wohnte Hugo Goldberg Jg. 1875 deportiert 1942 Theresienstadt ermordet 3.11.1943"
+   },
+   {
+    "name": "Käthe Maass",
+    "inscription": "Hier wohnte Kähte Maass geb. Elsbach Jg. 1887 deportiert 1942 Theresienstadt ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q44200438",
+   "Q63183785",
+   "Q63183794",
+   "Q63183816"
+  ],
+  "idx": 20
+ },
+ {
+  "id": "stein-Q63183508",
+  "address": "Andreasstraße 16",
+  "coords": [
+   53.582719,
+   10.006431
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alice Insel",
+    "inscription": "Hier wohnte Alice Insel geb. Münzer Jg. 1882 eingewiesen 1940 Heilanstalt Langenhorn ‚verlegt‘ 23.9.1940 Brandenburg ermordet 23.9.1940 ‚Aktion T4‘"
+   },
+   {
+    "name": "Ernst Joseph Grossmann",
+    "inscription": "Hier wohnte Ernst Joseph Grossmann Jg. 1882 deportiert 1941 Łodz/Litzmannstadt ermordet in Chelmno/Kulmhof"
+   },
+   {
+    "name": "Gert Grossmann",
+    "inscription": "Hier wohnte Gert Grossmann Jg. 1918 deportiert 1941 ermordet in Łodz/Litzmannstadt"
+   },
+   {
+    "name": "Heinz Grossmann",
+    "inscription": "Hier wohnte Heinz Grossmann Jg. 1913 deportiert 1941 Łodz/Litzmannstadt ermordet 10.4.1942"
+   },
+   {
+    "name": "Marianne Grossmann",
+    "inscription": "Hier wohnte Marianne Grossmann geb. Münzer Jg. 1883 deportiert 1941 ermordet in Łodz/Litzmannstadt"
+   }
+  ],
+  "wikidata": [
+   "Q63183508",
+   "Q63183511",
+   "Q63183514",
+   "Q63183516",
+   "Q63183518"
+  ],
+  "idx": 21
+ },
+ {
+  "id": "stein-Q63183692",
+  "address": "Bellevue 34",
+  "coords": [
+   53.578447,
+   10.003917
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Adolf Peine",
+    "inscription": "Hier wohnte Adolf Peine Jg. 1874 deportiert 1942 Theresienstadt Minsk ???"
+   },
+   {
+    "name": "Auguste Peine",
+    "inscription": "Hier wohnte Auguste Peine geb. Graf Jg. 1884 deportiert 1942 Theresienstadt Minsk ???"
+   },
+   {
+    "name": "Betty von der Heydt",
+    "inscription": "Hier wohnte Betty von der Heydt geb. Krim Jg. 1889 deportiert 1942 Auschwitz ???"
+   },
+   {
+    "name": "Wally Simon",
+    "inscription": "Hier wohnte Wally Simon geb. Peine Jg. 1879 deportiert 1942 Theresienstadt ermordet am 21.1.1943"
+   },
+   {
+    "name": "William Simon",
+    "inscription": "Hier wohnte William Simon Jg. 1870 verhaftet 3.3.1939 Zollfahndungsstelle tot beim Verhör 3.3.1939"
+   }
+  ],
+  "wikidata": [
+   "Q63183692",
+   "Q63183697",
+   "Q63183703",
+   "Q63183706",
+   "Q63183708"
+  ],
+  "idx": 22
+ },
+ {
+  "id": "stein-Q63183727",
+  "address": "Blumenstraße 14",
+  "coords": [
+   53.583928,
+   10.000053
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Heinrich Ullmann",
+    "inscription": "Hier wohnte Heinrich Ullmann Jg. 1882 deportiert 1941 ermordet in Minsk"
+   }
+  ],
+  "wikidata": [
+   "Q63183727"
+  ],
+  "idx": 23
+ },
+ {
+  "id": "stein-Q63183741",
+  "address": "Blumenstraße 31a",
+  "coords": [
+   53.582519,
+   10.001028
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Louise Hess",
+    "inscription": "Hier wohnte Louise Hess geb. Mecklenburg Jg. 1873 entrechtet/gedemütigt Flucht in den Tod 18.7.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63183741"
+  ],
+  "idx": 24
+ },
+ {
+  "id": "stein-Q63183753",
+  "address": "Blumenstraße 32",
+  "coords": [
+   53.582714,
+   10.000528
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Annemarie Ladewig",
+    "inscription": "Hier wohnte Annemarie Ladewig Jg. 1919 1945 KZ Fuhlsbüttel gehenkt 23.4.1945 im KZ Neuengamme"
+   },
+   {
+    "name": "Hildegard Ladewig",
+    "inscription": "Hier wohnte Hildegard Ladewig geb. Bucka Jg. 1892 gedemütigt/entrechtet Flucht in den Tod 30.11.1944"
+   },
+   {
+    "name": "Rudolf Ladewig",
+    "inscription": "Hier wohnte Rudolf Ladewig Jg. 1923 1945 KZ Fuhlsbüttel gehenkt 23.4.1945 im KZ Neuengamme"
+   }
+  ],
+  "wikidata": [
+   "Q63183753",
+   "Q63183759",
+   "Q63183767"
+  ],
+  "idx": 25
+ },
+ {
+  "id": "stein-Q63183768",
+  "address": "Blumenstraße 36a",
+  "coords": [
+   53.582433,
+   10.000811
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Elisabeth Rebecca Vogel",
+    "inscription": "Hier wohnte Elisabeth Rebecca Vogel geb. Wolf Jg. 1878 verhaftet 1942 KZ Fuhlsbüttel deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q63183768"
+  ],
+  "idx": 26
+ },
+ {
+  "id": "stein-Q63183873",
+  "address": "Blumenstraße 41",
+  "coords": [
+   53.582119,
+   10.001197
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Susanne May",
+    "inscription": "Hier wohnte Susanne May geb. Blumberg Jg. 1908 gedemütigt/entrechtet Flucht in den Tod 7.5.1938"
+   }
+  ],
+  "wikidata": [
+   "Q63183873"
+  ],
+  "idx": 27
+ },
+ {
+  "id": "stein-Q63183901",
+  "address": "Blumenstraße 46",
+  "coords": [
+   53.581933,
+   10.001119
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Edith Stoppelmann",
+    "inscription": "Hier wohnte Edith Stoppelmann geb. Koppel Jg. 1904 Flucht 1935 Belgien deportiert 1942 Auschwitz ermordet"
+   },
+   {
+    "name": "Gerhard Stoppelmann",
+    "inscription": "Hier wohnte Gerhard Stoppelmann Jg. 1904 Flucht 1935 Belgien deportiert 1942 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63183901",
+   "Q63183936"
+  ],
+  "idx": 28
+ },
+ {
+  "id": "stein-Q63190197",
+  "address": "Dorotheenstraße 43",
+  "coords": [
+   53.582019,
+   10.008672
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Margarete Windmüller",
+    "inscription": "Hier wohnte Margarete Windmüller geb. Simon Jg. 1883 eingewiesen 1940 ‚Heilanstalt‘ Berlin-Buch ermordet 11.3.1941"
+   }
+  ],
+  "wikidata": [
+   "Q63190197"
+  ],
+  "idx": 29
+ },
+ {
+  "id": "stein-Q63190244",
+  "address": "Dorotheenstraße 59",
+  "coords": [
+   53.583322,
+   10.0077
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Johanna Nehemias",
+    "inscription": "Hier wohnte Johanna Nehemias geb. Rothgießer Jg. 1867 deportiert 1942 Theresienstadt ermordet 5.4.1943"
+   },
+   {
+    "name": "Julius Nehemias",
+    "inscription": "Hier wohnte Julius Nehemias Jg. 1895 eingewiesen 1940 Landesanstalt Brandenburg ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63190244",
+   "Q63190258"
+  ],
+  "idx": 30
+ },
+ {
+  "id": "stein-Q63190431",
+  "address": "Forsmannstraße 7",
+  "coords": [
+   53.582781,
+   10.014967
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Margarethe Baalhorn",
+    "inscription": "Hier wohnte Margarethe Baalhorn geb. Weinert Jg. 1894 Haft 1937/1939 KZ Fuhlsbüttel tot an Haftfolgen"
+   }
+  ],
+  "wikidata": [
+   "Q63190431"
+  ],
+  "idx": 31
+ },
+ {
+  "id": "stein-Q63190463",
+  "address": "Geibelstraße 61",
+  "coords": [
+   53.585756,
+   10.014433
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Karl Peters",
+    "inscription": "Hier wohnte Karl Peters Jg. 1919 verhaftet 1939 Straf- und Jugendgefängnis Neumünster Flucht in den Tod 6.6.1940"
+   }
+  ],
+  "wikidata": [
+   "Q63190463"
+  ],
+  "idx": 32
+ },
+ {
+  "id": "stein-Q63190485",
+  "address": "Gertigstraße 9",
+  "coords": [
+   53.581514,
+   10.013128
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bertha Sommerfeld",
+    "inscription": "Hier wohnte Bertha Sommerfeld Jg. 1896 1941 KZ Fuhlsbüttel deportiert 1941 Ravensbrück ermordet 12.6.1942"
+   },
+   {
+    "name": "Hertha Sommerfeld",
+    "inscription": "Hier wohnte Hertha Sommerfeld Jg. 1910 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Max Sommerfeld",
+    "inscription": "Hier wohnte Max Sommerfeld Jg. 1909 deportiert 1941 Minsk 1944 Mauthausen ???"
+   }
+  ],
+  "wikidata": [
+   "Q63190485",
+   "Q63190491",
+   "Q63190499"
+  ],
+  "idx": 33
+ },
+ {
+  "id": "stein-Q63190500",
+  "address": "Gertigstraße 22",
+  "coords": [
+   53.581897,
+   10.014828
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Johanna Stern",
+    "inscription": "Hier wohnte Johanna Stern geb. Jüdell Jg. 1865 deportiert 1942 Theresienstadt tot 8.2.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63190500"
+  ],
+  "idx": 34
+ },
+ {
+  "id": "stein-Q63190502",
+  "address": "Gertigstraße 56",
+  "coords": [
+   53.582633,
+   10.017453
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ernst Stender",
+    "inscription": "Hier wohnte Ernst Stender Jg. 1901 ab 1933 im Widerstand Strafbataillon tot 17.10.1943"
+   },
+   {
+    "name": "Rudolf Stender",
+    "inscription": "Hier wohnte Rudolf Stender Jg. 1899 inhaftiert 1944 tot 18.5.1945 an Haftfolgen"
+   }
+  ],
+  "wikidata": [
+   "Q63190502",
+   "Q63190523"
+  ],
+  "idx": 35
+ },
+ {
+  "id": "stein-Q63190545",
+  "address": "Glindweg 26",
+  "coords": [
+   53.586292,
+   10.020056
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Martin Bernstein",
+    "inscription": "Hier wohnte Martin Bernstein Jg. 1896 verhaftet 1943 KZ Fuhlsbüttel deportiert 1943 Auschwitz ermordet 26.7.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63190545"
+  ],
+  "idx": 36
+ },
+ {
+  "id": "stein-Q63203882",
+  "address": "Goldbekufer 19",
+  "coords": [
+   53.586261,
+   10.014681
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bernhard Bästlein",
+    "inscription": "Hier wohnte Bernhard Bästlein Jg. 1894 ermordet 18.9.1944 Zuchthaus Brandenburg"
+   },
+   {
+    "name": "Regina Mendelsohn",
+    "inscription": "Hier wohnte Regina Mendelsohn geb. Jaffe Jg. 1873 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63203882",
+   "Q63203889"
+  ],
+  "idx": 37
+ },
+ {
+  "id": "stein-Q63846160",
+  "address": "Körnerstraße 3",
+  "coords": [
+   53.579478,
+   10.012639
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Otto Herbert Bauer",
+    "inscription": "Hier wohnte Dr. Otto Herbert Bauer Jg. 1896 KZ Fuhlsbüttel 1942 deportiert 1942 Mauthausen ermordet 18.9.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63846160"
+  ],
+  "idx": 38
+ },
+ {
+  "id": "stein-Q63846188",
+  "address": "Körnerstraße 17",
+  "coords": [
+   53.578853,
+   10.010867
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ludwig Kallmann",
+    "inscription": "Hier wohnte Ludwig Kallmann Jg. 1901 ‚Schutzhaft‘ 9.11.1938 KZ Fuhlsbüttel ermordet 9.11.1938"
+   }
+  ],
+  "wikidata": [
+   "Q63846188"
+  ],
+  "idx": 39
+ },
+ {
+  "id": "stein-Q63969607",
+  "address": "Mühlenkamp 8",
+  "coords": [
+   53.5803,
+   10.012669
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Walter Pentzien",
+    "inscription": "Hier wohnte Walter Pentzien Jg. 1932 eingewiesen 1934 Alsterdorfer Anstalten ‚verlegt‘ 7.8.1943 Heilanstalt Kalmenhof-Idstein ‚Kinderfachabteilung‘ ermordet 17.8.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63969607"
+  ],
+  "idx": 40
+ },
+ {
+  "id": "stein-Q63969714",
+  "address": "Rondeel 37",
+  "coords": [
+   53.586147,
+   10.002675
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Johanna Rappolt",
+    "inscription": "Hier wohnte Johanna Rappolt geb. Oppenheim Jg. 1870 deportiert 1942 Theresienstadt ermordet 15.11.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63969714"
+  ],
+  "idx": 41
+ },
+ {
+  "id": "stein-Q63969723",
+  "address": "Rondeel 41",
+  "coords": [
+   53.586192,
+   10.001897
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Clara Feldberg",
+    "inscription": "Hier wohnte Clara Feldberg geb. Löwenstein Jg. 1870 gedemütigt/entrechtet Flucht in den Tod 25.10.1941"
+   }
+  ],
+  "wikidata": [
+   "Q63969723"
+  ],
+  "idx": 42
+ },
+ {
+  "id": "stein-Q63975649",
+  "address": "Sierichstraße 20",
+  "coords": [
+   53.579508,
+   10.008703
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Agnes Freundlich",
+    "inscription": "Hier wohnte Agnes Freundlich geb. Elias Jg. 1874 deportiert 1942 Theresienstadt ermordet 16.2.1943"
+   },
+   {
+    "name": "Siegfried Freundlich",
+    "inscription": "Hier wohnte Siegfried Freundlich Jg. 1863 deportiert 1942 Theresienstadt ermordet 2.12.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63975649",
+   "Q63975664"
+  ],
+  "idx": 43
+ },
+ {
+  "id": "stein-Q63975669",
+  "address": "Sierichstraße 43",
+  "coords": [
+   53.581217,
+   10.007114
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dirk G. A. Dubber",
+    "inscription": "Hier wohnte Dirk G. A. Dubber Jg. 1925 Swing Jugend KZ Fuhlsbüttel Selbstmord in Freiheit im April 1942"
+   }
+  ],
+  "wikidata": [
+   "Q63975669"
+  ],
+  "idx": 44
+ },
+ {
+  "id": "stein-Q63975682",
+  "address": "Sierichstraße 46",
+  "coords": [
+   53.58115,
+   10.007433
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Irma Zancker",
+    "inscription": "Hier wohnte Irma Zancker geb. David Jg. 1901 deportiert 1943 Theresienstadt ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q63975682"
+  ],
+  "idx": 45
+ },
+ {
+  "id": "stein-Q63975713",
+  "address": "Sierichstraße 56",
+  "coords": [
+   53.582058,
+   10.006714
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Gertrud Penkert",
+    "inscription": "Hier wohnte Gertrud Penkert geb. Blankenstein Jg. 1888 verhaftet 1943 Gefängnis Fuhlsbüttel deportiert 1943 Auschwitz ermordet 1.12.1943"
+   },
+   {
+    "name": "Martha Salomon",
+    "inscription": "Hier wohnte Martha Salomon geb. Waldheim Jg. 1879 entrechtet/gedemütigt Flucht in den Tod 21.2.1942"
+   },
+   {
+    "name": "Siegfried Salomon",
+    "inscription": "Hier wohnte Siegfried Salomon Jg. 1873 deportiert 1942 Theresienstadt tot 24.8.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63975713",
+   "Q63975737",
+   "Q130550019"
+  ],
+  "idx": 46
+ },
+ {
+  "id": "stein-Q63975752",
+  "address": "Sierichstraße 58",
+  "coords": [
+   53.582219,
+   10.006589
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alice Oppenheimer",
+    "inscription": "Hier wohnte Alice Oppenheimer geb. Oppenheim Jg. 1867 deportiert 1942 Theresienstadt ermordet 3.9.1942"
+   },
+   {
+    "name": "Ernst Oppenheimer",
+    "inscription": "Hier wohnte Ernst Oppenheimer Jg. 1897 deportiert 1941 Minsk ???"
+   }
+  ],
+  "wikidata": [
+   "Q63975752",
+   "Q63975783"
+  ],
+  "idx": 47
+ },
+ {
+  "id": "stein-Q63975997",
+  "address": "Sierichstraße 70",
+  "coords": [
+   53.583953,
+   10.005308
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Georg Blankenstein",
+    "inscription": "Hier wohnte Georg Blankenstein Jg. 1879 1943 KZ Fuhlsbüttel deportiert 1943 Theresienstadt ermordet 14.4.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63975997"
+  ],
+  "idx": 48
+ },
+ {
+  "id": "stein-Q63976021",
+  "address": "Sierichstraße 84",
+  "coords": [
+   53.585594,
+   10.004061
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bernhard Levy",
+    "inscription": "Hier wohnte Bernhard Levy Jg. 1881 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Bertha Levy",
+    "inscription": "Hier wohnte Bertha Levy geb. London Jg. 1889 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63976021",
+   "Q63976045"
+  ],
+  "idx": 49
+ },
+ {
+  "id": "stein-Q63976051",
+  "address": "Sierichstraße 88",
+  "coords": [
+   53.586069,
+   10.003717
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ivan Philip",
+    "inscription": "Hier wohnte Ivan Philip Jg. 1875 Flucht tot 10.1.1944 in England"
+   }
+  ],
+  "wikidata": [
+   "Q63976051"
+  ],
+  "idx": 50
+ },
+ {
+  "id": "stein-Q64224613",
+  "address": "Wentzelstraße 14",
+  "coords": [
+   53.581194,
+   10.005586
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Rosa Samson",
+    "inscription": "Hier wohnte Rosa Samson geb. Weiss Jg. 1890 Flucht 1936 Holland deportiert 1942 Auschwitz ermordet"
+   },
+   {
+    "name": "Rudolf Samson",
+    "inscription": "Hier wohnte Rudolf Samson Jg. 1920 Flucht 1936 Holland deportiert 1942 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q64224613",
+   "Q64224617"
+  ],
+  "idx": 51
+ },
+ {
+  "id": "stein-Q64224627",
+  "address": "Willistraße 1",
+  "coords": [
+   53.585508,
+   9.999386
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Else Fanny Pels",
+    "inscription": "Hier wohnte Else Fanny Pels Jg. 1898 emigriert/Holland deportiert 1943 Sobibor ???"
+   }
+  ],
+  "wikidata": [
+   "Q64224627"
+  ],
+  "idx": 52
+ },
+ {
+  "id": "stein-Q64224664",
+  "address": "Willistraße 13",
+  "coords": [
+   53.586314,
+   9.999706
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Elisabeth Bauscher",
+    "inscription": "Hier wohnte Elisabeth Bauscher geb. Vogel Jg. 1895 deportiert 1942 ermordet in Auschwitz"
+   },
+   {
+    "name": "Olga Rosaly Vogel",
+    "inscription": "Hier wohnte Olga Rosaly Vogel geb. Fürth Jg. 1871 gedemütigt/entrechtet Flucht in den Tod 18.7.1942"
+   }
+  ],
+  "wikidata": [
+   "Q64224664",
+   "Q64224668"
+  ],
+  "idx": 53
+ },
+ {
+  "id": "stein-Q97063991",
+  "address": "Maria-Louisen-Straße 42",
+  "coords": [
+   53.585469,
+   10.000172
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Anna Bornemann",
+    "inscription": "Hier wohnte Anna Bornemann Jg. 1901 eingewiesen 1938 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Am Steinhof Wien tot an den Folgen"
+   }
+  ],
+  "wikidata": [
+   "Q97063991"
+  ],
+  "idx": 54
+ },
+ {
+  "id": "stein-Q98923524",
+  "address": "Körnerstraße 30",
+  "coords": [
+   53.578769,
+   10.010364
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Martha Hildesheim",
+    "inscription": "Hier wohnte Martha Hildesheim Jg. 1872 deportiert 1942 Theresienstadt ermordet 10.1.1943"
+   }
+  ],
+  "wikidata": [
+   "Q98923524"
+  ],
+  "idx": 55
+ },
+ {
+  "id": "stein-Q98923534",
+  "address": "Sierichstraße 90",
+  "coords": [
+   53.586328,
+   10.003569
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Carl Brandt",
+    "inscription": "Hier wohnte Dr. Carl Brandt Jg. 1867 gedemütigt/entrechtet Flucht in den Tod 27.3.1942"
+   }
+  ],
+  "wikidata": [
+   "Q98923534"
+  ],
+  "idx": 56
+ },
+ {
+  "id": "stein-Q110044717",
+  "address": "Andreasstraße 6",
+  "coords": [
+   53.582028,
+   10.004372
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Hermann Moritz Falk",
+    "inscription": "Hier wohnte Dr. Hermann Moritz Falk Jg. 1874 Flucht 1939 Frankreich tot 23.11.1939 Gueret"
+   },
+   {
+    "name": "Harald Falk",
+    "inscription": "Hier wohnte Harald Falk Jg. 1905 Flucht 1933 Frankreich interniert Drancy deportiert 1944 Auschwitz ermordet 15.5.1944"
+   }
+  ],
+  "wikidata": [
+   "Q110044717",
+   "Q110044724"
+  ],
+  "idx": 57
+ },
+ {
+  "id": "stein-Q111552174",
+  "address": "Blumenstraße 49",
+  "coords": [
+   53.581732,
+   10.001451
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Christiane Müller-Dannien",
+    "inscription": "Hier wohnte Christiane Müller-Dannien Jg. 1926 eingewiesen 1931 Alsterdorfer Anstalten ‚verlegt‘ 14.11.1943 Heilanstalt Rickling ermordet 7.1.1945"
+   }
+  ],
+  "wikidata": [
+   "Q111552174"
+  ],
+  "idx": 58
+ },
+ {
+  "id": "stein-Q113234298",
+  "address": "Dorotheenstraße 93",
+  "coords": [
+   53.585442,
+   10.00623
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Herbert Heckscher",
+    "inscription": "Hier wohnte Herbert Heckscher Jg. 1921 deportiert 1943 Theresienstadt Groß-Rosen 1945 Buchenwald ermordet 27.2.1945"
+   }
+  ],
+  "wikidata": [
+   "Q113234298"
+  ],
+  "idx": 59
+ },
+ {
+  "id": "stein-Q117462510",
+  "address": "Sierichstraße 15",
+  "coords": [
+   53.578986,
+   10.008777
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Otto Friedeberg",
+    "inscription": "Hier wohnte Otto Friedeberg Jg. 1855 gedemütigt/entrechtet unfreiwillig verzogen 1943 Cottbus Befreiung erlebt tot an den Folgen 7. Juli 1945"
+   }
+  ],
+  "wikidata": [
+   "Q117462510"
+  ],
+  "idx": 60
+ },
+ {
+  "id": "stein-Q120687756",
+  "address": "Krohnskamp 3",
+  "coords": [
+   53.585729,
+   10.004918
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Grete Rhein",
+    "inscription": "Hier wohnte Grete Rhein geb. Pulvermacher Jg. 1906 deportiert 1941 Riga ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q120687756"
+  ],
+  "idx": 61
+ },
+ {
+  "id": "stein-Q140308022",
+  "address": "Sierichstraße 52",
+  "coords": [
+   53.581703,
+   10.007033
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Moritz Fürst",
+    "inscription": "Hier wohnte Dr. Moritz Fürst Jg. 1868 gedemütigt/entrechtet Flucht 1939 Südafrika tot 28.10.1942"
+   }
+  ],
+  "wikidata": [
+   "Q140308022"
+  ],
+  "idx": 62
+ },
+ {
+  "id": "stein-Q63894930",
+  "address": "Maria-Louisen-Straße 2a",
+  "coords": [
+   53.583914,
+   9.996389
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Edmund Louis Wiener",
+    "inscription": "Hier wohnte Edmund Louis Wiener Jg. 1874 Flucht 1933 Palästina"
+   }
+  ],
+  "wikidata": [
+   "Q63894930"
+  ],
+  "idx": 63
+ },
+ {
+  "id": "stein-Q63894987",
+  "address": "Maria-Louisen-Straße 4",
+  "coords": [
+   53.583969,
+   9.996611
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Paul Clemens Meyer-Udewald",
+    "inscription": "Hier wohnte Paul Clemens Meyer-Udewald Jg. 1898 Flucht 1936 Holland interniert Westerbork deportiert 1944 Bergen-Belsen ermordet 15.4.1945"
+   }
+  ],
+  "wikidata": [
+   "Q63894987"
+  ],
+  "idx": 64
+ },
+ {
+  "id": "stein-Q96883803",
+  "address": "Maria-Louisen-Straße 7",
+  "coords": [
+   53.584322,
+   9.996994
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Esther Erna Pütz",
+    "inscription": "Hier wohnte Esther Erna Pütz geb. Biedermann Jg. 1887 Flucht Holland interniert Westerbork deportiert 1942 Auschwitz ermordet 1.10.1942"
+   },
+   {
+    "name": "Otto Pütz",
+    "inscription": "Hier wohnte Otto Pütz Jg. 1893 Flucht Holland interniert Westerbork deportiert 1942 Auschwitz ermordet 7.10.1942"
+   }
+  ],
+  "wikidata": [
+   "Q96883803",
+   "Q96883900"
+  ],
+  "idx": 65
+ },
+ {
+  "id": "stein-Q109897406",
+  "address": "Leinpfad 20",
+  "coords": [
+   53.582352,
+   9.996267
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Paula Jacobson",
+    "inscription": "Hier wohnte Paula Jacobson geb. Friedheim Jg. 1899 gedemütigt/entrechtet Flucht in den Tod 19.9.1934"
+   },
+   {
+    "name": "Paula Jacobson",
+    "inscription": "Hier wohnte Paula Jacobson geb. Friedheim Jg. 1899 gedemütigt/entrechtet Flucht in den Tod 19.9.1934"
+   }
+  ],
+  "wikidata": [
+   "Q109897406",
+   "Q115133285"
+  ],
+  "idx": 66
+ },
+ {
+  "id": "stein-Q125116434",
+  "address": "Agnesstraße 53",
+  "coords": [
+   53.583654,
+   9.997742
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Rudolf Lippmann",
+    "inscription": "Hier wohnte Rudolf Lippmann Jg. 1913 gedemütigt/entrechtet Flucht in den Tod 13. Okt. 1933"
+   }
+  ],
+  "wikidata": [
+   "Q125116434"
+  ],
+  "idx": 67
+ },
+ {
+  "id": "stein-Q46258347",
+  "address": "Adlerstraße 12",
+  "coords": [
+   53.584939,
+   10.056453
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Etkar Josef André",
+    "inscription": "Hier wohnte Etkar Josef André Jg 1894 verhaftet 5.3.1933 ‚Vorbereitung zum Hochverrat‘ hingerichtet 4.11.1936 Hamburg"
+   }
+  ],
+  "wikidata": [
+   "Q46258347"
+  ],
+  "idx": 68
+ },
+ {
+  "id": "stein-Q47003037",
+  "address": "Hufnertwiete 2",
+  "coords": [
+   53.586106,
+   10.042158
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Heinrich Orgler",
+    "inscription": "Hier wohnte Heinrich Orgler Jg. 1905 verhaftet 1936 KZ Fuhlsbüttel Flucht in den Tod 11.8.1944"
+   }
+  ],
+  "wikidata": [
+   "Q47003037"
+  ],
+  "idx": 69
+ },
+ {
+  "id": "stein-Q47003058",
+  "address": "Halbenkamp 16",
+  "coords": [
+   53.585253,
+   10.053994
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Wilhelm ‚Willi‘ Häussler",
+    "inscription": "Hier wohnte Wilhelm ‚Willi‘ Häussler Jg. 1907 verhaftet Zwangsarbeit Wilhelmsburg ermordet 22.3.1945"
+   }
+  ],
+  "wikidata": [
+   "Q47003058"
+  ],
+  "idx": 70
+ },
+ {
+  "id": "stein-Q63808223",
+  "address": "Jarrestraße 21",
+  "coords": [
+   53.584431,
+   10.022464
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Franz Jacob",
+    "inscription": "Hier wohnte Franz Jacob Jg. 1906 inhaftiert Brandenburg-Görden enthauptet 18.9.1944"
+   }
+  ],
+  "wikidata": [
+   "Q63808223"
+  ],
+  "idx": 71
+ },
+ {
+  "id": "stein-Q63808277",
+  "address": "Jarrestraße 27",
+  "coords": [
+   53.584681,
+   10.023597
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Adolf Biedermann",
+    "inscription": "Hier wohnte Adolf Biedermann Jg. 1881 entrechtet/gedemütigt tot 11.5.1933"
+   }
+  ],
+  "wikidata": [
+   "Q63808277"
+  ],
+  "idx": 72
+ },
+ {
+  "id": "stein-Q63846131",
+  "address": "Jean-Paul-Weg 10",
+  "coords": [
+   53.585153,
+   10.022806
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alexander Grünberg",
+    "inscription": "Hier wohnte Alexander Grünberg Jg. 1885 verhaftet 1943 KZ Fuhlsbüttel deportiert Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63846131"
+  ],
+  "idx": 73
+ },
+ {
+  "id": "stein-Q63895439",
+  "address": "Meerweinstraße 1",
+  "coords": [
+   53.585531,
+   10.024242
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Yvonne Mewes",
+    "inscription": "Hier wohnte Yvonne Mewes Jg. 1900 deportiert KZ Ravensbrück ermordet 6.1.1945"
+   }
+  ],
+  "wikidata": [
+   "Q63895439"
+  ],
+  "idx": 74
+ },
+ {
+  "id": "stein-Q63969664",
+  "address": "Novalisweg 1",
+  "coords": [
+   53.585825,
+   10.024681
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alfred Moser",
+    "inscription": "Hier wohnte Alfred Moser Jg. 1887 verhaftet 1943 KZ Fuhlsbüttel deportiert 1943 Auschwitz ermordet 23.7.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63969664"
+  ],
+  "idx": 75
+ },
+ {
+  "id": "stein-Q63969691",
+  "address": "Preystraße 22",
+  "coords": [
+   53.582947,
+   10.014622
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Rosalie Drechsler",
+    "inscription": "Hier wohnte Rosalie Drechsler geb. Rosenbach Jg. 1875 deportiert 1943 Theresienstadt 1943 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63969691"
+  ],
+  "idx": 76
+ },
+ {
+  "id": "stein-Q64224583",
+  "address": "Stammannstraße 12",
+  "coords": [
+   53.586342,
+   10.023169
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bertha Eckelmann",
+    "inscription": "Hier wohnte Bertha Eckelmann geb. Tetteles Jg. 1884 deportiert 1945 Theresienstadt befreit"
+   },
+   {
+    "name": "Herbert Asser",
+    "inscription": "Hier wohnte Herbert Asser Jg. 1905 vor Deportation untergetaucht versteckt gelebt befreit/überlebt"
+   }
+  ],
+  "wikidata": [
+   "Q64224583",
+   "Q76407126"
+  ],
+  "idx": 77
+ },
+ {
+  "id": "stein-Q66741412",
+  "address": "Andreasstraße 35",
+  "coords": [
+   53.583092,
+   10.007689
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Erika Timm",
+    "inscription": "Hier wohnte Erika Timm Jg. 1943 eingewiesen 1944 Alsterdorfer Anstalten ‚verlegt‘ 3.8.1944 Kinderfachabteilung Heilanstalt Uchtspringe ermordet 24.8.1944"
+   },
+   {
+    "name": "Gregor Czaczkes",
+    "inscription": "Hier wohnte Gregor Czaczkes Jg. 1923 Flucht 1938 Holland interniert Westerbork deportiert 1943 Sobibor ermordet 9.7.1943"
+   },
+   {
+    "name": "Leonie Czaczkes",
+    "inscription": "Hier wohnte Leonie Czaczkes geb. Stern Jg. 1895 Flucht 1938 Holland interniert Westerbork deportiert 1943 Sobibor ermordet 2.7.1943"
+   },
+   {
+    "name": "Siegmund Czaczkes",
+    "inscription": "Hier wohnte Siegmund Czaczkes Jg. 1894 Flucht 1938 Holland interniert Westerbork deportiert 1943 Sobibor ermordet 2.7.1943"
+   }
+  ],
+  "wikidata": [
+   "Q66741412",
+   "Q111907058",
+   "Q111907060",
+   "Q111907061"
+  ],
+  "idx": 78
+ },
+ {
+  "id": "stein-Q84245112",
+  "address": "Gertigstraße 31",
+  "coords": [
+   53.582456,
+   10.016172
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Rolf Krause",
+    "inscription": "Hier wohnte Rolf Krause Jg. 1933 eingewiesen 1940 Alsterdorfer Anstalten ‚verlegt‘ 10.8.1943 Heilanstalt Mainkofen ermordet 1.6.1944"
+   }
+  ],
+  "wikidata": [
+   "Q84245112"
+  ],
+  "idx": 79
+ },
+ {
+  "id": "stein-Q95214863",
+  "address": "Goldbekufer 20",
+  "coords": [
+   53.586322,
+   10.014794
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Hermann Garber",
+    "inscription": "Hier wohnte Hermann Garber Jg. 1907 eingewiesen 1935 Alsterdorfer Anstalten ‚verlegt‘ 10.8.1943 Heilanstalt Mainkofen tot 10.5.1945"
+   }
+  ],
+  "wikidata": [
+   "Q95214863"
+  ],
+  "idx": 80
+ },
+ {
+  "id": "stein-Q98180190",
+  "address": "Semperstraße 39",
+  "coords": [
+   53.586061,
+   10.016128
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Joseph Andrade",
+    "inscription": "Hier wohnte Joseph Andrade Jg. 1862 deportiert 1942 Theresienstadt ermordet 22.8.1942"
+   }
+  ],
+  "wikidata": [
+   "Q98180190"
+  ],
+  "idx": 81
+ },
+ {
+  "id": "stein-Q98180248",
+  "address": "Semperstraße 43",
+  "coords": [
+   53.586256,
+   10.016603
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ernestine Mächtig",
+    "inscription": "Hier wohnte Ernestine Mächtig Jg. 1925 eingewiesen 1934 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Am Steinhof Wien ermordet 13.4.1944"
+   }
+  ],
+  "wikidata": [
+   "Q98180248"
+  ],
+  "idx": 82
+ },
+ {
+  "id": "stein-Q107576409",
+  "address": "Lorenzengasse 2",
+  "coords": [
+   53.584486,
+   10.019269
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Auguste Wolf",
+    "inscription": "Hier wohnte Auguste Wolf geb. Asser Jg. 1880 deportiert 1942 Theresienstadt ermordet 20.3.1944"
+   },
+   {
+    "name": "Louis Wolf",
+    "inscription": "Hier wohnte Louis Wolf Jg. 1872 deportiert 1942 Theresienstadt ermordet 26.2.1944"
+   }
+  ],
+  "wikidata": [
+   "Q107576409",
+   "Q107576522"
+  ],
+  "idx": 83
+ },
+ {
+  "id": "stein-Q109812440",
+  "address": "Dorotheenstraße 50",
+  "coords": [
+   53.582364,
+   10.008683
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Olga Memleb",
+    "inscription": "Hier wohnte Olga Memleb Jg. 1908 eingewiesen 1935 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Am Steinhof Wien tot an den Folgen 12.5.1945"
+   }
+  ],
+  "wikidata": [
+   "Q109812440"
+  ],
+  "idx": 84
+ },
+ {
+  "id": "stein-Q113234327",
+  "address": "Hölderlinsallee 9",
+  "coords": [
+   53.585591,
+   10.023458
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Kurt Deeke",
+    "inscription": "Hier wohnte Kurt Deeke Jg. 1932 eingewiesen 1939 Alsterdorfer Anstalten ‚verlegt‘ 7.8.1943 Heilanstalt Kalmenhof/Idstein ‚Kinderfachabteilung‘ ermordet 8.9.1943"
+   }
+  ],
+  "wikidata": [
+   "Q113234327"
+  ],
+  "idx": 85
+ },
+ {
+  "id": "stein-Q117462532",
+  "address": "Geibelstraße 39",
+  "coords": [
+   53.584159,
+   10.01575
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Erika Hoffmann",
+    "inscription": "Hier wohnte Erika Hoffmann Jg. 1931 eingewiesen 1934 Alsterdorfer Anstalten ‚verlegt‘ 7.8.1943 Heilanstalt Eichberg ermordet 6.9.1943"
+   }
+  ],
+  "wikidata": [
+   "Q117462532"
+  ],
+  "idx": 86
+ },
+ {
+  "id": "stein-Q120687549",
+  "address": "Jarrestraße 54",
+  "coords": [
+   53.585221,
+   10.026701
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alice Lüder",
+    "inscription": "Hier wohnte Alice Lüder Jg. 1901 eingewiesen 1909 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Heilanstalt Am Steinhof/Wien tot an den Folgen 23. Okt. 1945"
+   }
+  ],
+  "wikidata": [
+   "Q120687549"
+  ],
+  "idx": 87
+ },
+ {
+  "id": "stein-Q124733047",
+  "address": "Stammannstraße 9",
+  "coords": [
+   53.586082,
+   10.022292
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Emma Mahnke",
+    "inscription": "Hier wohnte Emma Mahnke geb. Kroll Jg. 1872 eingewiesen 1943 Heilanstalt Langenhorn ‚verlegt‘ 14.7.1943 Heilanstalt Hadamar ermordet 12.11.1943"
+   }
+  ],
+  "wikidata": [
+   "Q124733047"
+  ],
+  "idx": 88
+ },
+ {
+  "id": "stein-Q131312894",
+  "address": "Poßmoorweg 1",
+  "coords": [
+   53.58573,
+   10.008172
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Anne Liese Neumann",
+    "inscription": "Hier wohnte Anne Liese Neumann Jg. 1925 eingewiesen 1938 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Heilanstalt Am Steinhof/Wien ermordet 3.10.1944"
+   }
+  ],
+  "wikidata": [
+   "Q131312894"
+  ],
+  "idx": 89
+ },
+ {
+  "id": "stein-Q43651523",
+  "address": "Wiesendamm 20",
+  "coords": [
+   53.587378,
+   10.039806
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Carl Burmester",
+    "inscription": "Hier wohnte Carl Burmester Jg. 1901 verhaftet 1934 Zuchthaus Hamburg gefoltert von Gestapo Sturz im Treppenhaus tot 17.9.1934"
+   }
+  ],
+  "wikidata": [
+   "Q43651523"
+  ],
+  "idx": 90
+ },
+ {
+  "id": "stein-Q43747531",
+  "address": "Wachtelstraße 4",
+  "coords": [
+   53.588556,
+   10.050317
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Robert Abshagen",
+    "inscription": "Hier wohnte Robert Abshagen Jg. 1911 verhaftet 1942 Untersuchungsgefängnis Hamburg enthauptet 10.7.1944"
+   }
+  ],
+  "wikidata": [
+   "Q43747531"
+  ],
+  "idx": 91
+ },
+ {
+  "id": "stein-Q45825745",
+  "address": "Rübenkamp 78",
+  "coords": [
+   53.596406,
+   10.037281
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Franz Klein",
+    "inscription": "Hier wohnte Franz Klein Jg. 1892 deportiert 1943 Theresienstadt Auschwitz ???"
+   }
+  ],
+  "wikidata": [
+   "Q45825745"
+  ],
+  "idx": 92
+ },
+ {
+  "id": "stein-Q46259623",
+  "address": "Bendixensweg 3",
+  "coords": [
+   53.598281,
+   10.043294
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Walter Stock",
+    "inscription": "Hier wohnte Walter Stock Jg. 1897 verhaftet März 1944 deportiert 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q46259623"
+  ],
+  "idx": 93
+ },
+ {
+  "id": "stein-Q47002769",
+  "address": "Wachtelstraße 45a",
+  "coords": [
+   53.587844,
+   10.053958
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Werner Dabelstein",
+    "inscription": "Hier wohnte Werner Dabelstein Jg. 1935 eingewiesen 1937 Alsterdorfer Anstalten ‚verlegt‘ 7.8.1943 Heilanstalt Kalmenhof ermordet 4.9.1943"
+   }
+  ],
+  "wikidata": [
+   "Q47002769"
+  ],
+  "idx": 94
+ },
+ {
+  "id": "stein-Q47002777",
+  "address": "Wachtelstraße 48",
+  "coords": [
+   53.586975,
+   10.056372
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Gustav Heidtmann",
+    "inscription": "Hier wohnte Gustav Heidtmann Jg. 1873 verhaftet KZ Fuhlsbüttel ermordet 20.8.1936"
+   }
+  ],
+  "wikidata": [
+   "Q47002777"
+  ],
+  "idx": 95
+ },
+ {
+  "id": "stein-Q47002794",
+  "address": "Tischbeinstraße 2",
+  "coords": [
+   53.597017,
+   10.042414
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Anna Rosenberg",
+    "inscription": "Hier wohnte Anna Rosenberg Jg. 1894 deportiert 1941 Łodz ermordet 1942 in Chelmno"
+   }
+  ],
+  "wikidata": [
+   "Q47002794"
+  ],
+  "idx": 96
+ },
+ {
+  "id": "stein-Q47002799",
+  "address": "Stockhausenstraße 11",
+  "coords": [
+   53.586528,
+   10.037864
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Ida Zinner",
+    "inscription": "Hier wohnte Ida Zinner Jg. 1906 eingewiesen 1939 Heilanstalt Langenhorn ‚verlegt‘ 23.9.1940 Brandenburg ermordet 23.9.1940 ‚Aktion T4‘"
+   }
+  ],
+  "wikidata": [
+   "Q47002799"
+  ],
+  "idx": 97
+ },
+ {
+  "id": "stein-Q47002807",
+  "address": "Stockhausenstraße 6",
+  "coords": [
+   53.586875,
+   10.037806
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Emil Rubinstein",
+    "inscription": "Hier wohnte Emil Rubinstein Jg. 1871 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   },
+   {
+    "name": "Röschen Rubinstein",
+    "inscription": "Hier wohnte Röschen Rubinstein geb. Levi Jg. 1890 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q47002807",
+   "Q47002810"
+  ],
+  "idx": 98
+ },
+ {
+  "id": "stein-Q47002815",
+  "address": "Steilshooper Straße 216",
+  "coords": [
+   53.598703,
+   10.05088
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Lieselotte Ahrens",
+    "inscription": "Hier wohnte Lieselotte Ahrens Jg. 1929 eingewiesen 1941 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Heilanstalt Am Steinhof Wien ermordet 7.11.1944"
+   }
+  ],
+  "wikidata": [
+   "Q47002815"
+  ],
+  "idx": 99
+ },
+ {
+  "id": "stein-Q47002818",
+  "address": "Schmachthäger Straße 13",
+  "coords": [
+   53.603108,
+   10.048958
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Paul Poetzsch",
+    "inscription": "Hier wohnte Paul Poetzsch Jg. 1919 eingewiesen 1943 ‚Heilanstalt‘ Weilmünster/Eichberg 1944 ‚Heilanstalt‘ Hadamar ermordet 7.11.1944"
+   }
+  ],
+  "wikidata": [
+   "Q47002818"
+  ],
+  "idx": 100
+ },
+ {
+  "id": "stein-Q47002829",
+  "address": "Rübenkamp 6",
+  "coords": [
+   53.589275,
+   10.041844
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Gabriela Kock",
+    "inscription": "Hier wohnte Gabriela Kock Jg. 1916 eingewiesen 1920 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Heilanstalt Am Steinhof Wien ermordet 24.11.1944"
+   }
+  ],
+  "wikidata": [
+   "Q47002829"
+  ],
+  "idx": 101
+ },
+ {
+  "id": "stein-Q47002846",
+  "address": "Prechtsweg 15",
+  "coords": [
+   53.606247,
+   10.042267
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Karl Schumann",
+    "inscription": "Hier wohnte Karl Schumann Jg. 1902 verhaftet ‚Hochverrat‘ tot an Haftfolgen 26.6.1945"
+   }
+  ],
+  "wikidata": [
+   "Q47002846"
+  ],
+  "idx": 102
+ },
+ {
+  "id": "stein-Q47002863",
+  "address": "Otto-Speckter-Straße 1",
+  "coords": [
+   53.596817,
+   10.046619
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Hertha Melhausen",
+    "inscription": "Hier wohnte Hertha Melhausen geb. Lübeck Jg. 1866 deportiert 1942 Theresienstadt ermordet 18.8.1942"
+   },
+   {
+    "name": "Jonni Melhausen",
+    "inscription": "Hier wohnte Jonni Melhausen Jg. 1891 verhaftet 1943 KZ Fuhlsbüttel deportiert 1943 Auschwitz ermordet 26.8.1943"
+   }
+  ],
+  "wikidata": [
+   "Q47002863",
+   "Q47002879"
+  ],
+  "idx": 103
+ },
+ {
+  "id": "stein-Q47002894",
+  "address": "Oertzweg 15",
+  "coords": [
+   53.595244,
+   10.055742
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Theodor Wulff",
+    "inscription": "Hier wohnte Theodor Wulff Jg. 1922 gedemütigt/entrechtet Flucht in den Tod 27.7.1938"
+   }
+  ],
+  "wikidata": [
+   "Q47002894"
+  ],
+  "idx": 104
+ },
+ {
+  "id": "stein-Q47002906",
+  "address": "Mildestieg 27",
+  "coords": [
+   53.598853,
+   10.045169
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Kurt Wilcke",
+    "inscription": "Hier wohnte Kurt Wilcke Jg. 1908 verhaftet 1939 KZ Fuhlsbüttel ‚Frontbewährung‘ tot 20.4.1944 Lazarett Narwafront Estland"
+   }
+  ],
+  "wikidata": [
+   "Q47002906"
+  ],
+  "idx": 105
+ },
+ {
+  "id": "stein-Q47002949",
+  "address": "Mildestieg 14",
+  "coords": [
+   53.597703,
+   10.045322
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Fritz Lentge",
+    "inscription": "Hier wohnte Fritz Lentge Jg. 1934 eingewiesen 1942 Alsterdorfer Anstalten ‚verlegt‘ 1943 Kalmenhof/Idstein ermordet 24.8.1943"
+   }
+  ],
+  "wikidata": [
+   "Q47002949"
+  ],
+  "idx": 106
+ },
+ {
+  "id": "stein-Q47003053",
+  "address": "Hermann-Kauffmann-Straße 29",
+  "coords": [
+   53.59395,
+   10.0394
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Peter Stoltenberg",
+    "inscription": "Hier wohnte Peter Stoltenberg Jg. 1942 eingewiesen 1943 Alsterdorfer Anstalten ‚verlegt‘ 7.8.1943 Kalmenhof/Idstein ‚Kinderfachabteilung‘ ermordet 21.8.1943"
+   }
+  ],
+  "wikidata": [
+   "Q47003053"
+  ],
+  "idx": 107
+ },
+ {
+  "id": "stein-Q47003082",
+  "address": "Habichtstraße 21",
+  "coords": [
+   53.589489,
+   10.059819
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Josef Katzenellenbogen",
+    "inscription": "Hier wohnte Josef Katzenellenbogen Jg. 1898 deportiert 1941 ermordet in Minsk"
+   }
+  ],
+  "wikidata": [
+   "Q47003082"
+  ],
+  "idx": 108
+ },
+ {
+  "id": "stein-Q47003107",
+  "address": "Genslerstraße 16",
+  "coords": [
+   53.593142,
+   10.041572
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Franz Acker",
+    "inscription": "Hier wohnte Franz Acker Jg. 1903 inhaftiert KZ Oranienburg ermordet 26.5.1943"
+   }
+  ],
+  "wikidata": [
+   "Q47003107"
+  ],
+  "idx": 109
+ },
+ {
+  "id": "stein-Q47003116",
+  "address": "Fraenkelstraße 6",
+  "coords": [
+   53.598631,
+   10.037772
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Gustav Wagner",
+    "inscription": "Hier wohnte Gustav Wagner Jg. 1896 verhaftet 1941 Zuchthaus Fuhlsbüttel deportiert Auschwitz ermordet 11.11.1943"
+   },
+   {
+    "name": "Gustav Wagner",
+    "inscription": "Hier wohnte Gustav Wagner Jg. 1896 verhaftet 20.3.1940 ‚Rundfunkverbrechen‘ 1941 Emslandlager Papenburg deportiert 1943 Auschwitz ermordet 11.11.1943"
+   }
+  ],
+  "wikidata": [
+   "Q47003116",
+   "Q113235232"
+  ],
+  "idx": 110
+ },
+ {
+  "id": "stein-Q47003152",
+  "address": "Elligersweg 46",
+  "coords": [
+   53.602111,
+   10.048589
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Adolf Krampe",
+    "inscription": "Hier wohnte Adolf Krampe Jg. 1905 verhaftet 1937 Verdacht ‚Hochverrat‘ von 1937 bis 1939 Zuchthaus Hamburg ‚vermisst‘ 16.3.1944"
+   }
+  ],
+  "wikidata": [
+   "Q47003152"
+  ],
+  "idx": 111
+ },
+ {
+  "id": "stein-Q47003260",
+  "address": "Elligersweg 41",
+  "coords": [
+   53.602683,
+   10.047456
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Herta Rosenstein",
+    "inscription": "Hier wohnte Herta Rosenstein geb. Klysecz Jg. 1903 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Oskar Rosenstein",
+    "inscription": "Hier wohnte Oskar Rosenstein Jg. 1897 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q47003260",
+   "Q47003277"
+  ],
+  "idx": 112
+ },
+ {
+  "id": "stein-Q47003294",
+  "address": "Diesterwegstraße 4",
+  "coords": [
+   53.58925,
+   10.044592
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Rudolf Müller",
+    "inscription": "Hier wohnte Rudolf Müller Jg. 1910 verhaftet 1936/1939 KZ Fuhlsbüttel Flucht in den Tod 3.2.1939"
+   }
+  ],
+  "wikidata": [
+   "Q47003294"
+  ],
+  "idx": 113
+ },
+ {
+  "id": "stein-Q47003309",
+  "address": "Dieselstraße 24",
+  "coords": [
+   53.594994,
+   10.054139
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Horst Engelhardt",
+    "inscription": "Hier wohnte Horst Engelhardt Jg. 1936 eingewiesen 1941 Alsterdorfer Anstalten ‚verlegt‘ 11.8.1943 Heilanstalt Mainkofen ermordet 18.4.1944"
+   }
+  ],
+  "wikidata": [
+   "Q47003309"
+  ],
+  "idx": 114
+ },
+ {
+  "id": "stein-Q47003330",
+  "address": "Detmerstraße 3",
+  "coords": [
+   53.591197,
+   10.042711
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Paul Karl Bach",
+    "inscription": "Hier wohnte Paul Karl Bach Jg. 1903 verhaftet KZ Fuhlsbüttel ermordet 20.7.1934"
+   }
+  ],
+  "wikidata": [
+   "Q47003330"
+  ],
+  "idx": 115
+ },
+ {
+  "id": "stein-Q47003359",
+  "address": "Dennerstraße 15",
+  "coords": [
+   53.597664,
+   10.043186
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Ernst Friedrich Wetzstein",
+    "inscription": "Hier wohnte Ernst Friedrich Wetzstein Jg. 1883 verhaftet KZ Fuhlsbüttel ermordet 31.10.1933"
+   }
+  ],
+  "wikidata": [
+   "Q47003359"
+  ],
+  "idx": 116
+ },
+ {
+  "id": "stein-Q59781204",
+  "address": "Fuhlsbüttler Straße 145",
+  "coords": [
+   53.591189,
+   10.044353
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Carl Hertz Müller",
+    "inscription": "Hier wohnte Carl Hertz Müller Jg. 1891 eingewiesen 1940 Heilanstalt Langenhorn ‚verlegt‘ 23.8.1940 Brandenburg ermordet 23.9.1940 ‚Aktion T4‘"
+   }
+  ],
+  "wikidata": [
+   "Q59781204"
+  ],
+  "idx": 117
+ },
+ {
+  "id": "stein-Q63190483",
+  "address": "Georg-Thielen-Gasse 9",
+  "coords": [
+   53.587297,
+   10.030869
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alphons Abel",
+    "inscription": "Hier wohnte Alphons Abel Jg. 1866 deportiert 1942 Theresienstadt tot 2.11.1943"
+   },
+   {
+    "name": "Martha Abel",
+    "inscription": "Hier wohnte Martha Abel geb. Kupferbach Jg. 1879 deportiert 1942 Theresienstadt ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q63190483",
+   "Q63190481"
+  ],
+  "idx": 118
+ },
+ {
+  "id": "stein-Q63807091",
+  "address": "Groothoffgasse 8",
+  "coords": [
+   53.587581,
+   10.032019
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Selma Benjamin",
+    "inscription": "Hier wohnte Selma Benjamin geb. Pasch Jg. 1868 deportiert 1941 Riga ermordet"
+   },
+   {
+    "name": "Thekla Bernau",
+    "inscription": "Hier wohnte Thekla Bernau geb. Benjamin Jg. 1900 deportiert 1941 Riga ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63807091",
+   "Q63807145"
+  ],
+  "idx": 119
+ },
+ {
+  "id": "stein-Q64774673",
+  "address": "Georg-Thielen-Gasse 13",
+  "coords": [
+   53.587692,
+   10.030803
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Käthe Minna Reiss",
+    "inscription": "Hier wohnte Käthe Minna Reiss geb. Lievendag Jg. 1899 ‚Polenaktion‘ 1938 Bentschen/Zbaszyn ermordet im besetzten Polen"
+   }
+  ],
+  "wikidata": [
+   "Q64774673"
+  ],
+  "idx": 120
+ },
+ {
+  "id": "stein-Q95210829",
+  "address": "Dieselstraße 22",
+  "coords": [
+   53.594892,
+   10.054147
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Emma Lina Schulz",
+    "inscription": "Hier wohnte Emma Lina Schulz geb. Kirstein Jg. 1902 eingewiesen 1941 Heilanstalt Langenhorn ‚verlegt‘ 24.3.1942 Heilanstalt Königslutter ermordet 6.8.1942"
+   }
+  ],
+  "wikidata": [
+   "Q95210829"
+  ],
+  "idx": 121
+ },
+ {
+  "id": "stein-Q95619006",
+  "address": "Heilholtkamp 21",
+  "coords": [
+   53.610411,
+   10.014294
+  ],
+  "district": "alsterdorf",
+  "people": [
+   {
+    "name": "Käthe Consentius",
+    "inscription": "Hier wohnte Käthe Consentius Jg. 1912 eingewiesen 1931 Alsterdorfer Anstalten Heilanstalt Langenhorn ‚verlegt‘ 5.11.1943 Meseritz-Obrawalde ermordet 5.11.1943"
+   }
+  ],
+  "wikidata": [
+   "Q95619006"
+  ],
+  "idx": 122
+ },
+ {
+  "id": "stein-Q101053922",
+  "address": "Schmachthäger Straße 53",
+  "coords": [
+   53.606042,
+   10.0445
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Alma Ehrmann",
+    "inscription": "Hier wohnte Alma Ehrmann geb. Stock Jg. 1888 deportiert 1942 ermordet in Auschwitz"
+   },
+   {
+    "name": "Elsa Stock",
+    "inscription": "Hier wohnte Elsa Stock Jg. 1891 verhaftet April 1939 Gefängnis Fuhlsbüttel 1942 Ravensbrück ‚verlegt‘ 1942 Bernburg ermordet am Tag der Ankunft"
+   },
+   {
+    "name": "Julius Ehrmann",
+    "inscription": "Hier wohnte Julius Ehrmann Jg. 1872 deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q101053922",
+   "Q101053950",
+   "Q106097020"
+  ],
+  "idx": 123
+ },
+ {
+  "id": "stein-Q101204261",
+  "address": "Bramfelder Straße 104",
+  "coords": [
+   53.5892,
+   10.053581
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Bruno Krüger",
+    "inscription": "Hier wohnte Bruno Krüger Jg. 1911 eingewiesen 1938 Heilanstalt Langenhorn ‚verlegt‘ 19.3.1941 Heilanstalt Rickling ermordet 25.7.1943"
+   }
+  ],
+  "wikidata": [
+   "Q101204261"
+  ],
+  "idx": 124
+ },
+ {
+  "id": "stein-Q108105458",
+  "address": "Diesterwegstraße 7",
+  "coords": [
+   53.589206,
+   10.044503
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Johannes Riedel",
+    "inscription": "Hier wohnte Johannes Riedel Jg. 1895 verhaftet 4.2.1943 ‚Wehrkraftzersetzung‘ Untersuchungsgefängnis Hamburg hingerichtet 1.9.1943 Berlin-Plötzensee"
+   }
+  ],
+  "wikidata": [
+   "Q108105458"
+  ],
+  "idx": 125
+ },
+ {
+  "id": "stein-Q111708660",
+  "address": "Feuerbergstraße 43",
+  "coords": [
+   53.613061,
+   10.029797
+  ],
+  "district": "alsterdorf",
+  "people": [
+   {
+    "name": "Anna-Maria Tomassetti",
+    "inscription": "Anna-Maria Tomassetti geb. 15.3.1945 untergebracht Kinderheim Feuerbergstr. Kinderkrankenhaus Blankenese Mangelernährung tot 1.10.1945"
+   },
+   {
+    "name": "Karl-Heinz Dohrmann",
+    "inscription": "Karl-Heinz Dohrmann Jg. 1937 untergebracht 1940 Kinderheim Feuerbergstr. Alsterdorfer Anstalten ‚verlegt‘ 7.8.1943 Heilanstalt Eichberg ‚Kinderfachabteilung‘ ermordet 12.10.1943"
+   }
+  ],
+  "wikidata": [
+   "Q111708660",
+   "Q111708671"
+  ],
+  "idx": 126
+ },
+ {
+  "id": "stein-Q116983466",
+  "address": "Burmesterstraße 7",
+  "coords": [
+   53.586789,
+   10.03685
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Morris Oscar Bauer",
+    "inscription": "Hier wohnte Morris Oscar Bauer Jg. 1879 deportiert 1943 Theresienstadt 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q116983466"
+  ],
+  "idx": 127
+ },
+ {
+  "id": "stein-Q119416454",
+  "address": "Bramfelder Straße 128",
+  "coords": [
+   53.590668,
+   10.054988
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Elisabeth Choyke",
+    "inscription": "Hier wohnte Elisabeth Choyke geb. Kohn Jg. 1874 deportiert 1942 Theresienstadt ermordet 27.12.1942"
+   },
+   {
+    "name": "Moritz Choyke",
+    "inscription": "Hier wohnte Moritz Choyke Jg. 1870 deportiert 1942 Theresienstadt ermordet 4.1.1944"
+   }
+  ],
+  "wikidata": [
+   "Q119416454",
+   "Q119416579"
+  ],
+  "idx": 128
+ },
+ {
+  "id": "stein-Q123538117",
+  "address": "Harzensweg 1",
+  "coords": [
+   53.591874,
+   10.04849
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Max Moritz Elias",
+    "inscription": "Hier wohnte Max Moritz Elias Jg. 1874 deportiert 1941 Riga-Jungfernhof ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q123538117"
+  ],
+  "idx": 129
+ },
+ {
+  "id": "stein-Q123538269",
+  "address": "Fuhlsbüttler Straße 122",
+  "coords": [
+   53.589826,
+   10.045494
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Bernhard Meyer",
+    "inscription": "Hier wohnte Bernhard Meyer Jg. 1902 deportiert 1941 Ghetto Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q123538269"
+  ],
+  "idx": 130
+ },
+ {
+  "id": "stein-Q125054664",
+  "address": "Herbstsweg 2",
+  "coords": [
+   53.595849,
+   10.048131
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Willy Lesser",
+    "inscription": "Hier wohnte Willy Lesser Jg. 1901 im Widerstand/SPD verhaftet 31.1.1935 U-Haft Chemnitz 1935 KZ Sachsenburg entlassen 12.2.1936"
+   }
+  ],
+  "wikidata": [
+   "Q125054664"
+  ],
+  "idx": 131
+ },
+ {
+  "id": "stein-Q134600195",
+  "address": "Hellbrookstraße 52",
+  "coords": [
+   53.591379,
+   10.046216
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Ernst Sebras",
+    "inscription": "Hier wohnte Ernst Sebras Jg. 1903 eingewiesen 1932 Heilanstalt Langenhorn ‚verlegt‘ 2.4.1943 Meseritz-Obrawalde ermordet 25.4.1944"
+   }
+  ],
+  "wikidata": [
+   "Q134600195"
+  ],
+  "idx": 132
+ },
+ {
+  "id": "stein-Q134740540",
+  "address": "Bramfelder Straße 106",
+  "coords": [
+   53.589359,
+   10.053681
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Olga Kurtz",
+    "inscription": "Hier wohnte Olga Kurtz Jg. 1905 eingewiesen 1931 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Heilanstalt Am Steinhof/Wien ermordet 24.11.1944"
+   }
+  ],
+  "wikidata": [
+   "Q134740540"
+  ],
+  "idx": 133
+ },
+ {
+  "id": "stein-Q136914633",
+  "address": "Hufnerstraße 119",
+  "coords": [
+   53.590481,
+   10.043216
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Emil Dechant",
+    "inscription": "Hier wohnte Emil Dechant Jg. 1899 Zeuge Jehovas verhaftet 13.9.1937 KZ Fuhlsbüttel Gefängnis Wolfenbüttel entlassen 15.7.1940"
+   }
+  ],
+  "wikidata": [
+   "Q136914633"
+  ],
+  "idx": 134
+ },
+ {
+  "id": "stein-Q137161074",
+  "address": "Starstraße 9",
+  "coords": [
+   53.58786,
+   10.048326
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Günther Jagemann",
+    "inscription": "Hier wohnte Günther Jagemann Jg. 1924 eingewiesen 1927 Alsterdorfer Anstalten ‚verlegt‘ 27.11.1941 ‚Heilanstalt‘ Tiegenhof ermordet 24.2.1942"
+   }
+  ],
+  "wikidata": [
+   "Q137161074"
+  ],
+  "idx": 135
+ },
+ {
+  "id": "stein-Q138610670",
+  "address": "Schwalbenstraße 74",
+  "coords": [
+   53.592846,
+   10.046891
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Siegfried Herzfeld",
+    "inscription": "Hier wohnte Siegfried Herzfeld Jg. 1893 gedemütigt/entrechtet Flucht in den Tod 29. April 1938"
+   }
+  ],
+  "wikidata": [
+   "Q138610670"
+  ],
+  "idx": 136
+ },
+ {
+  "id": "stein-Q138656290",
+  "address": "Rungestieg 1",
+  "coords": [
+   53.603202,
+   10.047831
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Franz Schult",
+    "inscription": "Hier wohnte Franz Schult Jg. 1888 im Widerstand/SPD verhaftet 17.2.1943 ‚regimekritische Äußerungen‘ 1943 KZ Fuhlsbüttel 1943 UG Hamburg entlassen 18.5.1943"
+   }
+  ],
+  "wikidata": [
+   "Q138656290"
+  ],
+  "idx": 137
+ },
+ {
+  "id": "stein-Q140199101",
+  "address": "Heilholtkamp 54",
+  "coords": [
+   53.610488,
+   10.017741
+  ],
+  "district": "alsterdorf",
+  "people": [
+   {
+    "name": "Ernst Gravenhorst",
+    "inscription": "Hier wohnte Ernst Gravenhorst Jg. 1923 verhaftet 1943 ‚Fahnenflucht‘ Zuchthaus Fuhlsbüttel Zwangsarbeit Kettenwerk ‚Strafbataillon 561‘ überlebt"
+   }
+  ],
+  "wikidata": [
+   "Q140199101"
+  ],
+  "idx": 138
+ },
+ {
+  "id": "stein-Q44200501",
+  "address": "Cäcilienstraße 6",
+  "coords": [
+   53.586769,
+   10.004297
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Carl Josef Müller",
+    "inscription": "Hier wohnte Carl Josef Müller Jg. 1865 deportiert 1942 Theresienstadt ermordet 29.10.1942"
+   },
+   {
+    "name": "Louise Rebecca Müller",
+    "inscription": "Hier wohnte Louise Rebecca Müller geb. Hauer Jg. 1872 deportiert 1942 Theresienstadt ermordet 1944 in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q44200501",
+   "Q63190087"
+  ],
+  "idx": 139
+ },
+ {
+  "id": "stein-Q59468044",
+  "address": "Fuhlsbüttler Straße 5",
+  "coords": [
+   53.584361,
+   10.046989
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Gertrud Dawartz",
+    "inscription": "Hier wohnte Gertrud Dawartz geb. Müller Jg. 1889 Zwangsumzug 1943 Regensburg verhaftet 1943 Zuchthaus Regensburg deportiert 1944 Auschwitz ermordet 12.8.1944"
+   }
+  ],
+  "wikidata": [
+   "Q59468044"
+  ],
+  "idx": 140
+ },
+ {
+  "id": "stein-Q63190115",
+  "address": "Cäcilienstraße 11",
+  "coords": [
+   53.586597,
+   10.003986
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Benny Rosenbaum",
+    "inscription": "Hier wohnte Benny Rosenbaum Jg. 1880 verhaftet 1935 Zuchthaus Hamburg ermordet 28.5.1942 Sachsenhausen"
+   },
+   {
+    "name": "Gustel Witkower",
+    "inscription": "Hier wohnte Gustel Witkower Jg. 1886 deportiert 1941 ermordet in Riga"
+   }
+  ],
+  "wikidata": [
+   "Q63190115",
+   "Q63190160"
+  ],
+  "idx": 141
+ },
+ {
+  "id": "stein-Q63190260",
+  "address": "Dorotheenstraße 123",
+  "coords": [
+   53.588531,
+   10.003981
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ernst David Steindecker",
+    "inscription": "Hier wohnte Ernst David Steindecker Jg. 1890 deportiert 1942 ermordet in Auschwitz"
+   },
+   {
+    "name": "Regina Steindecker",
+    "inscription": "Hier wohnte Regina Steindecker geb. Steindecker Jg. 1898 deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q63190260",
+   "Q63190262"
+  ],
+  "idx": 142
+ },
+ {
+  "id": "stein-Q63895040",
+  "address": "Maria-Louisen-Straße 55",
+  "coords": [
+   53.587458,
+   10.002811
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alwine de Levie",
+    "inscription": "Hier wohnte Alwine de Levie geb. Herz Jg. 1859 Flucht 1937 Holland interniert Westerbork deportiert 1943 ermordet in Sobibor"
+   }
+  ],
+  "wikidata": [
+   "Q63895040"
+  ],
+  "idx": 143
+ },
+ {
+  "id": "stein-Q63895064",
+  "address": "Maria-Louisen-Straße 57",
+  "coords": [
+   53.587711,
+   10.003231
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Fritz Lindemann",
+    "inscription": "Hier wohnte Fritz Lindemann Jg. 1894 verhaftet 1944 durch Gestapo Schussverletzungen tot 22.9.1944 Berlin Polizeikrankenhaus"
+   }
+  ],
+  "wikidata": [
+   "Q63895064"
+  ],
+  "idx": 144
+ },
+ {
+  "id": "stein-Q63895076",
+  "address": "Maria-Louisen-Straße 63",
+  "coords": [
+   53.588036,
+   10.003558
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Gertrud van Cleef",
+    "inscription": "Hier wohnte Gertrud van Cleef geb. Bromet Jg. 1899 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Herbert van Cleef",
+    "inscription": "Hier wohnte Herbert van Cleef Jg. 1928 Flucht 1939 Holland deportiert 1944 Auschwitz ermordet 31.7.1944"
+   },
+   {
+    "name": "Julius van Cleef",
+    "inscription": "Hier wohnte Julius van Cleef Jg. 1877 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63895076",
+   "Q63895080",
+   "Q63895083"
+  ],
+  "idx": 145
+ },
+ {
+  "id": "stein-Q63895087",
+  "address": "Maria-Louisen-Straße 90",
+  "coords": [
+   53.587403,
+   10.003231
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Siegfried Meyer",
+    "inscription": "Hier wohnte Siegfried Meyer Jg. 1881 gedemütigt/entrechtet Flucht in den Tod 6.3.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63895087"
+  ],
+  "idx": 146
+ },
+ {
+  "id": "stein-Q63895089",
+  "address": "Maria-Louisen-Straße 92",
+  "coords": [
+   53.587528,
+   10.003403
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Erich Friedberger",
+    "inscription": "Hier wohnte Erich Friedberger Jg. 1892 Flucht 1938 Holland interniert Westerbork deportiert 1943 Bergen-Belsen 1944 Theresienstadt ermordet 23.5.1944"
+   },
+   {
+    "name": "Henriette Friedberger",
+    "inscription": "Hier wohnte Henriette Friedberger geb. Frank Jg. 1897 Flucht 1938 Holland interniert Westerbork deportiert 1943 Bergen-Belsen 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63895089",
+   "Q63895091"
+  ],
+  "idx": 147
+ },
+ {
+  "id": "stein-Q63895095",
+  "address": "Maria-Louisen-Straße 94",
+  "coords": [
+   53.587728,
+   10.003642
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Johanna Kannenberg",
+    "inscription": "Hier wohnte Johanna Kannenberg geb. Wohl Jg. 1878 gedemütigt/entrechtet Flucht in den Tod 21.1.1944"
+   }
+  ],
+  "wikidata": [
+   "Q63895095"
+  ],
+  "idx": 148
+ },
+ {
+  "id": "stein-Q63895100",
+  "address": "Maria-Louisen-Straße 96",
+  "coords": [
+   53.587875,
+   10.003794
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Paula Mathiason",
+    "inscription": "Hier wohnte Paula Mathiason geb. Rosenthal Jg. 1876 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63895100"
+  ],
+  "idx": 149
+ },
+ {
+  "id": "stein-Q63895102",
+  "address": "Maria-Louisen-Straße 104",
+  "coords": [
+   53.588661,
+   10.004753
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Friedrich Oettinger",
+    "inscription": "Hier wohnte Dr. Friedrich Oettinger Jg. 1906 Flucht 1933 Holland Flucht in den Tod 16.5.1940 Amsterdam"
+   },
+   {
+    "name": "Elisabeth Oettinger",
+    "inscription": "Hier wohnte Elisabeth Oettinger geb. Oettinger Jg. 1909 Flucht 1933 Holland Flucht in den Tod 16.5.1940 Amsterdam"
+   },
+   {
+    "name": "Ernst Philip Oettinger",
+    "inscription": "Ernst Philip Oettinger Jg. 1939 geboren in Holland mit in den Tod genommen 16.5.1940 Amsterdam"
+   },
+   {
+    "name": "Mechel Hesslein",
+    "inscription": "Hier wohnte Mechel Hesslein Jg. 1874 entrechtet/gedemütigt Flucht in den Tod 21.6.1943"
+   },
+   {
+    "name": "Thomas Martin Oettinger",
+    "inscription": "Thomas Martin Oettinger Jg. 1936 geboren in Holland mit in den Tod genommen 16.5.1940 Amsterdam"
+   }
+  ],
+  "wikidata": [
+   "Q63895102",
+   "Q63895109",
+   "Q63895114",
+   "Q63895118",
+   "Q63895120"
+  ],
+  "idx": 150
+ },
+ {
+  "id": "stein-Q63895125",
+  "address": "Maria-Louisen-Straße 112",
+  "coords": [
+   53.589281,
+   10.005319
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Heinrich Mayer",
+    "inscription": "Hier wohnte Heinrich Mayer Jg. 1866 deportiert 1942 Theresienstadt ermordet 2.12.1942"
+   },
+   {
+    "name": "Heinrich Mayer",
+    "inscription": "Hier wohnte Heinrich Mayer Jg. 1866 deportiert 1942 Theresienstadt ermordet 2.12.1942"
+   },
+   {
+    "name": "Marie Mayer",
+    "inscription": "Hier wohnte Marie Mayer geb. Dehn Jg. 1880 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Marie Mayer",
+    "inscription": "Hier wohnte Marie Mayer geb. Dehn Jg. 1880 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63895125",
+   "Q63895184",
+   "Q97656971",
+   "Q97657234"
+  ],
+  "idx": 151
+ },
+ {
+  "id": "stein-Q63976062",
+  "address": "Sierichstraße 98",
+  "coords": [
+   53.587966,
+   10.002245
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Adolf Blankenstein",
+    "inscription": "Hier wohnte Adolf Blankenstein Jg. 1872 deportiert 1943 Theresienstadt tot 28.3.1943"
+   },
+   {
+    "name": "Paul Winterberger",
+    "inscription": "Hier wohnte Paul Winterberger Jg. 1881 deportiert 1941 Riga-Jungfernhof ermordet 7.1.1942"
+   },
+   {
+    "name": "Rosa Winterberger",
+    "inscription": "Hier wohnte Rosa Winterberger geb. Spangenthal Jg. 1888 deportiert 1941 Ghetto Riga 1944 KZ Stutthof ermordet 2.1.1945"
+   }
+  ],
+  "wikidata": [
+   "Q63976062",
+   "Q138656229",
+   "Q138656251"
+  ],
+  "idx": 152
+ },
+ {
+  "id": "stein-Q63976070",
+  "address": "Sierichstraße 102",
+  "coords": [
+   53.588294,
+   10.002039
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Herbert Siegfried Samson",
+    "inscription": "Hier wohnte Dr. Herbert Siegfried Samson Jg. 1898 Flucht-Holland deportiert 1942 ermordet 5.1.1945 Bergen-Belsen"
+   }
+  ],
+  "wikidata": [
+   "Q63976070"
+  ],
+  "idx": 153
+ },
+ {
+  "id": "stein-Q63976074",
+  "address": "Sierichstraße 108",
+  "coords": [
+   53.588578,
+   10.001803
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alice Hammerschlag",
+    "inscription": "Hier wohnte Alice Hammerschlag geb. Wagner Jg. 1893 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Emil Hammerschlag",
+    "inscription": "Hier wohnte Emil Hammerschlag Jg. 1882 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63976074",
+   "Q63976076"
+  ],
+  "idx": 154
+ },
+ {
+  "id": "stein-Q63976087",
+  "address": "Sierichstraße 110",
+  "coords": [
+   53.588786,
+   10.001653
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Frank Loew",
+    "inscription": "Hier wohnte Frank Loew Jg. 1933 Flucht 1936 Tschechien deportiert 1941 Theresienstadt 1942 Zamosc ermordet"
+   },
+   {
+    "name": "Fritz Loew",
+    "inscription": "Hier wohnte Fritz Loew Jg. 1905 Flucht 1936 Tschechien deportiert 1941 Theresienstadt 1942 Zamosc ermordet"
+   },
+   {
+    "name": "Leonore Susi Loew",
+    "inscription": "Hier wohnte Leonore Susi Loew Jg. 1929 Flucht 1936 Tschechien deportiert 1941 Theresienstadt 1942 Zamosc ermordet"
+   },
+   {
+    "name": "Margot Loew",
+    "inscription": "Hier wohnte Margot Loew geb. Stern Jg. 1907 Flucht 1936 Tschechien deportiert 1941 Theresienstadt 1942 Zamosc ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63976087",
+   "Q63976092",
+   "Q63976095",
+   "Q63976096"
+  ],
+  "idx": 155
+ },
+ {
+  "id": "stein-Q63992278",
+  "address": "Hufnerstraße 40",
+  "coords": [
+   53.586228,
+   10.041764
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Eugen Holland",
+    "inscription": "Hier wohnte Eugen Holland Jg. 1876 deportiert 1943 Theresienstadt ermordet 24.1.1944"
+   },
+   {
+    "name": "Lisette Holland",
+    "inscription": "Hier wohnte Lisette Holland geb. Stock Jg. 1881 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63992278",
+   "Q63992291"
+  ],
+  "idx": 156
+ },
+ {
+  "id": "stein-Q64224637",
+  "address": "Willistraße 12",
+  "coords": [
+   53.586678,
+   10.000036
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Gabriele Kaftal",
+    "inscription": "Hier wohnte Gabriele Kaftal Jg. 1922 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Herbert Kaftal",
+    "inscription": "Hier wohnte Herbert Kaftal Jg. 1894 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Hermann Kaftal",
+    "inscription": "Hier wohnte Hermann Kaftal Jg. 1929 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Margharita Kaftal",
+    "inscription": "Hier wohnte Margharita Kaftal geb. Meier Jg. 1902 deportiert 1941 Minsk ???"
+   }
+  ],
+  "wikidata": [
+   "Q64224637",
+   "Q64224643",
+   "Q64224651",
+   "Q64224660"
+  ],
+  "idx": 157
+ },
+ {
+  "id": "stein-Q64224670",
+  "address": "Willistraße 18",
+  "coords": [
+   53.586936,
+   10.000161
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Hermann Feiner",
+    "inscription": "Hier wohnte Hermann Feiner Jg. 1894 Selbstmord 5.7.1935 in Königstein/Taunus"
+   }
+  ],
+  "wikidata": [
+   "Q64224670"
+  ],
+  "idx": 158
+ },
+ {
+  "id": "stein-Q64224680",
+  "address": "Zesenstraße 11",
+  "coords": [
+   53.588389,
+   10.005933
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Eveline Waschinsky",
+    "inscription": "Hier wohnte Eveline Waschinsky Jg. 1898 deportiert 1943 Theresienstadt 1943 Auschwitz ermordet"
+   },
+   {
+    "name": "Melanie Peters",
+    "inscription": "Hier wohnte Melanie Peters geb. Waschinsky Jg. 1900 deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q64224680",
+   "Q64224686"
+  ],
+  "idx": 159
+ },
+ {
+  "id": "stein-Q64224688",
+  "address": "Zesenstraße 13",
+  "coords": [
+   53.588492,
+   10.006061
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Susanne Wolf",
+    "inscription": "Hier wohnte Susanne Wolf geb. Vogel Jg. 1866 gedemütigt/entrechtet tot 13.7.1942"
+   }
+  ],
+  "wikidata": [
+   "Q64224688"
+  ],
+  "idx": 160
+ },
+ {
+  "id": "stein-Q64224691",
+  "address": "Zesenstraße 15",
+  "coords": [
+   53.588667,
+   10.006222
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Herbert Epstein",
+    "inscription": "Hier wohnte Herbert Epstein Jg. 1892 deportiert 1942 Theresienstadt ermordet 6.12.1942"
+   },
+   {
+    "name": "Hermann Epstein",
+    "inscription": "Hier wohnte Hermann Epstein Jg. 1857 deportiert 1942 Theresienstadt ermordet 28.9.1942"
+   }
+  ],
+  "wikidata": [
+   "Q64224691",
+   "Q64224696"
+  ],
+  "idx": 161
+ },
+ {
+  "id": "stein-Q64441911",
+  "address": "Willistraße 8",
+  "coords": [
+   53.586511,
+   10.000008
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Gabriele Kaftal",
+    "inscription": "Hier wohnte Gabriele Kaftal Jg. 1922 deportiert 1941 Minsk ???"
+   }
+  ],
+  "wikidata": [
+   "Q64441911"
+  ],
+  "idx": 162
+ },
+ {
+  "id": "stein-Q123476491",
+  "address": "Lämmersieth 41",
+  "coords": [
+   53.586406,
+   10.056471
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Emma Knoop",
+    "inscription": "Hier wohnte Emma Knoop Jg. 1870 eingewiesen 1935 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Heilanstalt Am Steinhof/Wien ermordet 25.2.1945"
+   }
+  ],
+  "wikidata": [
+   "Q123476491"
+  ],
+  "idx": 163
+ },
+ {
+  "id": "stein-Q124733121",
+  "address": "Bramfelder Straße 66a",
+  "coords": [
+   53.586112,
+   10.050951
+  ],
+  "district": "barmbek-nord",
+  "people": [
+   {
+    "name": "Clara Choyke",
+    "inscription": "Hier wohnte Clara Choyke geb. Kohn Jg. 1877 deportiert 1942 Theresienstadt ermordet 29.4.1943"
+   },
+   {
+    "name": "Nathan Choyke",
+    "inscription": "Hier wohnte Nathan Choyke Jg. 1871 deportiert 1942 Theresienstadt ermordet 6.1.1944"
+   }
+  ],
+  "wikidata": [
+   "Q124733121",
+   "Q124733127"
+  ],
+  "idx": 164
+ },
+ {
+  "id": "stein-Q131312880",
+  "address": "Opitzstraße 2",
+  "coords": [
+   53.589323,
+   10.005632
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Hermann Hertz Nussbaum",
+    "inscription": "Hier wohnte Hermann Hertz Nussbaum Jg. 1867 deportiert 1942 Theresienstadt ermordet 20.5.1943"
+   },
+   {
+    "name": "Meta Henriette Nussbaum",
+    "inscription": "Hier wohnte Meta Henriette Nussbaum geb. Pfifferling Jg. 1875 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q131312880",
+   "Q131312886"
+  ],
+  "idx": 165
+ },
+ {
+  "id": "stein-Q44200548",
+  "address": "Alsterdorfer Straße 40",
+  "coords": [
+   53.596739,
+   9.997231
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Erika Ilse Etter",
+    "inscription": "Hier wohnte Erika Ilse Etter Jg. 1922 gehenkt 23.4.1945 im KZ Neuengamme"
+   },
+   {
+    "name": "Werner Etter",
+    "inscription": "Hier wohnte Werner Etter Jg. 1913 verhaftet 1943 Zuchthaus Brandenburg enthauptet 19.2.1945"
+   }
+  ],
+  "wikidata": [
+   "Q44200548",
+   "Q63183399"
+  ],
+  "idx": 166
+ },
+ {
+  "id": "stein-Q63183334",
+  "address": "Agnesstraße 2",
+  "coords": [
+   53.581003,
+   10.000461
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Max Bernstein",
+    "inscription": "Hier wohnte Max Bernstein Jg. 1896 verhaftet KZ Fuhlsbüttel KZ Neuengamme ermordet 14.10.1938"
+   }
+  ],
+  "wikidata": [
+   "Q63183334"
+  ],
+  "idx": 167
+ },
+ {
+  "id": "stein-Q63183404",
+  "address": "Alsterdorfer Straße 108",
+  "coords": [
+   53.601328,
+   9.996919
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Cäcilie Bauer",
+    "inscription": "Hier wohnte Cäcilie Bauer geb. Rosenberg Jg. 1871 emigriert Niederlande deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q63183404"
+  ],
+  "idx": 168
+ },
+ {
+  "id": "stein-Q63183414",
+  "address": "Alsterdorfer Straße 113",
+  "coords": [
+   53.600714,
+   9.996417
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bruno Meisel",
+    "inscription": "Hier wohnte Bruno Meisel Jg. 1883 verhaftet Zuchthaus Brandenburg ermordet 13.11.1944"
+   }
+  ],
+  "wikidata": [
+   "Q63183414"
+  ],
+  "idx": 169
+ },
+ {
+  "id": "stein-Q63183469",
+  "address": "Alsterdorfer Straße 125",
+  "coords": [
+   53.601497,
+   9.996575
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Nanette Rosenbaum",
+    "inscription": "Hier wohnte Nanette Rosenbaum geb. Wolf Jg. 1881 deportiert 1941 Riga ermordet"
+   },
+   {
+    "name": "Samuel Rosenbaum",
+    "inscription": "Hier wohnte Samuel Rosenbaum Jg. 1878 deportiert 1941 Riga ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63183469",
+   "Q63183501"
+  ],
+  "idx": 170
+ },
+ {
+  "id": "stein-Q63183954",
+  "address": "Blumenstraße 52",
+  "coords": [
+   53.581603,
+   10.001219
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Paul Löwenthal",
+    "inscription": "Hier wohnte Paul Löwenthal Jg. 1872 gedemütigt/entrechtet tot 5.8.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63183954"
+  ],
+  "idx": 171
+ },
+ {
+  "id": "stein-Q63190263",
+  "address": "Efeuweg 14",
+  "coords": [
+   53.599944,
+   9.998308
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Paula Weinberg",
+    "inscription": "Hier wohnte Paula Weinberg geb. Plaut Jg. 1882 deportiert 1941 Riga ???"
+   }
+  ],
+  "wikidata": [
+   "Q63190263"
+  ],
+  "idx": 172
+ },
+ {
+  "id": "stein-Q63190372",
+  "address": "Efeuweg 16",
+  "coords": [
+   53.599933,
+   9.998539
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alice Baum",
+    "inscription": "Hier wohnte Alice Baum geb. Haarburger Jg. 1873 gedemütigt/entrechtet Flucht in den Tod 15.10.1941"
+   }
+  ],
+  "wikidata": [
+   "Q63190372"
+  ],
+  "idx": 173
+ },
+ {
+  "id": "stein-Q63190393",
+  "address": "Fernsicht",
+  "coords": [
+   53.580936,
+   10.001233
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ilka Feis",
+    "inscription": "Hier wohnte Ilka Feis geb. Hess Jg. 1896 verhaftet 1941 KZ Fuhlsbüttel deportiert 1941 Łodz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63190393"
+  ],
+  "idx": 174
+ },
+ {
+  "id": "stein-Q63807989",
+  "address": "Hudtwalckerstraße 28",
+  "coords": [
+   53.594303,
+   9.998203
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Benjamin Martin Josephs",
+    "inscription": "Hier wohnte Benjamin Martin Josephs Jg. 1886 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Gidel Julie Josephs",
+    "inscription": "Hier wohnte Gidel Julie Josephs geb. Goldberg Jg. 1894 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Hannah Josephs",
+    "inscription": "Hier wohnte Hannah Josephs Jg. 1923 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63807989",
+   "Q63808017",
+   "Q63808054"
+  ],
+  "idx": 175
+ },
+ {
+  "id": "stein-Q63808109",
+  "address": "Hudtwalckerstraße 35",
+  "coords": [
+   53.594522,
+   9.997914
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Gertrud Leiter",
+    "inscription": "Hier wohnte Gertrud Leiter Jg. 1893 deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q63808109"
+  ],
+  "idx": 176
+ },
+ {
+  "id": "stein-Q63846589",
+  "address": "Lattenkamp 68",
+  "coords": [
+   53.599447,
+   9.995458
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Erna Pauline Stadtaus",
+    "inscription": "Hier wohnte Erna Pauline Stadtaus geb. Worms Jg. 1886 deportiert 1942 Auschwitz ermordet 11.1.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63846589"
+  ],
+  "idx": 177
+ },
+ {
+  "id": "stein-Q63846679",
+  "address": "Lattenkamp 82",
+  "coords": [
+   53.600708,
+   9.995242
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Jacob Cohn",
+    "inscription": "Hier wohnte Jacob Cohn Jg. 1883 deportiert 1941 Riga ermordet"
+   },
+   {
+    "name": "Julia Cohn",
+    "inscription": "Hier wohnte Julia Cohn geb. Cohen Jg. 1888 deportiert 1941 Riga ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63846679",
+   "Q63859128"
+  ],
+  "idx": 178
+ },
+ {
+  "id": "stein-Q63894286",
+  "address": "Lattenkampstieg 4",
+  "coords": [
+   53.597472,
+   9.995353
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Amalie Paasch",
+    "inscription": "Hier wohnte Amalie Paasch geb. Stock Jg. 1882 deportiert ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q63894286"
+  ],
+  "idx": 179
+ },
+ {
+  "id": "stein-Q63969698",
+  "address": "Rehmstraße 16",
+  "coords": [
+   53.597972,
+   9.998633
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Diedrich Johannes von der Reith",
+    "inscription": "Hier wohnte Diedrich Johannes von der Reith Jg. 1900 verhaftet 1933 KZ Fuhlsbüttel gehenkt 12.12.1933 UG Hamburg"
+   },
+   {
+    "name": "Erwin Christen",
+    "inscription": "Hier wohnte Erwin Christen Jg. 1902 eingewiesen 1929 Alsterdorfer Anstalten ‚verlegt‘ 10.8.1943 Heilanstalt Mainkofen ermordet 7.3.1944"
+   }
+  ],
+  "wikidata": [
+   "Q63969698",
+   "Q63969706"
+  ],
+  "idx": 180
+ },
+ {
+  "id": "stein-Q95214529",
+  "address": "Alsterdorfer Straße 8",
+  "coords": [
+   53.595478,
+   9.998239
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Paul Buhrmeister",
+    "inscription": "Hier wohnte Paul Buhrmeister Jg. 1892 eingewiesen 1938 Alsterdorfer Anstalten 1943 Heilanstalt Eichberg ‚verlegt‘ 12.10.1943 Heilanstalt Hadamar ermordet 29.10.1943"
+   }
+  ],
+  "wikidata": [
+   "Q95214529"
+  ],
+  "idx": 181
+ },
+ {
+  "id": "stein-Q106774811",
+  "address": "Braamkamp 12",
+  "coords": [
+   53.601819,
+   9.997406
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bruno Otto Fries",
+    "inscription": "Hier wohnte Bruno Otto Fries Jg. 1885 ‚Schutzhaft‘ 1943 Gefängnis Fuhlsbüttel deportiert Auschwitz ermordet 24.8.1943"
+   }
+  ],
+  "wikidata": [
+   "Q106774811"
+  ],
+  "idx": 182
+ },
+ {
+  "id": "stein-Q114943983",
+  "address": "Hudtwalckertwiete 8",
+  "coords": [
+   53.594303,
+   9.998203
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Rahel Brüh",
+    "inscription": "Hier wohnte Rahel Brüh geb. Schapiro Jg. 1915 Flucht 1939 Lettland Schicksal unbekannt"
+   },
+   {
+    "name": "Simon Brüh",
+    "inscription": "Hier wohnte Simon Brüh Jg. 1907 Flucht 1939 Lettland Schicksal unbekannt"
+   },
+   {
+    "name": "Tamara Brüh",
+    "inscription": "Hier wohnte Tamara Brüh Jg. 1937 Flucht 1939 Lettland Schicksal unbekannt"
+   }
+  ],
+  "wikidata": [
+   "Q114943983",
+   "Q114944011",
+   "Q114944036"
+  ],
+  "idx": 183
+ },
+ {
+  "id": "stein-Q117464872",
+  "address": "Lattenkamp 84",
+  "coords": [
+   53.600826,
+   9.995355
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Hans Koetzer",
+    "inscription": "Hier wohnte Hans Koetzer Jg. 1915 eingewiesen 1926 Alsterdorfer Anstalten ‚verlegt‘ 1938 Het Apeldoornsche Bosch deportiert 1943 Auschwitz ermordet 25.1.1943"
+   }
+  ],
+  "wikidata": [
+   "Q117464872"
+  ],
+  "idx": 184
+ },
+ {
+  "id": "stein-Q120687857",
+  "address": "Rehmstraße 9",
+  "coords": [
+   53.597418,
+   9.998531
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Heinrich Gunkel",
+    "inscription": "Hier wohnte Heinrich Gunkel Jg. 1922 eingewiesen 1939 Alsterdorfer Anstalten Heilanstalt Langenhorn ‚verlegt‘ 27.11.1941 Heilanstalt Tiegenhof ermordet 3.2.1943"
+   }
+  ],
+  "wikidata": [
+   "Q120687857"
+  ],
+  "idx": 185
+ },
+ {
+  "id": "stein-Q120687966",
+  "address": "Rehmstraße 11",
+  "coords": [
+   53.597552,
+   9.998513
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Maria Bockentin",
+    "inscription": "Hier wohnte Maria Bockentin geb. Theilen Jg. 1888 eingewiesen 1935 Ricklinger Anstalten ‚verlegt‘ 25.11.1941 Heilanstalt Pfafferode ermordet 8.12.1943"
+   }
+  ],
+  "wikidata": [
+   "Q120687966"
+  ],
+  "idx": 186
+ },
+ {
+  "id": "stein-Q135263900",
+  "address": "Lattenkamp 15",
+  "coords": [
+   53.597839,
+   9.995864
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Carl Burchard",
+    "inscription": "Hier wohnte Carl Burchard Jg. 1871 deportiert 1942 Theresienstadt ermordet 13.9.1942"
+   },
+   {
+    "name": "Emma Burchard",
+    "inscription": "Hier wohnte Emma Burchard geb. Burchard Jg. 1877 deportiert 1942 Theresienstadt ermordet 25.1.1943"
+   }
+  ],
+  "wikidata": [
+   "Q135263900",
+   "Q135263902"
+  ],
+  "idx": 187
+ },
+ {
+  "id": "stein-Q123325982",
+  "address": "Braamkamp 39",
+  "coords": [
+   53.600742,
+   10.003386
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Arnold Milkuschütz",
+    "inscription": "Hier wohnte Arnold Milkuschütz Jg. 1878 deportiert 1941 Ghetto Minsk ermordet"
+   },
+   {
+    "name": "Gertrud Milkuschütz",
+    "inscription": "Hier wohnte Gertrud Milkuschütz geb. Hirsch Jg. 1879 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Ludwig Milkuschütz",
+    "inscription": "Hier wohnte Ludwig Milkuschütz Jg. 1875 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Martha Milkuschütz",
+    "inscription": "Hier wohnte Martha Milkuschütz geb. Glogau Jg. 1866 deportiert 1942 Theresienstadt ermordet 29.8.1942"
+   }
+  ],
+  "wikidata": [
+   "Q123325982",
+   "Q123326060",
+   "Q123326091",
+   "Q123325942"
+  ],
+  "idx": 188
+ },
+ {
+  "id": "stein-Q132203046",
+  "address": "Großheidestraße 35",
+  "coords": [
+   53.587238,
+   10.02416
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ana Brahm",
+    "inscription": "Hier wohnte Ana Brahm Jg. 1859 gedemütigt/entrechtet Flucht in den Tod 20. Juli 1942"
+   },
+   {
+    "name": "Hans Gustav Müller",
+    "inscription": "Hier wohnte Hans Gustav Müller Jg. 1892 gedemütigt/entrechtet versteckt überlebt"
+   },
+   {
+    "name": "Margarethe Müller",
+    "inscription": "Hier wohnte Margarethe Müller geb. Matz Jg. 1897 ausgegrenzt/drangsaliert überlebt"
+   }
+  ],
+  "wikidata": [
+   "Q132203046",
+   "Q132203096",
+   "Q132203126"
+  ],
+  "idx": 189
+ },
+ {
+  "id": "stein-Q140046560",
+  "address": "Novalisweg 24a",
+  "coords": [
+   53.586834,
+   10.023907
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Charlotte Kranzler",
+    "inscription": "Hier wohnte Charlotte Kranzler geb. Ehmann Jg. 1912 im Widerstand/KPD inhaftiert 1934–1936 Frauengefängnis Lauerhof Flucht 9.11.1938 USA"
+   },
+   {
+    "name": "Ille Wendt",
+    "inscription": "Hier wohnte Ille Wendt geb. Bertha Ruppe Jg. 1908 im Widerstand/KPD seit 1933 mehrmals verhaftet Gefängnis Hütten Gestapo Stadthaus entlassen 1939"
+   },
+   {
+    "name": "Walter Wendt",
+    "inscription": "Hier wohnte Walter Wendt Jg. 1901 im Widerstand/KPD mehrmals verhaftet KZ Fuhlsbüttel UG Holstenglacis schwer misshandelt entlassen 10.3.1939"
+   }
+  ],
+  "wikidata": [
+   "Q140046560",
+   "Q140046626",
+   "Q140046699"
+  ],
+  "idx": 190
+ },
+ {
+  "id": "stein-Q44199687",
+  "address": "Barmbeker Straße 93",
+  "coords": [
+   53.590422,
+   10.010892
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Rudolf Klug",
+    "inscription": "Hier wohnte Rudolf Klug Jg. 1905 im Widerstand mehrmals verhaftet 1937 KZ Sachsenhausen verurteilt wegen ‚Landesverrat‘ erschossen 18.3.1944 bei Narvik"
+   }
+  ],
+  "wikidata": [
+   "Q44199687"
+  ],
+  "idx": 191
+ },
+ {
+  "id": "stein-Q63183532",
+  "address": "Barmbeker Straße 127",
+  "coords": [
+   53.591085,
+   10.008118
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Anna Levy",
+    "inscription": "Hier wohnte Anna Levy Jg. 1864 gedemütigt/entrechtet Flucht in den Tod 15.7.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63183532"
+  ],
+  "idx": 192
+ },
+ {
+  "id": "stein-Q63183537",
+  "address": "Barmbeker Straße 177",
+  "coords": [
+   53.592764,
+   10.001103
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Hermann Strübing",
+    "inscription": "Hier wohnte Hermann Strübing Jg. 1891 verhaftet KZ Fuhlsbüttel ermordet 27.11.1936"
+   }
+  ],
+  "wikidata": [
+   "Q63183537"
+  ],
+  "idx": 193
+ },
+ {
+  "id": "stein-Q63183540",
+  "address": "Bei der Matthäuskirche 5",
+  "coords": [
+   53.589008,
+   10.009642
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Walter Oettinger",
+    "inscription": "Hier wohnte Walter Oettinger Jg. 1905 Flucht 1939 Holland versteckt ermordet 24.5.1943 Amsterdam"
+   }
+  ],
+  "wikidata": [
+   "Q63183540"
+  ],
+  "idx": 194
+ },
+ {
+  "id": "stein-Q63183546",
+  "address": "Beim Jacobjstift 5",
+  "coords": [
+   53.600528,
+   10.000631
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Minna Behrens",
+    "inscription": "Hier wohnte Minna Behrens geb. Jacobsohn Jg. 1901 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Ruth-Bella Behrens",
+    "inscription": "Hier wohnte Ruth-Bella Behrens Jg. 1932 deportiert 1941 Minsk ermordet"
+   },
+   {
+    "name": "Siegfried Behrens",
+    "inscription": "Hier wohnte Siegfried Behrens Jg. 1898 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63183546",
+   "Q63183549",
+   "Q63183668"
+  ],
+  "idx": 195
+ },
+ {
+  "id": "stein-Q63183996",
+  "address": "Braamkamp 36",
+  "coords": [
+   53.601231,
+   10.000861
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alice Ascher",
+    "inscription": "Hier wohnte Alice Ascher Jg. 1880 deportiert 1941 ermordet in Riga"
+   },
+   {
+    "name": "Emilie Ascher",
+    "inscription": "Hier wohnte Emilie Ascher geb. Blumenfeld Jg. 1858 entrechtet/gedemütigt Flucht in den Tod 19.7.1942"
+   },
+   {
+    "name": "Margot Doctor",
+    "inscription": "Hier wohnte Margot Doctor Jg. 1897 deportiert 1941 Riga ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63183996",
+   "Q63184030",
+   "Q63184050"
+  ],
+  "idx": 196
+ },
+ {
+  "id": "stein-Q63184063",
+  "address": "Braamkamp 38",
+  "coords": [
+   53.601142,
+   10.001364
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Marie Fraenkel",
+    "inscription": "Hier wohnte Marie Fraenkel geb. Deutsch Jg. 1861 deportiert 1943 Theresienstadt tot 12.10.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63184063"
+  ],
+  "idx": 197
+ },
+ {
+  "id": "stein-Q63184066",
+  "address": "Braamkamp 40",
+  "coords": [
+   53.6011,
+   10.0015
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Elisabeth Melchior",
+    "inscription": "Hier wohnte Elisabeth Melchior geb. Friedburg Jg. 1875 deportiert 1941 ermordet in Riga"
+   }
+  ],
+  "wikidata": [
+   "Q63184066"
+  ],
+  "idx": 198
+ },
+ {
+  "id": "stein-Q63190375",
+  "address": "Efeuweg 39",
+  "coords": [
+   53.599939,
+   10.001619
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Pauline Mathilde Neubauer",
+    "inscription": "Hier wohnte Pauline Mathilde Neubauer geb. Hoffa Jg. 1870 gedemütigt/entrechtet Flucht in den Tod 7.1.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63190375"
+  ],
+  "idx": 199
+ },
+ {
+  "id": "stein-Q63190383",
+  "address": "Eppendorfer Stieg 11",
+  "coords": [
+   53.593042,
+   10.000439
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Anna Seidner",
+    "inscription": "Hier wohnte Anna Seidner geb. Peschek Jg. 1885 deportiert 1941 Minsk ???"
+   },
+   {
+    "name": "Emil Seidner",
+    "inscription": "Hier wohnte Emil Seidner Jg. 1879 deportiert 1941 Minsk ???"
+   }
+  ],
+  "wikidata": [
+   "Q63190383",
+   "Q63190388"
+  ],
+  "idx": 200
+ },
+ {
+  "id": "stein-Q63190412",
+  "address": "Flemingstraße 3",
+  "coords": [
+   53.592031,
+   10.000253
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Braina Horenstein",
+    "inscription": "Hier wohnte Braina Horenstein geb. Schechter Jg. 1870 deportiert 1942 Theresienstadt 1943 Auschwitz ermordet"
+   },
+   {
+    "name": "Moses Horenstein",
+    "inscription": "Hier wohnte Moses Horenstein Jg. 1860 deportiert 1942 Theresienstadt ermordet 23.11.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63190412",
+   "Q63190420"
+  ],
+  "idx": 201
+ },
+ {
+  "id": "stein-Q63190425",
+  "address": "Flemingstraße 12",
+  "coords": [
+   53.59185,
+   10.001189
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Conrad Warnecke",
+    "inscription": "Hier wohnte Conrad Warnecke Jg. 1877 verhaftet 1940 KZ Fuhlsbüttel tot an Haftfolgen 30.7.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63190425"
+  ],
+  "idx": 202
+ },
+ {
+  "id": "stein-Q63190470",
+  "address": "Georg-Thielen-Gasse 2",
+  "coords": [
+   53.586878,
+   10.031119
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Max Kupferbach",
+    "inscription": "Hier wohnte Max Kupferbach Jg. 1880 verhaftet 1939 KZ Fuhlsbüttel deportiert 1941 ermordet in Minsk"
+   }
+  ],
+  "wikidata": [
+   "Q63190470"
+  ],
+  "idx": 203
+ },
+ {
+  "id": "stein-Q63203894",
+  "address": "Goldbekufer 40",
+  "coords": [
+   53.588472,
+   10.019497
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Samuel Levy",
+    "inscription": "Hier wohnte Samuel Levy Jg. 1857 entrechtet/gedemütigt Flucht in den Tod 19.12.1941"
+   }
+  ],
+  "wikidata": [
+   "Q63203894"
+  ],
+  "idx": 204
+ },
+ {
+  "id": "stein-Q63203897",
+  "address": "Goldbekufer 42",
+  "coords": [
+   53.588597,
+   10.019797
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Flora Blumenthal",
+    "inscription": "Hier wohnte Flora Blumenthal geb. Lewy Jg. 1884 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Gella Alice Katz",
+    "inscription": "Hier wohnte Gella Alice Katz geb. Wagner Jg. 1882 Flucht 1933 Frankreich Holland interniert Westerbork deportiert 1943 Sobibor ermordet"
+   },
+   {
+    "name": "Marcus Max Blumenthal",
+    "inscription": "Hier wohnte Marcus Max Blumenthal Jg. 1873 deportiert 1942 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Richard Katz",
+    "inscription": "Hier wohnte Richard Katz Jg. 1882 Flucht 1933 Frankreich Holland interniert Westerbork deportiert 1943 Sobibor ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63203897",
+   "Q63203904",
+   "Q63203912",
+   "Q63203915"
+  ],
+  "idx": 205
+ },
+ {
+  "id": "stein-Q63203962",
+  "address": "Gottschedstraße 4",
+  "coords": [
+   53.587981,
+   10.012253
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Clara Bacher",
+    "inscription": "Hier wohnte Clara Bacher geb. Haurwitz Jg. 1898 deportiert 1942 Theresienstadt 1944 Auschwitz ???"
+   },
+   {
+    "name": "Dr. Walter Bacher",
+    "inscription": "Hier wohnte Dr. Walter Bacher Jg. 1893 deportiert 1942 Theresienstadt 1944 Auschwitz ???"
+   }
+  ],
+  "wikidata": [
+   "Q63203962",
+   "Q63203965"
+  ],
+  "idx": 206
+ },
+ {
+  "id": "stein-Q63203975",
+  "address": "Grasweg 38",
+  "coords": [
+   53.592828,
+   10.004539
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Elsa Delbanco",
+    "inscription": "Hier wohnte Elsa Delbanco geb. Löwinberg Jg. 1879 gedemütigt/entrechtet Flucht in den Tod 17.11.1941"
+   }
+  ],
+  "wikidata": [
+   "Q63203975"
+  ],
+  "idx": 207
+ },
+ {
+  "id": "stein-Q63807175",
+  "address": "Gryphiusstraße 1",
+  "coords": [
+   53.591053,
+   10.000203
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bertha Lewig",
+    "inscription": "Hier wohnte Bertha Lewig geb. Cohn Jg. 1867 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63807175"
+  ],
+  "idx": 208
+ },
+ {
+  "id": "stein-Q63807224",
+  "address": "Gryphiusstraße 5",
+  "coords": [
+   53.591031,
+   10.000881
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Gertrud Ergas",
+    "inscription": "Hier wohnte Gertrud Ergas geb. Cohn Jg. 1885 deportiert 1941 ermordet in Minsk"
+   },
+   {
+    "name": "Ralph Ergas",
+    "inscription": "Hier wohnte Ralph Ergas Jg. 1918 ‚Schutzhaft‘ 1938 Sachsenhausen Flucht 1939 USA"
+   }
+  ],
+  "wikidata": [
+   "Q63807224",
+   "Q63807279"
+  ],
+  "idx": 209
+ },
+ {
+  "id": "stein-Q63807319",
+  "address": "Gryphiusstraße 7",
+  "coords": [
+   53.591061,
+   10.001047
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Anna Wallach",
+    "inscription": "Hier wohnte Anna Wallach geb. Davidsohn Jg. 1881 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   },
+   {
+    "name": "Benjamin Wallach",
+    "inscription": "Hier wohnte Benjamin Wallach Jg. 1867 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   },
+   {
+    "name": "Siegfried Berliner",
+    "inscription": "Hier wohnte Siegfried Berliner Jg. 1871 gedemütigt/entrechtet Flucht in den Tod 21.6.1943"
+   }
+  ],
+  "wikidata": [
+   "Q63807319",
+   "Q115302923",
+   "Q115303355"
+  ],
+  "idx": 210
+ },
+ {
+  "id": "stein-Q63807355",
+  "address": "Gryphiusstraße 8",
+  "coords": [
+   53.590917,
+   10.001078
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Edith Benndorf",
+    "inscription": "Hier wohnte Edith Benndorf geb. Guttmann Jg. 1897 deportiert 1942 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63807355"
+  ],
+  "idx": 211
+ },
+ {
+  "id": "stein-Q63807404",
+  "address": "Gryphiusstraße 12",
+  "coords": [
+   53.590931,
+   10.001833
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Charlotte Friedmann",
+    "inscription": "Hier wohnte Dr. Charlotte Friedmann geb. Sackur Jg. 1875 deportiert 1941 ermordet in Łodz/Litzmannstadt"
+   }
+  ],
+  "wikidata": [
+   "Q63807404"
+  ],
+  "idx": 212
+ },
+ {
+  "id": "stein-Q63807446",
+  "address": "Hauersweg 6",
+  "coords": [
+   53.586933,
+   10.030281
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alfred Kupferbach",
+    "inscription": "Hier wohnte Alfred Kupferbach Jg. 1889 Flucht 1936 Holland Frankreich interniert Récébédou tot 18.2.1942"
+   }
+  ],
+  "wikidata": [
+   "Q63807446"
+  ],
+  "idx": 213
+ },
+ {
+  "id": "stein-Q63807489",
+  "address": "Hauersweg 7",
+  "coords": [
+   53.586922,
+   10.030114
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Adele Massé",
+    "inscription": "Hier wohnte Adele Massé Jg. 1889 deportiert 1941 Riga ermordet"
+   },
+   {
+    "name": "Gretchen Massé",
+    "inscription": "Hier wohnte Gretchen Massé Jg. 1883 deportiert 1941 Riga ermordet"
+   },
+   {
+    "name": "Margot Massé",
+    "inscription": "Hier wohnte Margot Massé Jg. 1895 deportiert 1941 Riga ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63807489",
+   "Q63807517",
+   "Q63807541"
+  ],
+  "idx": 214
+ },
+ {
+  "id": "stein-Q63807568",
+  "address": "Hauersweg 16",
+  "coords": [
+   53.587489,
+   10.030139
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Dr. Dorothea Bernstein",
+    "inscription": "Hier wohnte Dr. Dorothea Bernstein Jg. 1893 deportiert 1941 Łodz 1942 weiterdeportiert ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63807568"
+  ],
+  "idx": 215
+ },
+ {
+  "id": "stein-Q63807608",
+  "address": "Hauersweg 18",
+  "coords": [
+   53.587747,
+   10.030081
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Martha David",
+    "inscription": "Hier wohnte Martha David geb. Brach Jg. 1871 deportiert 1943 Theresienstadt tot 12.10.1944"
+   }
+  ],
+  "wikidata": [
+   "Q63807608"
+  ],
+  "idx": 216
+ },
+ {
+  "id": "stein-Q63807667",
+  "address": "Heidberg 64",
+  "coords": [
+   53.589372,
+   10.013597
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Margaretha Rothe",
+    "inscription": "Hier wohnte Margaretha Rothe Jg. 1919 Weiße Rose ermordet am 15.4.1945 im Gefängnis Leipzig-Moisdorf"
+   },
+   {
+    "name": "Margaretha Rothe",
+    "inscription": "Hier wohnte Margaretha Rothe Jg. 1919 im Widerstand Weiße Rose verhaftet 1943 Gefängnis Leipzig tot an Haftfolgen 15.4.1945 Krankenh. Leipzig-Dösen"
+   }
+  ],
+  "wikidata": [
+   "Q63807667",
+   "Q98221945"
+  ],
+  "idx": 217
+ },
+ {
+  "id": "stein-Q63846208",
+  "address": "Krochmannstraße 13",
+  "coords": [
+   53.597814,
+   10.002044
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Hermann Löwenstein",
+    "inscription": "Hier wohnte Hermann Löwenstein Jg. 1873 deportiert 1942 Theresienstadt 1942 Minsk ermordet"
+   },
+   {
+    "name": "Jenny Löwenstein",
+    "inscription": "Hier wohnte Jenny Löwenstein geb. Rose Jg. 1880 deportiert 1942 Theresienstadt 1942 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63846208",
+   "Q63846238"
+  ],
+  "idx": 218
+ },
+ {
+  "id": "stein-Q63846242",
+  "address": "Krochmannstraße 68",
+  "coords": [
+   53.602072,
+   10.004583
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alice Gersztenzang",
+    "inscription": "Hier wohnte Alice Gersztenzang geb. Jacoby Jg. 1905 deportiert 1941 Łodz ermordet 23.5.1942"
+   },
+   {
+    "name": "Helga Anne Gersztenzang",
+    "inscription": "Hier wohnte Helga Anne Gersztenzang Jg. 1934 deportiert 1941 Łodz ermordet"
+   },
+   {
+    "name": "Szlama Chaim Gersztenzang",
+    "inscription": "Hier wohnte Szlama Chaim Gersztenzang Jg. 1898 deportiert 1941 Łodz 1942 Chelmno ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63846242",
+   "Q63846285",
+   "Q63846321"
+  ],
+  "idx": 219
+ },
+ {
+  "id": "stein-Q63846362",
+  "address": "Krochmannstraße 72",
+  "coords": [
+   53.602125,
+   10.004797
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Edith Schickler",
+    "inscription": "Hier wohnte Edith Schickler Jg. 1911 deportiert 1943 Auschwitz ???"
+   },
+   {
+    "name": "Fanny Schickler",
+    "inscription": "Hier wohnte Fanny Schickler Jg. 1913 deportiert 1943 Auschwitz ???"
+   }
+  ],
+  "wikidata": [
+   "Q63846362",
+   "Q63846435"
+  ],
+  "idx": 220
+ },
+ {
+  "id": "stein-Q63846509",
+  "address": "Krohnskamp 72",
+  "coords": [
+   53.589281,
+   10.01195
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Erich Koppel",
+    "inscription": "Hier wohnte Erich Koppel Jg. 1914 deportiert 1942 Auschwitz ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63846509"
+  ],
+  "idx": 221
+ },
+ {
+  "id": "stein-Q63894235",
+  "address": "Efeuweg 56",
+  "coords": [
+   53.599828,
+   10.002253
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Clara Emma Olshausen",
+    "inscription": "Hier wohnte Clara Emma Olshausen geb. Hirschfeld Jg. 1864 deportiert 1944 Theresienstadt ermordet 18.1.1944"
+   }
+  ],
+  "wikidata": [
+   "Q63894235"
+  ],
+  "idx": 222
+ },
+ {
+  "id": "stein-Q63895279",
+  "address": "Maria-Louisen-Straße 122",
+  "coords": [
+   53.591197,
+   10.006617
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ferdinand Isenberg",
+    "inscription": "Hier wohnte Ferdinand Isenberg Jg. 1875 verhaftet 15.2.1939 KZ Fuhlsbüttel gedemütigt/entrechtet Flucht in den Tod 18.2.1939"
+   }
+  ],
+  "wikidata": [
+   "Q63895279"
+  ],
+  "idx": 223
+ },
+ {
+  "id": "stein-Q63969673",
+  "address": "Novalisweg 17",
+  "coords": [
+   53.586983,
+   10.02305
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Albert Rosenberg",
+    "inscription": "Hier wohnte Albert Rosenberg Jg. 1869 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   },
+   {
+    "name": "Regina Rosenberg",
+    "inscription": "Hier wohnte Regina Rosenberg geb. Jacobsohn Jg. 1880 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63969673",
+   "Q63969680"
+  ],
+  "idx": 224
+ },
+ {
+  "id": "stein-Q63969685",
+  "address": "Poßmoorweg 45",
+  "coords": [
+   53.587922,
+   10.013086
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Sophie Schoop",
+    "inscription": "Hier wohnte Sophie Schoop geb. Tisch Jg. 1875 verhaftet 1943 deportiert 1944 Auschwitz ermordet 3.1.1945"
+   }
+  ],
+  "wikidata": [
+   "Q63969685"
+  ],
+  "idx": 225
+ },
+ {
+  "id": "stein-Q63975547",
+  "address": "Semperstraße 67",
+  "coords": [
+   53.587572,
+   10.019628
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Henriette Arndt",
+    "inscription": "Hier wohnte Henriette Arndt Jg. 1892 deportiert 1941 Łodz weiterdeportiert 1942 ???"
+   }
+  ],
+  "wikidata": [
+   "Q63975547"
+  ],
+  "idx": 226
+ },
+ {
+  "id": "stein-Q63976105",
+  "address": "Sierichstraße 127",
+  "coords": [
+   53.591144,
+   9.999522
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ilse Windesheim",
+    "inscription": "Hier wohnte Ilse Windesheim Jg. 1922 verhaftet 1941 KZ Fuhlsbüttel deportiert 1942 Trawniki ermordet"
+   },
+   {
+    "name": "Leonie Windesheim",
+    "inscription": "Hier wohnte Leonie Windesheim geb. Silberberg Jg. 1893 verhaftet 1941 KZ Fuhlsbüttel deportiert 1942 Trawniki ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63976105",
+   "Q63976126"
+  ],
+  "idx": 227
+ },
+ {
+  "id": "stein-Q63976152",
+  "address": "Sierichstraße 132",
+  "coords": [
+   53.59065,
+   10.000186
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Fanny Harrison",
+    "inscription": "Hier wohnte Fanny Harrison geb. Sternberg Jg. 1878 deportiert 1942 ermordet in Auschwitz"
+   },
+   {
+    "name": "Henriette Liebermann",
+    "inscription": "Hier wohnte Henriette Liebermann geb. Sanders Jg. 1878 deportiert 1941 Łodz/Litzmannstadt ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q63976152",
+   "Q134732112"
+  ],
+  "idx": 228
+ },
+ {
+  "id": "stein-Q64176492",
+  "address": "Sierichstraße 140",
+  "coords": [
+   53.591694,
+   9.999422
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Ellen Hammerschlag",
+    "inscription": "Hier wohnte Ellen Hammerschlag Jg. 1929 deportiert 1943 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Herta Hammerschlag",
+    "inscription": "Hier wohnte Herta Hammerschlag geb. Magnus Jg. 1907 deportiert 1943 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Inge Hammerschlag",
+    "inscription": "Hier wohnte Inge Hammerschlag Jg. 1933 deportiert 1943 Theresienstadt 1944 Auschwitz ermordet"
+   },
+   {
+    "name": "Otto Hammerschlag",
+    "inscription": "Hier wohnte Otto Hammerschlag Jg. 1900 Flucht 1939 Belgien deportiert 1942 Auschwitz ermordet 30.10.1942"
+   }
+  ],
+  "wikidata": [
+   "Q64176492",
+   "Q64176501",
+   "Q64176504",
+   "Q64176515"
+  ],
+  "idx": 229
+ },
+ {
+  "id": "stein-Q64224600",
+  "address": "Stammannstraße 27",
+  "coords": [
+   53.587336,
+   10.024919
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Hertha Feiner",
+    "inscription": "Hier wohnte Hertha Feiner Jg. 1896 deportiert 1943 Flucht in den Tod im Zug nach Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q64224600"
+  ],
+  "idx": 230
+ },
+ {
+  "id": "stein-Q64224607",
+  "address": "Timmermannstraße 16",
+  "coords": [
+   53.597919,
+   10.000361
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Helga Heidelmann",
+    "inscription": "Hier wohnte Helga Heidelmann ermordet 3.11.1943 ‚Heilanstalt‘ Wien"
+   }
+  ],
+  "wikidata": [
+   "Q64224607"
+  ],
+  "idx": 231
+ },
+ {
+  "id": "stein-Q64774502",
+  "address": "Semperstraße 87",
+  "coords": [
+   53.588544,
+   10.021686
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Betty Mannheim",
+    "inscription": "Hier wohnte Betty Mannheim Jg. 1887 eingewiesen 1936 Heilanstalt Langenhorn ‚verlegt‘ 23.9.1940 Brandenburg ermordet 23.9.1940 ‚Aktion T4‘"
+   }
+  ],
+  "wikidata": [
+   "Q64774502"
+  ],
+  "idx": 232
+ },
+ {
+  "id": "stein-Q66741421",
+  "address": "Wiesendamm 145",
+  "coords": [
+   53.589794,
+   10.01645
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Paula Henriette Meyer",
+    "inscription": "Hier wohnte Paula Henriette Meyer geb. Heymann Jg. 1878 deportiert 1942 ermordet in Auschwitz"
+   }
+  ],
+  "wikidata": [
+   "Q66741421"
+  ],
+  "idx": 233
+ },
+ {
+  "id": "stein-Q76407298",
+  "address": "Maria-Louisen-Straße 120",
+  "coords": [
+   53.590953,
+   10.006447
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bella Stern",
+    "inscription": "Hier wohnte Bella Stern geb. Abenheimer Jg. 1867 Flucht 1938 Italien USA"
+   },
+   {
+    "name": "Leo Liebmann Stern",
+    "inscription": "Hier wohnte Leo Liebmann Stern Jg. 1858 Flucht 1938 Italien USA"
+   }
+  ],
+  "wikidata": [
+   "Q76407298",
+   "Q76407467"
+  ],
+  "idx": 234
+ },
+ {
+  "id": "stein-Q95214667",
+  "address": "Eppendorfer Stieg 6",
+  "coords": [
+   53.592503,
+   10.000142
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Adolf Goetz",
+    "inscription": "Hier wohnte Adolf Goetz Jg. 1876 deportiert 1941 Łodz/Litzmannstadt ermordet 18.2.1944"
+   },
+   {
+    "name": "Margarete Goetz",
+    "inscription": "Hier wohnte Margarete Goetz geb. Rothschild Jg. 1879 deportiert 1941 Łodz/Litzmannstadt 1942 Chelmno/Kulmhof ermordet Mai 1942"
+   }
+  ],
+  "wikidata": [
+   "Q95214667",
+   "Q95214783"
+  ],
+  "idx": 235
+ },
+ {
+  "id": "stein-Q95215030",
+  "address": "Grasweg 8",
+  "coords": [
+   53.592894,
+   10.002731
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Emma Lucie Kahl",
+    "inscription": "Hier wohnte Emma Lucie Kahl geb. Woitschach Jg. 1878 eingewiesen 1939 Alsterdorfer Anstalten Heilanstalt Langenhorn ‚verlegt‘ 25.2.1943 Heilanstalt Ilten ermordet 23.3.1945"
+   }
+  ],
+  "wikidata": [
+   "Q95215030"
+  ],
+  "idx": 236
+ },
+ {
+  "id": "stein-Q97500677",
+  "address": "Braamkamp 42",
+  "coords": [
+   53.601003,
+   10.001678
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Gertrud Becker",
+    "inscription": "Hier wohnte Gertrud Becker Jg. 1895 eingewiesen 1931 Alsterdorfer Anstalten ‚verlegt‘ 16.8.1943 Am Steinhof Wien ermordet 15.9.1944"
+   }
+  ],
+  "wikidata": [
+   "Q97500677"
+  ],
+  "idx": 237
+ },
+ {
+  "id": "stein-Q100943926",
+  "address": "Grasweg 15",
+  "coords": [
+   53.592919,
+   10.004136
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Erika Milee",
+    "inscription": "Hier wohnte Erika Milee Jg. 1907 Flucht 1939 Paraguay"
+   }
+  ],
+  "wikidata": [
+   "Q100943926"
+  ],
+  "idx": 238
+ },
+ {
+  "id": "stein-Q106774795",
+  "address": "Heidberg 65",
+  "coords": [
+   53.589303,
+   10.013286
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Albert Rosenbaum",
+    "inscription": "Hier wohnte Albert Rosenbaum Jg. 1888 Flucht 1934 Holland interniert Westerbork deportiert 1943 Sobibor ermordet 9.7.1943"
+   }
+  ],
+  "wikidata": [
+   "Q106774795"
+  ],
+  "idx": 239
+ },
+ {
+  "id": "stein-Q107576346",
+  "address": "Novalisweg 24c",
+  "coords": [
+   53.587867,
+   10.022367
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Heinz Gärtner",
+    "inscription": "Hier wohnte Heinz Gärtner Jg. 1916 im Widerstand/SAJ/SPD verhaftet 27.4.1936 Jugendgefängnis Hahnöversand entlassen 28.10.1937"
+   }
+  ],
+  "wikidata": [
+   "Q107576346"
+  ],
+  "idx": 240
+ },
+ {
+  "id": "stein-Q111537556",
+  "address": "Meerweinstraße 21",
+  "coords": [
+   53.588189,
+   10.027689
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Roland Koch",
+    "inscription": "Hier wohnte Roland Koch Jg. 1903 im Widerstand/SPD verhaftet 5.3.1937 Gefängnis Glasmoor entlassen 16.4.1939"
+   }
+  ],
+  "wikidata": [
+   "Q111537556"
+  ],
+  "idx": 241
+ },
+ {
+  "id": "stein-Q111552168",
+  "address": "Poßmoorweg 69",
+  "coords": [
+   53.588881,
+   10.014849
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Alfred Goslar",
+    "inscription": "Hier wohnte Alfred Goslar Jg. 1870 deportiert 1942 Theresienstadt 1942 Treblinka ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q111552168"
+  ],
+  "idx": 242
+ },
+ {
+  "id": "stein-Q112713199",
+  "address": "Geißlertwiete 12",
+  "coords": [
+   53.587036,
+   10.029258
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Betty Chassel",
+    "inscription": "Hier wohnte Betty Chassel Jg. 1877 deportiert 1941 Łodz/Litzmannstadt 1942 Chelmno/Kulmhof ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q112713199"
+  ],
+  "idx": 243
+ },
+ {
+  "id": "stein-Q113053106",
+  "address": "Krochmannstraße 45",
+  "coords": [
+   53.599944,
+   10.00184
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Elisabeth Hirschstein",
+    "inscription": "Hier wohnte Elisabeth Hirschstein geb. Beier Jg. 1877 deportiert 1941 Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q113053106"
+  ],
+  "idx": 244
+ },
+ {
+  "id": "stein-Q119454628",
+  "address": "Stammannstraße 13",
+  "coords": [
+   53.586442,
+   10.02298
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Eleonore Meyer",
+    "inscription": "Hier wohnte Eleonore Meyer Jg. 1868 deportiert 1942 Theresienstadt Minsk ermordet"
+   },
+   {
+    "name": "Mathilde Lina Meyer",
+    "inscription": "Hier wohnte Mathilde Lina Meyer Jg. 1874 deportiert 1942 Theresienstadt Minsk ermordet"
+   }
+  ],
+  "wikidata": [
+   "Q119454628",
+   "Q119454651"
+  ],
+  "idx": 245
+ },
+ {
+  "id": "stein-Q123457169",
+  "address": "Timmermannstraße 18",
+  "coords": [
+   53.598107,
+   10.000445
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Bertha Berliner",
+    "inscription": "Hier wohnte Bertha Berliner geb. Rosenblatt Jg. 1868 deportiert 1942 Theresienstadt ermordet 24.8.1942"
+   }
+  ],
+  "wikidata": [
+   "Q123457169"
+  ],
+  "idx": 246
+ },
+ {
+  "id": "stein-Q132202889",
+  "address": "Dorotheenstraße 141",
+  "coords": [
+   53.591335,
+   10.001922
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Martha Marie Baumgarten",
+    "inscription": "Hier wohnte Martha Marie Baumgarten Jg. 1866 deportiert 1942 Theresienstadt ermordet 10.9.1942"
+   }
+  ],
+  "wikidata": [
+   "Q132202889"
+  ],
+  "idx": 247
+ },
+ {
+  "id": "stein-Q138604002",
+  "address": "Barmbeker Straße 129",
+  "coords": [
+   53.591157,
+   10.007824
+  ],
+  "district": "winterhude",
+  "people": [
+   {
+    "name": "Robert Friedmann",
+    "inscription": "Hier wohnte Robert Friedmann Jg. 1888 gedemütigt/entrechtet Flucht 1933 Palästina"
+   }
+  ],
+  "wikidata": [
+   "Q138604002"
+  ],
+  "idx": 248
+ }
+]

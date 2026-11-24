@@ -44,7 +44,9 @@ import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effe
 import { WALK_GAMES } from '../data/walk-games';
 import { TalkCard } from '../components/TalkCard';
 import { STATION_TALK, talksForTour, type TalkPool } from '../data/talk';
-import { STATION_BY_ID } from '../data';
+import { POI_EMOJI, STATION_BY_ID } from '../data';
+import { DENKMAL_SOURCE, tafelNear } from '../data/open';
+import { WaypointExtras, hasExtras, useNearestTree } from '../components/WaypointExtras';
 import { FamilyGameCard } from '../components/FamilyGameCard';
 import { Lilli, LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
@@ -666,9 +668,13 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         <ul>
           {station.sources.map((s) => (
             <li key={s}>
-              <a href={s} target="_blank" rel="noreferrer">
-                {decodeURIComponent(s.replace(/^https?:\/\//, ''))}
-              </a>
+              {/^https?:/.test(s) ? (
+                <a href={s} target="_blank" rel="noreferrer">
+                  {decodeURIComponent(s.replace(/^https?:\/\//, ''))}
+                </a>
+              ) : (
+                s
+              )}
             </li>
           ))}
         </ul>
@@ -772,6 +778,7 @@ function StationSteps({
               <p>{station.snack}</p>
               {station.kidsFact && <p className="kids-fact">{station.kidsFact}</p>}
             </section>
+            {!station.origin && <TafelCard station={station} />}
           </>
         )}
         {step.kind === 'talk' && <TalkCard pools={talkPools(station)} seed={game.config.seed + game.index} youngest={youngest} initial={STATION_TALK[station.id] ?? talk} />}
@@ -808,7 +815,6 @@ function StationSteps({
   );
 }
 
-const POI_EMOJI: Record<Poi['kind'], string> = { spielplatz: '🛝', eis: '🍦', wc: '🚻', cafe: '☕' };
 
 function PauseView({ game, poi }: { game: Game; poi: Poi }) {
   const pos = usePosition();
@@ -858,6 +864,19 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
 }
 
 const WAYPOINT_RADIUS = 35;
+
+/** Hängt an dieser Station eine blaue Denkmaltafel? Dann ihren Text zeigen. */
+function TafelCard({ station }: { station: Station }) {
+  const t = tafelNear(station.coords);
+  if (!t) return null;
+  return (
+    <section className="card snack tafel-card" data-testid="tafel-card">
+      <h3>Von der blauen Tafel</h3>
+      <p className="tafel-text">„{t.text}“</p>
+      <small className="muted">{DENKMAL_SOURCE}</small>
+    </section>
+  );
+}
 
 /** Nur für Eltern: Ort des Schatzes, um dort vorab eine Überraschung zu verstecken */
 function ParentTreasure({ game, onClose }: { game: Game; onClose: () => void }) {
@@ -926,6 +945,8 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
   const nextStation = game.stops.slice(game.index + 1).find((s) => s.kind === 'station');
   const ahead = game.stops.slice(game.index + 1, game.stops.indexOf(nextStation!)).filter((s) => s.kind === 'waypoint').length;
   const nextTitle = nextStation ? STATION_BY_ID.get(nextStation.id)?.teaser : undefined;
+  const tree = useNearestTree(poi.coords);
+  const extras = hasExtras(poi, tree);
 
   useEffect(() => {
     if (!arrived && dist !== null && isWithinUnlock(dist, WAYPOINT_RADIUS, pos.accuracy)) {
@@ -934,11 +955,12 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
       celebrateWaypoint(document.querySelector('.compass-wrap, .waypoint'), WAYPOINT_POINTS);
     }
   }, [dist, pos.accuracy, arrived]);
+  // Ohne Extras geht es automatisch weiter; mit Extras (Kunst, Baum, Denkmal …) entscheidet ihr selbst
   useEffect(() => {
-    if (!arrived) return;
+    if (!arrived || extras) return;
     const t = setTimeout(() => reachWaypoint(true), 1600);
     return () => clearTimeout(t);
-  }, [arrived]);
+  }, [arrived, extras]);
 
   const brg = pos.coords ? bearing(pos.coords, poi.coords) : 0;
   return (
@@ -948,6 +970,14 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
           <Lilli size={110} mood="excited" />
           <h1 className="large-title">Zwischenziel geschafft!</h1>
           <span className="points-pill">+{WAYPOINT_POINTS}</span>
+          {extras && (
+            <>
+              <WaypointExtras poi={poi} tree={tree} />
+              <button type="button" className="btn big primary" data-testid="waypoint-next" onClick={() => { play('tap'); reachWaypoint(true); }}>
+                Weiter
+              </button>
+            </>
+          )}
         </div>
       ) : (
         <>
@@ -956,7 +986,7 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
               {POI_EMOJI[poi.kind]}
             </span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="caption">Lauft zum Zwischenziel</div>
+              <div className="caption">{poi.kind === 'kunst' ? 'Lauft zum Kunstwerk' : poi.kind === 'trinkwasser' ? 'Lauft zum Trinkbrunnen' : 'Lauft zum Zwischenziel'}</div>
               <strong>{poi.title}</strong>
               {nextTitle && (
                 <small className="muted">

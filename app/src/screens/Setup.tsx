@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DISTRICTS, START_POINTS } from '../data/districts';
-import { POIS, STATIONS } from '../data';
+import { POIS, ROUTE_STATIONS } from '../data';
 import type { AgeGroup, Category, DistrictId, LatLng } from '../data/types';
 import { formatDistance, distance } from '../lib/geo';
 import { generateRoute, measure, type RouteStop } from '../lib/route';
@@ -112,7 +112,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
   const [avoid, setAvoid] = useState<string[]>([]);
   const [noOther, setNoOther] = useState(false);
   const plan = (sd: number, av: string[]) =>
-    generateRoute(STATIONS, POIS, {
+    generateRoute(ROUTE_STATIONS, POIS, {
       districts,
       start: start!.coords,
       minutes,
@@ -505,7 +505,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
         return (
           <>
             <Chips
-              options={DISTRICTS.map((d) => ({ id: d.id, label: `${d.name} · ${STATIONS.filter((s) => s.district === d.id).length}` }))}
+              options={DISTRICTS.map((d) => ({ id: d.id, label: `${d.name} · ${ROUTE_STATIONS.filter((s) => s.district === d.id && s.mode === 'normal').length}` }))}
               selected={districts}
               onPick={(id) => {
                 play('select');

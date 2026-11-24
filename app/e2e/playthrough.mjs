@@ -80,6 +80,7 @@ let families = 0;
 let treasure = false;
 let pauses = 0;
 let waypoints = 0;
+let extras = 0;
 let guard = 0;
 while (guard++ < 40) {
   const state = await coordsOf();
@@ -131,6 +132,18 @@ while (guard++ < 40) {
     if (waypoints === 1) await snap('waypoint');
     await context.setGeolocation({ latitude: coords[0], longitude: coords[1], accuracy: 8 });
     await page.locator('[data-testid=waypoint][data-state=arrived]').waitFor({ timeout: 8000 });
+    await page.waitForTimeout(300);
+    const next = page.getByTestId('waypoint-next');
+    if (await next.isVisible().catch(() => false)) {
+      extras++;
+      if (extras === 1) {
+        await page.getByTestId('tree-card').waitFor();
+        await page.getByTestId('tree-reveal').click();
+        await page.getByTestId('tree-answer').waitFor();
+        await snap('waypoint-extras');
+      }
+      await next.click();
+    }
     await page.waitForFunction((i) => JSON.parse(localStorage.getItem('hh-hunt:game')).index > i, leg, { timeout: 8000 });
     // weggehen, damit das nächste Ziel nicht sofort freischaltet
     await context.setGeolocation({ latitude: coords[0] - 0.01, longitude: coords[1], accuracy: 10 });
@@ -237,7 +250,7 @@ if (photoUploaded && !(await page.locator('.photo-grid img').count())) errors.pu
 const score = await page.getByTestId('final-score').innerText();
 const walk = (await page.getByTestId('steps').innerText()).replace(/\s+/g, ' ');
 console.log('Auswertung:', walk, '|', await page.getByTestId('walk-distance').innerText(), '|', await page.getByTestId('walk-time').innerText());
-console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Familien-Momente: ${families}, Zwischenziele: ${waypoints}, Schatz: ${treasure ? 'gefunden' : 'nein'}`);
+console.log('Ergebnis:', score, `| Stationen: ${stations}, Pausen: ${pauses}, Cache-Zahlen: ${clues}, Familien-Momente: ${families}, Zwischenziele: ${waypoints} (mit Extras: ${extras}), Schatz: ${treasure ? 'gefunden' : 'nein'}`);
 if (!treasure) errors.push('Schatz-Finale wurde nicht gespielt');
 if (THEME === 'architektur') {
   const arch = await page.evaluate(() => {

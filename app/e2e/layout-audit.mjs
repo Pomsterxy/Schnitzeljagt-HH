@@ -106,6 +106,7 @@ for (const vp of VIEWPORTS) {
   });
   await shot('unterwegs');
   // zur ersten Station
+  let extrasShot = false;
   for (let i = 0; i < 8; i++) {
     const st = await page.evaluate(() => {
       const g = JSON.parse(localStorage.getItem('hh-hunt:game'));
@@ -116,6 +117,12 @@ for (const vp of VIEWPORTS) {
     const t = (await page.locator('.play').getAttribute('data-target')).split(',').map(Number);
     await ctx.setGeolocation({ latitude: t[0], longitude: t[1], accuracy: 8 });
     await page.waitForTimeout(2200);
+    const wn = page.getByTestId('waypoint-next');
+    if (await wn.count()) {
+      if (!extrasShot) await shot('zwischenziel-extras');
+      extrasShot = true;
+      await wn.click();
+    }
     const p = page.getByRole('button', { name: /Pause beendet|Pause überspringen/ });
     if (await p.count()) await p.click();
   }

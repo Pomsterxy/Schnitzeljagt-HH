@@ -149,7 +149,7 @@ export function TaskCard({
             <input
               inputMode="decimal"
               type="text"
-              placeholder={task.type === 'estimate' ? `Schätzung in ${task.unit}` : 'Zahl'}
+              placeholder={task.type === 'estimate' ? `Schätzung (${task.unit})` : 'Zahl'}
               value={value}
               aria-label="Antwort"
               onChange={(e) => setValue(e.target.value.replace(/[^0-9.,-]/g, ''))}

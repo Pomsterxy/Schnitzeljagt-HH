@@ -53,6 +53,10 @@ export const MAX_LEG = 500;
 export const MAX_DETOUR = 1.3;
 /** Kurzer Halt an einem Zwischenziel */
 export const WAYPOINT_MINUTES = 1;
+/** Höchstens so viele stille Gedenkorte pro Tour (es gibt viele Stolpersteine) */
+export const MAX_QUIET = 2;
+/** Orte, an denen eine Pause Sinn ergibt */
+const PAUSE_KINDS = new Set<Poi['kind']>(['spielplatz', 'eis', 'cafe']);
 /** Koordinaten berechnen + Schatz suchen */
 export const FINAL_MINUTES = 10;
 
@@ -92,6 +96,8 @@ interface Leg {
 
 /** Aufschlag pro Zwischenziel, damit Etappen eher lang (bis 500 m) statt kleinteilig werden */
 const HOP_PENALTY = 140;
+/** Kunstwerke sind spannende Zwischenziele: kleinerer Aufschlag, damit Wege eher an ihnen vorbeiführen */
+const ART_HOP_PENALTY = 70;
 
 /**
  * Wegenetz: Kanten nur zwischen Punkten, die höchstens MAX_LEG auseinander liegen.
@@ -147,7 +153,7 @@ class Network {
       // Start und Stationen sind keine Durchgangspunkte, nur Zwischenziele (POIs)
       if (u !== src && (u === 0 || this.nodes[u].station)) continue;
       for (const e of this.adj[u]) {
-        const w = dist[u] + e.d + HOP_PENALTY;
+        const w = dist[u] + e.d + (this.nodes[e.to].poi?.kind === 'kunst' ? ART_HOP_PENALTY : HOP_PENALTY);
         if (w < dist[e.to]) {
           dist[e.to] = w;
           prev[e.to] = u;
@@ -241,7 +247,9 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
     for (;;) {
       let best: { list: Station[]; ratio: number; s: Station } | null = null;
       const base = cost(list);
+      const quietCount = list.filter((x) => x.mode === 'quiet').length;
       for (const s of remaining) {
+        if (s.mode === 'quiet' && quietCount >= MAX_QUIET) continue;
         for (let pos = 0; pos <= list.length; pos++) {
           const cand = list.slice(0, pos).concat([s], list.slice(pos));
           const c = cost(cand);
@@ -297,8 +305,8 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
     }
   }
 
-  const candidates = pois.filter((p) => opt.districts.includes(p.district) && p.kind !== 'wc');
-  const pauseList = candidates.length ? candidates : pois.filter((p) => p.kind !== 'wc');
+  const candidates = pois.filter((p) => opt.districts.includes(p.district) && PAUSE_KINDS.has(p.kind));
+  const pauseList = candidates.length ? candidates : pois.filter((p) => PAUSE_KINDS.has(p.kind));
 
   /** Ziel-Folge (Stationen + Pause + Finale) zu fertigen Stopps mit Zwischenzielen ausbauen */
   type Target = { kind: 'station'; station: Station } | { kind: 'pause' | 'final'; poi: Poi };
@@ -393,7 +401,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
       const mid = r.length / 2;
       let bi = -1;
       r.forEach((x, i) => {
-        if (x.kind === 'waypoint' && x.poi.kind !== 'wc' && (bi < 0 || Math.abs(i - mid) < Math.abs(bi - mid))) bi = i;
+        if (x.kind === 'waypoint' && PAUSE_KINDS.has(x.poi.kind) && (bi < 0 || Math.abs(i - mid) < Math.abs(bi - mid))) bi = i;
       });
       if (bi >= 0) r[bi] = { kind: 'pause', poi: (r[bi] as { poi: Poi }).poi };
     }

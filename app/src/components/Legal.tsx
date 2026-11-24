@@ -1,4 +1,5 @@
 import { IMPRESSUM } from '../data/impressum';
+import { OPEN_DATA_DATE } from '../data/open';
 
 /** Impressum und Datenschutzhinweis (unter "Mehr") */
 export function Legal() {
@@ -80,9 +81,17 @@ export function Legal() {
           <li>
             <strong>Open-Meteo</strong> liefert die Regenvorhersage für die Routenplanung. Gesendet wird nur der grob gerundete Startpunkt (etwa auf 1 km genau).
           </li>
+          <li>
+            <strong>Urban Data Platform Hamburg</strong> (api.hamburg.de, Landesbetrieb Geoinformation und Vermessung) liefert für den Baum-Detektiv den nächsten Straßenbaum. Gesendet wird ein kleiner Kartenausschnitt um das Zwischenziel (nicht euer Standort) und wie bei jeder Website eure IP-Adresse.
+          </li>
           <li>Links zu Wikipedia, Geocaching.com oder Quellen öffnen sich nur, wenn ihr sie antippt.</li>
         </ul>
         <p>Schriften und Bilder der Stationen sind in der App enthalten und werden nicht von fremden Servern geladen.</p>
+        <p>
+          <strong>Offene Daten:</strong> Denkmaltafeln, Baudenkmale, Spielplätze, Trinkwasserbrunnen und Straßenbäume: Freie und Hansestadt Hamburg
+          (Urban Data Platform, u. a. Denkmalschutzamt), Datenlizenz Deutschland – Namensnennung 2.0. Kunstwerke und Stolpersteine: Wikidata (CC0);
+          mehr zu den Stolpersteinen auf stolpersteine-hamburg.de. Stand der Daten: {OPEN_DATA_DATE}.
+        </p>
       </details>
     </div>
   );
