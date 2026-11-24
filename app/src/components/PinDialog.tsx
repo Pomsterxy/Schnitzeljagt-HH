@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { play } from '../lib/feedback';
+import { backdropClose } from '../lib/backdrop';
 
 export function PinDialog({
   title,
@@ -17,7 +18,7 @@ export function PinDialog({
   const [v, setV] = useState('');
   const [err, setErr] = useState(0);
   return (
-    <div className="overlay" role="dialog" aria-modal="true" aria-label={title} onClick={onCancel}>
+    <div className="overlay" role="dialog" aria-modal="true" aria-label={title} {...backdropClose(onCancel)}>
       <div className="dialog" onClick={(e) => e.stopPropagation()}>
         <div className="grabber" />
         <h3>{title}</h3>

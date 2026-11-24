@@ -1036,3 +1036,19 @@ details > summary { min-height: 44px; display: flex; align-items: center; gap: 8
 @media (max-width: 360px) {
   .collection .btn { white-space: normal; line-height: 1.15; text-align: center; }
 }
+
+/* ---------- Bildschirmtastatur: nichts verdecken ---------- */
+:root { --kb: 0px; }
+/* Chat-Eingabe klebt über der Tastatur statt dahinter */
+.composer { bottom: var(--kb); }
+/* Bottom-Sheets (PIN, Problem melden) rutschen über die Tastatur */
+.overlay { padding-bottom: var(--kb); }
+.dialog { max-height: calc(100dvh - var(--kb) - 24px); }
+.kb-open .dialog { padding-bottom: 16px; }
+/* Bei offener Tastatur stören feste Leisten unten nur */
+.kb-open .tabbar, .kb-open .step-bar, .kb-open .action-bar { display: none; }
+/* iOS zoomt in Felder mit kleiner Schrift: mindestens 16 px */
+input, textarea, select { font-size: max(16px, 1em); }
+.report-kind.on { background: var(--accent); box-shadow: 0 3px 0 var(--accent-edge); }
+/* Bei offener Tastatur unten Platz schaffen, damit Felder nach oben in die Mitte rutschen können */
+.kb-open .screen { padding-bottom: calc(var(--kb) + 40px); }

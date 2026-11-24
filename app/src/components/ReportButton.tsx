@@ -3,6 +3,7 @@ import type { Station } from '../data/types';
 import { usePosition } from '../lib/location';
 import { play } from '../lib/feedback';
 import { addReport } from '../state/reports';
+import { backdropClose } from '../lib/backdrop';
 
 const KINDS = ['Aufgabe stimmt nicht', 'Ort nicht zugänglich', 'GPS-Punkt liegt falsch', 'Text oder Bild falsch', 'Sonstiges'];
 
@@ -27,7 +28,7 @@ export function ReportButton({ station }: { station: Station }) {
         Stimmt hier etwas nicht?
       </button>
       {open && (
-        <div className="overlay" role="dialog" aria-modal="true" aria-label="Problem melden" onClick={() => setOpen(false)}>
+        <div className="overlay" role="dialog" aria-modal="true" aria-label="Problem melden" {...backdropClose(() => setOpen(false))}>
           <div className="dialog confirm-sheet" onClick={(e) => e.stopPropagation()}>
             <div className="grabber" />
             <h3>Problem melden</h3>

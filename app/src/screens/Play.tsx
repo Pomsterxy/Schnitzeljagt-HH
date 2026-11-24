@@ -33,6 +33,7 @@ import { Breath } from '../components/Breath';
 import { Compass } from '../components/Compass';
 import { DotLoader, RollingNumber } from '../components/Micro';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { backdropClose } from '../lib/backdrop';
 import { setPowerSave, usePowerSave, watchBattery } from '../lib/power';
 import { prefetchTour, useTilePrefetch } from '../lib/prefetch';
 import { ReportButton } from '../components/ReportButton';
@@ -195,7 +196,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
       {pos.simulated && <SimPanel target={stopCoords(stop)} radius={station?.radius ?? WAYPOINT_RADIUS} />}
 
       {menu && (
-        <div className="overlay" role="dialog" aria-modal="true" aria-label="Menü" onClick={() => setMenu(false)}>
+        <div className="overlay" role="dialog" aria-modal="true" aria-label="Menü" {...backdropClose(() => setMenu(false))}>
           <div className="dialog" onClick={(e) => e.stopPropagation()}>
             <div className="grabber" />
             <h3>Menü</h3>
@@ -278,7 +279,7 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
       )}
 
       {notebook && (
-        <div className="overlay" role="dialog" aria-modal="true" onClick={() => setNotebook(false)}>
+        <div className="overlay" role="dialog" aria-modal="true" {...backdropClose(() => setNotebook(false))}>
           <div className="dialog light" onClick={(e) => e.stopPropagation()}>
             <div className="grabber" />
             <h3>Cache-Notizbuch</h3>

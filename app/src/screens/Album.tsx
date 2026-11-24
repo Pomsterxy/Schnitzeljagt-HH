@@ -4,6 +4,7 @@ import { DISTRICTS } from '../data/districts';
 import { BADGES, rankFor } from '../data/badges';
 import { useGame } from '../state/game';
 import { play } from '../lib/feedback';
+import { backdropClose } from '../lib/backdrop';
 
 export function Album({ mode }: { mode: 'cards' | 'badges' }) {
   const { career } = useGame();
@@ -68,7 +69,7 @@ export function Album({ mode }: { mode: 'cards' | 'badges' }) {
       )}
 
       {sel && (
-        <div className="overlay" role="dialog" aria-modal="true" onClick={() => setOpen(null)}>
+        <div className="overlay" role="dialog" aria-modal="true" {...backdropClose(() => setOpen(null))}>
           <div className="dialog" onClick={(e) => e.stopPropagation()}>
             <div className="grabber" />
             <h3>{sel.title}</h3>
