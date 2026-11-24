@@ -28,10 +28,13 @@ export function Legal() {
             {IMPRESSUM.contact && (
               <>
                 <br />
-                Kontakt: {IMPRESSUM.contact}
+                Kontakt: {IMPRESSUM.contact.includes('@') ? <a href={`mailto:${IMPRESSUM.contact}`}>{IMPRESSUM.contact}</a> : IMPRESSUM.contact}
               </>
             )}
           </p>
+        ) : null}
+        {hasImprint ? (
+          <p>Privates, nicht-kommerzielles Familienprojekt, kostenlos und ohne Werbung.</p>
         ) : (
           <p>Privates, nicht-kommerzielles Familienprojekt. Die App wird kostenlos und ohne Werbung im Freundes- und Bekanntenkreis geteilt.</p>
         )}
