@@ -10,7 +10,9 @@ import { youngestGroup } from '../lib/scoring';
 import { LilliSays } from '../components/Lilli';
 import { TalkCard } from '../components/TalkCard';
 import { StarRating } from '../components/Micro';
-import { shareGame } from './Play';
+import { ownResult, shareResult } from './Play';
+import { saveResult, useResults } from '../lib/results';
+import { Leaderboard } from '../components/Leaderboard';
 import { Icon } from '../components/Icon';
 import { celebrateFinish } from '../lib/effects';
 
@@ -83,6 +85,11 @@ export function Finish({ onHome }: { onHome: () => void }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [game?.points, game]);
+  // Eigenes Ergebnis für den Team-Vergleich merken
+  useEffect(() => {
+    if (game?.finishedAt) saveResult(ownResult(game));
+  }, [game?.finishedAt, game]);
+  const board = useResults(game ? ownResult(game).fp : null);
   useEffect(() => {
     const t = setTimeout(celebrateFinish, 300);
     return () => clearTimeout(t);
@@ -109,8 +116,9 @@ export function Finish({ onHome }: { onHome: () => void }) {
         {rank.next ? ` Noch ${rank.next.min - career.points} Punkte bis „${rank.next.title}“.` : ''}
       </LilliSays>
       <StarRating id={game.id} />
-      <button type="button" className="btn" data-testid="finish-share" onClick={() => void shareGame(game)}>
-        Diese Tour an Freunde weitergeben
+      <Leaderboard results={board} hint />
+      <button type="button" className="btn" data-testid="finish-share" onClick={() => void shareResult(game)}>
+        Ergebnis schicken und andere Teams herausfordern
       </button>
       <TalkCard pools={['finish']} seed={game.config.seed} youngest={youngestGroup(game.team.members.map((m) => m.age))} title="Zum Nachklang" />
       <section className="card walk-stats rise" aria-label="Eure Tour in Zahlen">

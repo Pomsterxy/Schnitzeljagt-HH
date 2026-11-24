@@ -13,6 +13,7 @@ Dort liegen die Stationen am dichtesten.
 - [ ] Akku voll laden, ggf. Powerbank mitnehmen (Bildschirm bleibt während der Tour an; für lange Touren unter „Mehr“ den Stromsparmodus einschalten)
 - [ ] Auf dem iPhone die App unbedingt **vom Home-Bildschirm** starten: Safari löscht Website-Daten nach einigen Tagen ohne Nutzung, Home-Bildschirm-Apps sind davon ausgenommen
 - [ ] Tour im WLAN starten und kurz warten: Im Menü steht dann „Offline-Karten für diese Tour gespeichert“
+- [ ] **Offline-Probe (2 Minuten):** Nach dem Start der Tour Flugmodus an, App ganz schließen und neu öffnen. Die Tour muss weiterlaufen, unter „Karte“ sind Straßen zu sehen. Danach Flugmodus wieder aus (GPS funktioniert auch im Flugmodus, aber der Baum-Detektiv braucht Netz)
 - [ ] Ton an, Lautstärke mittel
 - [ ] Ein Erwachsener merkt sich die Eltern-PIN
 
@@ -47,7 +48,7 @@ Dort liegen die Stationen am dichtesten.
 ## Danach (5 Minuten)
 
 - [ ] Auswertung ansehen: Stimmen Schritte, Strecke und Zeit ungefähr?
-- [ ] Unter „Mehr“ → **„Meldungen teilen“** und an mich schicken
+- [ ] Unter „Mehr“ → **„Meldungen teilen“** und an mich schicken (technische Fehler, die die App selbst bemerkt hat, und das Handymodell werden automatisch mitgeschickt)
 - [ ] Kurz notieren:
   - Was hat den Kindern am meisten Spaß gemacht?
   - Wann war die Stimmung am schlechtesten, und warum?
@@ -63,3 +64,4 @@ Dort liegen die Stationen am dichtesten.
 | Zwischenziel nicht erreichbar | „Zwischenziel auslassen“ |
 | Kinder haben keine Lust mehr | Menü → „Tour abbrechen“ → „Jetzt beenden, Punkte behalten“ |
 | App hängt | App ganz schließen und neu öffnen, der Spielstand bleibt erhalten |
+| „Hoppla!“-Seite | „Neu laden“ antippen, der Spielstand bleibt erhalten. Der Fehler wird notiert und mit den Meldungen geteilt |

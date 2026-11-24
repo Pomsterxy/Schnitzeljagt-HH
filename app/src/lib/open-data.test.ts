@@ -58,4 +58,7 @@ describe('Offene Daten', () => {
     }
     expect(artSeen).toBeGreaterThan(0);
   });
+  it('gibt an jeder normalen Station etwas für die Jüngsten', () => {
+    for (const s of ROUTE_STATIONS.filter((x) => x.mode === 'normal')) expect(s.tasks.some((t) => t.level === 'kids'), s.id).toBe(true);
+  });
 });

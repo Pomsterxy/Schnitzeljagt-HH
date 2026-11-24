@@ -23,10 +23,10 @@ export interface SharedTour {
 
 const KIND: Record<RouteStop['kind'], string> = { station: 's', waypoint: 'w', pause: 'p', final: 'f' };
 
-function b64url(s: string): string {
+export function b64url(s: string): string {
   return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-function unb64url(s: string): string {
+export function unb64url(s: string): string {
   const b = s.replace(/-/g, '+').replace(/_/g, '/');
   return decodeURIComponent(escape(atob(b + '='.repeat((4 - (b.length % 4)) % 4))));
 }

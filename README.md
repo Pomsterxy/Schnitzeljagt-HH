@@ -29,6 +29,10 @@ ruhigen Modus ohne Punkte.
 - **Offline**: Texte und Bilder sind in der App gespeichert; beim Start einer Tour werden die Kartenausschnitte entlang der Route vorgeladen (sparsam, Zoom 15–17)
 - **Stabilität**: Stromsparmodus und Akku-Warnung (Android), „Rückgängig“ nach Löschen oder Überspringen, automatische Sicherungskopie des Spielstands und Sicherung als Datei unter „Mehr“
 - **Offene Daten aus Hamburg**: blaue Denkmaltafeln als neue Stationen (mit Jahres-Quiz, Alters-Schätzen und Foto-Detektiv) und als Infokarte an bestehenden Stationen; Stolpersteine als stille Gedenkstationen (höchstens zwei pro Tour) und als Hinweis an Zwischenzielen; Kunstwerke im öffentlichen Raum und Trinkbrunnen als Zwischenziele; Spielplatz-Beschreibungen, Baudenkmale in der Nähe und der **Baum-Detektiv** (nächster Straßenbaum mit Art und Pflanzjahr, online) an Zwischenzielen
+- **Team-Vergleich**: Am Ende das Ergebnis als Link schicken. Andere Familien spielen genau dieselbe Tour, schicken ihr Ergebnis zurück und sehen eine Rangliste, ganz ohne Server
+- **Jahreszeiten**: Im Winter keine Eis-Pause (Eisdielen haben oft zu), bei Dunkelheit keine unbeleuchteten Parkwege, im Sommer Wasser-Stationen und Planschbecken (zum Ausprobieren: `?datum=2026-07-15T14:00`)
+- **Für die Jüngsten**: An jeder Station gibt es eine Aufgabe für Kinder von 6–9 Jahren (Such- und Fotoaufträge, ohne Vorwissen)
+- **Fehler-Tagebuch**: Technische Fehler werden nur auf dem Handy notiert und mit den Meldungen geteilt; bei einem Absturz erscheint statt eines weißen Bildschirms eine „Hoppla!“-Seite mit „Neu laden“
 - **Datenschutz**: kein Konto, kein Server, alles bleibt auf dem Handy; Impressum und Datenschutzhinweis unter „Mehr“ (Angaben in `app/src/data/impressum.ts`)
 
 ## Starten
@@ -67,9 +71,12 @@ npm run build && npm run preview &
 npm run e2e                   # Kompletter Spieldurchlauf im Browser (Karte + Abenteuer) und Sonderfälle
 node e2e/keyboard.mjs http://localhost:4173/       # Bildschirmtastatur verdeckt keine Eingabefelder
 node e2e/layout-audit.mjs http://localhost:4173/   # Layout in 6 Bildschirmgrößen prüfen
+node e2e/devices.mjs http://localhost:4173/        # iPhone + Android nachgestellt: Netz fällt unterwegs weg
 ```
 
 Bei jeder Änderung auf `main` laufen Lint, Unit-Tests, Spieldurchläufe, Sonderfälle und der Tastatur-Test automatisch (GitHub Actions). Nur wenn alles grün ist, wird die App veröffentlicht.
+
+**Pflege:** Dependabot schlägt einmal im Monat Paket-Updates vor; jeder Vorschlag wird vor dem Zusammenführen getestet. Einmal im Jahr (1. März, oder unter „Actions“ → „Offene Daten auffrischen“ von Hand) lädt ein Workflow die offenen Daten neu und legt Änderungen in den Zweig `daten-auffrischung`.
 
 ## Projektstruktur
 

@@ -1,0 +1,16 @@
+# Einmal im Monat nach Updates schauen und sie als Pull Request vorschlagen.
+# Vor jedem Zusammenführen laufen automatisch alle Tests (siehe Workflow "Tests für Pull Requests").
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /app
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      kleine-updates:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

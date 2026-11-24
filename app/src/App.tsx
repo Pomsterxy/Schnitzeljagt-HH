@@ -4,6 +4,7 @@ const Setup = lazy(() => import('./screens/Setup').then((m) => ({ default: m.Set
 const Play = lazy(() => import('./screens/Play').then((m) => ({ default: m.Play })));
 const Finish = lazy(() => import('./screens/Finish').then((m) => ({ default: m.Finish })));
 const Album = lazy(() => import('./screens/Album').then((m) => ({ default: m.Album })));
+const Compare = lazy(() => import('./screens/Compare').then((m) => ({ default: m.Compare })));
 const Settings = lazy(() => import('./screens/Settings').then((m) => ({ default: m.Settings })));
 import { TabBar, type Tab } from './components/TabBar';
 import { getGame } from './state/game';
@@ -13,8 +14,9 @@ import { EffectsLayer } from './components/EffectsLayer';
 import { clearEffects } from './lib/effects';
 import { UndoToast } from './components/UndoToast';
 import { useRipple } from './components/Micro';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
-type Screen = Tab | 'setup' | 'play' | 'finish';
+type Screen = Tab | 'setup' | 'play' | 'finish' | 'compare';
 
 export default function App() {
   // Einladung per Link (?tour=…): direkt in die Planung mit fester Route
@@ -22,13 +24,17 @@ export default function App() {
     const code = new URLSearchParams(location.search).get('tour');
     return code ? decodeTour(code) : null;
   });
+  // Ergebnis eines anderen Teams (?result=…): Rangliste und Herausforderung
+  const [resultCode] = useState(() => new URLSearchParams(location.search).get('result'));
   const [screen, setScreen] = useState<Screen>(() => {
+    if (resultCode) return 'compare';
     if (shared) return 'setup';
     const g = getGame();
     return g && !g.finishedAt && g.index < g.stops.length ? 'play' : 'home';
   });
   useEffect(() => {
-    if (new URLSearchParams(location.search).has('tour')) history.replaceState(null, '', location.pathname);
+    const q = new URLSearchParams(location.search);
+    if (q.has('tour') || q.has('result')) history.replaceState(null, '', location.pathname);
   }, []);
 
   useEffect(() => {
@@ -71,6 +77,18 @@ export default function App() {
     case 'play':
       content = <Play onFinish={() => setScreen('finish')} onHome={() => setScreen('home')} />;
       break;
+    case 'compare':
+      content = (
+        <Compare
+          code={resultCode ?? ''}
+          onPlay={(t) => {
+            setShared(t);
+            setScreen('setup');
+          }}
+          onHome={() => setScreen('home')}
+        />
+      );
+      break;
     case 'finish':
       content = <Finish onHome={() => setScreen('home')} />;
       break;
@@ -92,7 +110,9 @@ export default function App() {
   return (
     <>
       <div key={screen} className="screen-enter">
-        <Suspense fallback={<div className="screen-loading" aria-hidden="true" />}>{content}</Suspense>
+        <ErrorBoundary onHome={() => setScreen('home')}>
+          <Suspense fallback={<div className="screen-loading" aria-hidden="true" />}>{content}</Suspense>
+        </ErrorBoundary>
       </div>
       {tab && <TabBar active={tab} onChange={setScreen} dark={tab === 'home'} />}
       <EffectsLayer />

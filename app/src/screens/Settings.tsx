@@ -7,6 +7,7 @@ import { resetCareer } from '../state/game';
 import { setPowerSave, usePowerSave } from '../lib/power';
 import { Legal } from '../components/Legal';
 import { clearReports, reportsText, useReports } from '../state/reports';
+import { clearErrors, deviceLine, errorsText, useErrors } from '../lib/errorlog';
 
 function SwitchRow({ on, onToggle, title, sub, testId }: { on: boolean; onToggle: () => void; title: string; sub: string; testId?: string }) {
   return (
@@ -101,10 +102,11 @@ export function Settings() {
 /** Gemeldete Probleme ansehen und teilen (z. B. per WhatsApp an die Person, die die App pflegt) */
 function Reports() {
   const list = useReports();
+  const errors = useErrors();
   const [copied, setCopied] = useState(false);
-  if (!list.length) return null;
+  if (!list.length && !errors.length) return null;
   const share = async () => {
-    const text = reportsText(list);
+    const text = [list.length ? reportsText(list) : '', errorsText(errors), deviceLine()].filter(Boolean).join('\n\n');
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Schnitzeljagd – Meldungen', text });
@@ -122,19 +124,35 @@ function Reports() {
   };
   return (
     <div className="card rise reports" data-testid="reports">
-      <div className="caption">Gemeldete Probleme ({list.length})</div>
-      <ul>
-        {list.map((r) => (
-          <li key={r.id}>
-            <strong>{r.stationTitle}</strong> · {r.kind}
-            {r.text && <div className="muted">{r.text}</div>}
-          </li>
-        ))}
-      </ul>
+      <div className="caption">Meldungen ({list.length + errors.length})</div>
+      {list.length > 0 && (
+        <ul>
+          {list.map((r) => (
+            <li key={r.id}>
+              <strong>{r.stationTitle}</strong> · {r.kind}
+              {r.text && <div className="muted">{r.text}</div>}
+            </li>
+          ))}
+        </ul>
+      )}
+      {errors.length > 0 && (
+        <p className="muted" data-testid="error-count">
+          Dazu {errors.length === 1 ? '1 technischer Fehler' : `${errors.length} technische Fehler`}, die die App selbst bemerkt hat. Sie werden mitgeschickt.
+        </p>
+      )}
       <button type="button" className="btn primary" onClick={() => void share()}>
         {copied ? 'Kopiert!' : 'Meldungen teilen'}
       </button>
-      <button type="button" className="btn ghost small" onClick={() => { if (confirm('Alle Meldungen löschen?')) clearReports(); }}>
+      <button
+        type="button"
+        className="btn ghost small"
+        onClick={() => {
+          if (confirm('Alle Meldungen löschen?')) {
+            clearReports();
+            clearErrors();
+          }
+        }}
+      >
         Meldungen löschen
       </button>
     </div>

@@ -1,5 +1,6 @@
 import type { Category, DistrictId, LatLng, Poi, Station } from '../data/types';
 import { DETOUR, distance, walkDistance, walkMinutes } from './geo';
+import type { Season } from './season';
 
 export interface RouteOptions {
   districts: DistrictId[];
@@ -20,6 +21,8 @@ export interface RouteOptions {
   maxLeg?: number;
   /** Stationen der vorigen Route ("Neu würfeln"): werden seltener gewählt */
   avoid?: string[];
+  /** Jahreszeit und Dunkelheit */
+  season?: Season;
 }
 
 export type RouteStop =
@@ -224,8 +227,12 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
   const jitter = new Map(pool.map((s) => [s.id, 0.6 + rand() * 0.8]));
   const themed = opt.theme && opt.theme !== 'mix' ? opt.theme : null;
   const avoid = new Set(opt.avoid ?? []);
+  const season = opt.season;
+  // Dunkel: Natur-Orte liegen meist in unbeleuchteten Parks. Sommer: Wasser macht Spaß.
+  const seasonFactor = (s: Station) =>
+    (season?.dark && s.categories.includes('natur') ? 0.25 : 1) * (season?.summer && s.categories.includes('wasser') ? 1.5 : 1);
   const value = (s: Station) =>
-    s.appeal * (jitter.get(s.id) ?? 1) * (themed ? (s.categories.includes(themed) ? 4 : 0.35) : 1) * (avoid.has(s.id) ? 0.3 : 1);
+    s.appeal * (jitter.get(s.id) ?? 1) * (themed ? (s.categories.includes(themed) ? 4 : 0.35) : 1) * (avoid.has(s.id) ? 0.3 : 1) * seasonFactor(s);
 
   /** Dauer einer Stationsfolge (Infinity, wenn ein Weg nicht mit kurzen Etappen geht) */
   const cost = (list: Station[]): number => {
@@ -305,8 +312,11 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
     }
   }
 
-  const candidates = pois.filter((p) => opt.districts.includes(p.district) && PAUSE_KINDS.has(p.kind));
-  const pauseList = candidates.length ? candidates : pois.filter((p) => PAUSE_KINDS.has(p.kind));
+  // Im Winter haben Eisdielen oft geschlossen: dann keine Eis-Pause
+  const pauseOk = (p: Poi) => PAUSE_KINDS.has(p.kind) && !(season?.winter && p.kind === 'eis');
+  const wet = new Set(season?.summer ? season.wetIds : []);
+  const candidates = pois.filter((p) => opt.districts.includes(p.district) && pauseOk(p));
+  const pauseList = candidates.length ? candidates : pois.filter(pauseOk);
 
   /** Ziel-Folge (Stationen + Pause + Finale) zu fertigen Stopps mit Zwischenzielen ausbauen */
   type Target = { kind: 'station'; station: Station } | { kind: 'pause' | 'final'; poi: Poi };
@@ -356,7 +366,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
         const da = distance(a, p.coords);
         const db = distance(p.coords, b);
         if (da > maxLeg || db > maxLeg) continue;
-        const score = da + db - distance(a, b) - (p.kind === 'eis' ? 60 : 0) - (p.kind === 'spielplatz' && p.title !== 'Spielplatz' ? 40 : 0);
+        const score = da + db - distance(a, b) - (p.kind === 'eis' ? 60 : 0) - (p.kind === 'spielplatz' && p.title !== 'Spielplatz' ? 40 : 0) - (wet.has(p.id) ? 150 : 0);
         if (score < bestScore) {
           bestScore = score;
           bestPoi = p;
@@ -401,7 +411,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
       const mid = r.length / 2;
       let bi = -1;
       r.forEach((x, i) => {
-        if (x.kind === 'waypoint' && PAUSE_KINDS.has(x.poi.kind) && (bi < 0 || Math.abs(i - mid) < Math.abs(bi - mid))) bi = i;
+        if (x.kind === 'waypoint' && pauseOk(x.poi) && (bi < 0 || Math.abs(i - mid) < Math.abs(bi - mid))) bi = i;
       });
       if (bi >= 0) r[bi] = { kind: 'pause', poi: (r[bi] as { poi: Poi }).poi };
     }

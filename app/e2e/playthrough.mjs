@@ -269,7 +269,9 @@ const cards = await page.locator('.cardlet:not(.locked)').count();
 if (photoUploaded) console.log('Foto hochgeladen und im Album gespeichert');
 console.log('Gesammelte Karten im Album:', cards);
 await snap('album');
-if (cards !== stations) errors.push(`Album zeigt ${cards} Karten, erwartet ${stations}`);
+// Stationen aus offenen Daten (Denkmaltafeln, Stolpersteine) kommen bewusst nicht ins Album
+const openStations = await page.evaluate(() => JSON.parse(localStorage.getItem('hh-hunt:game')).stops.filter((s) => s.kind === 'station' && /^(tafel|stein)-/.test(s.id)).length);
+if (cards !== stations - openStations) errors.push(`Album zeigt ${cards} Karten, erwartet ${stations - openStations}`);
 
 await browser.close();
 if (errors.length) {

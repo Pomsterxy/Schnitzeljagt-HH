@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview --port 4173",
     "test": "vitest run",
-    "e2e": "node e2e/playthrough.mjs http://localhost:4173/ map winterhude && node e2e/playthrough.mjs http://localhost:4173/ adventure alsterdorf && node e2e/robustness.mjs http://localhost:4173/",
+    "e2e": "node e2e/playthrough.mjs http://localhost:4173/ map winterhude && node e2e/playthrough.mjs http://localhost:4173/ adventure alsterdorf && node e2e/robustness.mjs http://localhost:4173/ && node e2e/devices.mjs http://localhost:4173/",
     "lint": "eslint ."
   },
   "dependencies": {

@@ -48,6 +48,7 @@ jobs:
           node e2e/playthrough.mjs $URL adventure alsterdorf,barmbek-nord
           node e2e/robustness.mjs $URL
           node e2e/keyboard.mjs $URL
+          node e2e/devices.mjs $URL
       - name: Für GitHub Pages vorbereiten
         run: |
           touch dist/.nojekyll
