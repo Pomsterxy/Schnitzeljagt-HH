@@ -13,6 +13,7 @@ import { EffectsLayer } from './components/EffectsLayer';
 import { clearEffects } from './lib/effects';
 import { UndoToast } from './components/UndoToast';
 import { useRipple } from './components/Micro';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 type Screen = Tab | 'setup' | 'play' | 'finish';
 
@@ -92,7 +93,9 @@ export default function App() {
   return (
     <>
       <div key={screen} className="screen-enter">
-        <Suspense fallback={<div className="screen-loading" aria-hidden="true" />}>{content}</Suspense>
+        <ErrorBoundary onHome={() => setScreen('home')}>
+          <Suspense fallback={<div className="screen-loading" aria-hidden="true" />}>{content}</Suspense>
+        </ErrorBoundary>
       </div>
       {tab && <TabBar active={tab} onChange={setScreen} dark={tab === 'home'} />}
       <EffectsLayer />

@@ -13,7 +13,9 @@ import App from './App.tsx';
 import { registerSW } from 'virtual:pwa-register';
 import { restoreMirrorIfEmpty } from './lib/storage';
 import { watchKeyboard } from './lib/keyboard';
+import { watchErrors } from './lib/errorlog';
 
+watchErrors();
 watchKeyboard();
 
 // Neue Versionen zuverlässig laden: beim Start, beim Zurückkehren in die App und alle 30 Minuten
