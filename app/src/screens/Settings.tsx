@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { CREDITS } from '../data';
 import { setSimulated, usePosition } from '../lib/location';
-import { exportBackup, importBackup, loadJSON, saveJSON } from '../lib/storage';
+import { exportBackup, importBackup } from '../lib/storage';
 import { setSoundOn, useSoundOn } from '../lib/feedback';
-import { OC_KEY_STORAGE } from '../components/NearbyCaches';
 import { resetCareer } from '../state/game';
 import { setPowerSave, usePowerSave } from '../lib/power';
 import { Legal } from '../components/Legal';
@@ -25,7 +24,6 @@ export function Settings() {
   const pos = usePosition();
   const sound = useSoundOn();
   const powerSave = usePowerSave();
-  const [ocKey, setOcKey] = useState(() => loadJSON<string>(OC_KEY_STORAGE, ''));
   return (
     <div className="screen with-tabs">
       <h1 className="large-title rise">Mehr</h1>
@@ -49,33 +47,11 @@ export function Settings() {
         />
       </div>
 
-      <div className="field-label rise">Echte Geocaches</div>
-      <div className="card rise" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <p style={{ fontSize: 15, lineHeight: 1.45 }}>
-          An jeder Station gibt es Links zur Karte von Geocaching.com und Opencaching.de. Mit einem eigenen, kostenlosen Schlüssel von
-          Opencaching.de zeigt die App Caches in der Nähe direkt an:{' '}
-          <a href="https://www.opencaching.de/okapi/signup.html" target="_blank" rel="noreferrer">
-            Schlüssel anfordern
-          </a>
-          .
-        </p>
-        <input
-          aria-label="Opencaching-Schlüssel"
-          value={ocKey}
-          placeholder="Opencaching-Schlüssel (Consumer Key)"
-          style={{ background: 'var(--fill2)' }}
-          onChange={(e) => {
-            setOcKey(e.target.value.trim());
-            saveJSON(OC_KEY_STORAGE, e.target.value.trim());
-          }}
-        />
-      </div>
-
       <div className="field-label rise">Datenschutz</div>
       <div className="card rise">
         <p style={{ fontSize: 15, lineHeight: 1.5 }}>
           Kein Konto, kein Server: Spielstand, Fotos und Album bleiben nur auf diesem Gerät. Euer Standort wird nur im Browser verwendet.
-          Kartenkacheln kommen von OpenStreetMap. Nur wenn ihr echte Geocaches abruft, geht der Standort der Station an Opencaching.de.
+          Kartenkacheln kommen von OpenStreetMap. Öffnet ihr an einer Station „Echte Geocaches in der Nähe“, fragt die App bei Opencaching.de nach Caches rund um die Station (nicht euren Standort).
         </p>
       </div>
 
