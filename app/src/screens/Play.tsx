@@ -9,6 +9,7 @@ import {
   abandonGame,
   addActivity,
   finishGame,
+  finishedStations,
   currentStop,
   nextStop,
   reachWaypoint,
@@ -17,6 +18,7 @@ import {
   spendHelp,
   stopCoords,
   stopKey,
+  tourStats,
   trackPosition,
   treasureFound,
   unlockStop,
@@ -35,6 +37,7 @@ import { DotLoader, RollingNumber } from '../components/Micro';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { formatDegMin } from '../lib/cache';
 import { encodeTour, shareLink, tourLink } from '../lib/share';
+import { encodeResult, resultLink, tourFingerprint, type TeamResult } from '../lib/results';
 import type { RouteStop } from '../lib/route';
 import { backdropClose } from '../lib/backdrop';
 import { setPowerSave, usePowerSave, watchBattery } from '../lib/power';
@@ -907,7 +910,8 @@ function ParentTreasure({ game, onClose }: { game: Game; onClose: () => void }) 
 }
 
 /** Laufende Tour als Einladungs-Link teilen (gleiche Stationen, gleiche Reihenfolge) */
-export async function shareGame(game: Game) {
+/** Tour als Code (für Einladungs- und Ergebnis-Links) */
+export function tourCodeOf(game: Game): string {
   const stops: RouteStop[] = game.stops.flatMap((s): RouteStop[] => {
     const r = resolveStop(s);
     if (s.kind === 'station' && r.station) return [{ kind: 'station', station: r.station }];
@@ -915,13 +919,44 @@ export async function shareGame(game: Game) {
     return [];
   });
   const c = game.config;
-  const code = encodeTour({ d: c.districts, m: c.minutes, s: c.startLabel, c: c.start, stops, n: c.nav, sd: c.seed, t: c.theme ?? 'mix', ml: c.maxLeg ?? 500 });
+  return encodeTour({ d: c.districts, m: c.minutes, s: c.startLabel, c: c.start, stops, n: c.nav, sd: c.seed, t: c.theme ?? 'mix', ml: c.maxLeg ?? 500 });
+}
+
+export async function shareGame(game: Game) {
+  const code = tourCodeOf(game);
   const r = await shareLink(tourLink(code), `Wir haben die Schatzsuche „${game.team.name}“ gespielt – schafft ihr mehr als ${game.points} Punkte?`);
   if (r === 'copied') alertToast('Link kopiert – jetzt z. B. in WhatsApp einfügen.');
 }
 
+/** Eigenes Ergebnis dieser Tour (für den Team-Vergleich) */
+export function ownResult(game: Game): TeamResult {
+  const stationStops = game.stops.filter((s) => s.kind === 'station');
+  const stats = tourStats(game, 0.6);
+  return {
+    fp: tourFingerprint(game.stops),
+    team: game.team.name,
+    avatar: game.team.avatar,
+    points: game.points,
+    stations: finishedStations(game).length,
+    total: stationStops.length,
+    meters: Math.round(stats.meters),
+    ms: Math.round(stats.ms),
+    treasure: !!game.final?.found,
+    at: game.finishedAt ?? Date.now(),
+    mine: true,
+  };
+}
+
+/** Ergebnis + Tour als Link: andere Familien spielen dieselbe Tour und schicken ihr Ergebnis zurück */
+export async function shareResult(game: Game) {
+  const r = ownResult(game);
+  const link = resultLink(encodeResult(r, tourCodeOf(game)));
+  const res = await shareLink(link, `${game.team.avatar} ${game.team.name}: ${r.points} Punkte bei der Schnitzeljagd! Schafft ihr dieselbe Tour besser?`);
+  if (res === 'copied') alertToast('Link kopiert – jetzt z. B. in WhatsApp einfügen.');
+}
+
 /** Kleine Bestätigung ohne eigenen Zustand */
-function alertToast(text: string) {
+export function alertToast(text: string) {
   const el = document.createElement('div');
   el.className = 'mini-toast';
   el.setAttribute('role', 'status');

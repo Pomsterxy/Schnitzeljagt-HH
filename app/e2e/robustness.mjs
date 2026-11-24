@@ -365,6 +365,40 @@ async function context_check(page) {
   if (JSON.stringify(stopsA) !== JSON.stringify(stopsB)) fail(`Andere Route beim Freund:\n${stopsA}\n${stopsB}`);
   if (friend.url().includes('tour=')) fail('Einladungscode bleibt in der Adresse stehen');
   console.log(`✓ Tour per Link geteilt: Freunde bekommen dieselben ${stopsB.length} Ziele`);
+  // Team-Vergleich: Ergebnis-Link eines anderen Teams annehmen, nachspielen, Rangliste
+  {
+    const tourCode = new globalThis.URL(link).searchParams.get('tour');
+    const tour = JSON.parse(Buffer.from(tourCode, 'base64url').toString('utf8'));
+    const fpStr = tour.st.map(([k, id]) => `${k}:${id}`).join('|');
+    let h = 2166136261;
+    for (let i = 0; i < fpStr.length; i++) h = Math.imul(h ^ fpStr.charCodeAt(i), 16777619);
+    const fp = (h >>> 0).toString(36) + tour.st.length.toString(36);
+    const result = { fp, team: 'Die Herausforderer', avatar: '🦊', points: 42, stations: 3, total: 4, meters: 2300, ms: 5400000, treasure: true, at: Date.now() - 3600000 };
+    const code = Buffer.from(JSON.stringify({ v: 1, r: result, t: tourCode }), 'utf8').toString('base64url');
+    const rctx = await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ['geolocation'], geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 } });
+    await rctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+    const rp = await rctx.newPage();
+    await rp.goto(`${URL}?result=${code}`);
+    await rp.getByTestId('compare').waitFor();
+    if (!(await rp.getByTestId('leaderboard').innerText()).includes('Die Herausforderer')) fail('Rangliste zeigt das andere Team nicht');
+    await rp.getByTestId('accept-challenge').click();
+    await rp.getByTestId('chat-input').fill('Gegenteam');
+    await rp.getByRole('button', { name: 'Senden' }).click();
+    await rp.getByRole('button', { name: 'Passt so' }).click();
+    await rp.getByTestId('chat-input').fill('2222');
+    await rp.getByRole('button', { name: 'Senden' }).click();
+    await rp.getByRole('button', { name: "Los geht's!" }).click();
+    await rp.locator('.play').waitFor();
+    await rp.getByLabel('Menü').click();
+    await rp.getByTestId('quit-tour').click();
+    await rp.getByTestId('quit-keep').click();
+    await rp.getByTestId('final-score').waitFor();
+    const board = await rp.getByTestId('leaderboard').innerText();
+    if (!board.includes('Die Herausforderer') || !board.includes('Gegenteam')) fail('Rangliste nach der Tour unvollständig: ' + board);
+    if (await rp.locator('[data-testid=crash]').count()) fail('Absturzseite beim Team-Vergleich');
+    console.log('✓ Team-Vergleich: Herausforderung angenommen, beide Teams in der Rangliste');
+    await rctx.close();
+  }
   await ctx.close();
 }
 
