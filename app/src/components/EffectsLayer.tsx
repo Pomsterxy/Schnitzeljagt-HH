@@ -149,6 +149,11 @@ export function EffectsLayer() {
         setFloats((l) => [...l, { ...f, id: fid }]);
         setTimeout(() => setFloats((l) => l.filter((x) => x.id !== fid)), 1400);
       },
+      clear: () => {
+        parts.current.length = 0;
+        setFloats([]);
+        setFlashes([]);
+      },
       flash: (color) => {
         const fid = ++id;
         setFlashes((l) => [...l, { id: fid, color }]);

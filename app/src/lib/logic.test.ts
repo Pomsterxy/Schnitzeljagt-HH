@@ -192,6 +192,12 @@ describe('Routengenerator', () => {
     expect(any.waypoints).toBe(0);
     expect(legsOf(500).waypoints).toBeGreaterThanOrEqual(km.waypoints);
   });
+  it('nimmt keine Toiletten als Zwischenziel', () => {
+    for (const sp of START_POINTS) {
+      const r = generateRoute(STATIONS, POIS, { ...base, districts: [sp.district], start: sp.coords, minutes: 240, cache: true });
+      expect(r.stops.some((s) => s.kind === 'waypoint' && s.poi.kind === 'wc')).toBe(false);
+    }
+  });
   it('misst konsistent', () => {
     const r = generateRoute(STATIONS, POIS, { ...base, minutes: 90 });
     const m = measure(base.start, r.stops, base.kmh);

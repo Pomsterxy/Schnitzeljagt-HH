@@ -6,7 +6,7 @@ ruhigen Modus ohne Punkte.
 
 - **51 Stationen** mit echten Fakten, 56 Fotos und Lizenzangaben, darunter 10 Gedenkorte und 24 Architektur-Stationen
 - **Planung im Chat**: Lilli fragt nacheinander nach Teamname, Anzahl, Namen und Alter, Stadtteilen, Dauer (45 min – 4 h), Thema, Startpunkt und Extras; jede Antwort lässt sich antippen und ändern
-- **Kurze, direkte Wege**: Im Chat legt ihr fest, ob Wege über 500 m okay sind (höchstens 500 m, bis 1 km oder egal). Bei kurzen Wegen ist keine Etappe länger als gewählt. Liegen Stationen weiter auseinander, führt der Weg ohne Zickzack über Zwischenziele (Spielplätze, Eisdielen u. a.) mit kleinen Spielen für unterwegs; auf Wunsch mit Spielplatz- oder Eis-Pause
+- **Kurze, direkte Wege**: Im Chat legt ihr fest, ob Wege über 500 m okay sind (höchstens 500 m, bis 1 km oder egal). Bei kurzen Wegen ist keine Etappe länger als gewählt. Liegen Stationen weiter auseinander, führt der Weg ohne Zickzack über Zwischenziele (Spielplätze, Eisdielen u. a., keine Toiletten) mit kleinen Spielen für unterwegs; auf Wunsch mit Spielplatz- oder Eis-Pause
 - **Geocaching**: Schatz-Finale wie ein Multi-Cache. Jede Station liefert eine Cache-Zahl fürs Notizbuch, am Ende berechnet ihr die Koordinaten und sucht den Schatz nur mit Kompass und Entfernung. Dazu kommen Links zu echten Geocaches (Geocaching.com, Opencaching.de); mit eigenem Opencaching-Schlüssel zeigt die App Caches in der Nähe direkt an
 - **GPS-Freischaltung**: Aufgaben erscheinen erst am Ort; wenn das GPS spinnt, hilft die Eltern-PIN
 - **Zwei Navigationsmodi**: Karte mit Richtungspfeil oder Abenteuer (nur Rätsel, Heiß/Kalt kostet Punkte)
