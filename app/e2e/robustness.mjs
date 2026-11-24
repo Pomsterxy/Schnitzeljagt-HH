@@ -173,6 +173,27 @@ async function context_check(page) {
       console.log('✓ Neu würfeln liefert eine andere Route');
     },
   });
+  // Kompass antippen schaltet den Handy-Kompass ein, der Hinweis verschwindet bei Kompassdaten
+  for (let i = 0; i < 6 && !(await page.getByTestId('compass-tap').count()); i++) {
+    const b = page.getByRole('button', { name: 'Zwischenziel auslassen' });
+    if (await b.count()) await b.click();
+    await page.waitForTimeout(300);
+  }
+  await page.getByTestId('compass-hint').waitFor();
+  // Test-Browser hat keinen Kompass: einen vorgaukeln
+  await page.evaluate(() => {
+    if (!('DeviceOrientationEvent' in window)) window.DeviceOrientationEvent = class extends Event {};
+  });
+  await page.getByTestId('compass-tap').click();
+  await page.waitForTimeout(500);
+  await page.evaluate(() => {
+    const e = new Event('deviceorientationabsolute');
+    Object.assign(e, { alpha: 90, absolute: true });
+    window.dispatchEvent(e);
+  });
+  await page.getByTestId('compass-hint').waitFor({ state: 'detached', timeout: 3000 });
+  console.log('✓ Kompass antippen schaltet den Handy-Kompass ein');
+
   // Mitten in der Tour: beenden und Punkte behalten
   await page.getByLabel('Menü').click();
   await page.getByTestId('quit-tour').click();

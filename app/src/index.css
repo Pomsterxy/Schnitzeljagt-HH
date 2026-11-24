@@ -881,3 +881,12 @@ h1, h2, h3, .large-title, .title2, .score-big, .walk-big, .big-dist { font-famil
 .station:not(.quiet) .celebrate .chip { grid-column: 1 / -1; justify-self: start; margin-top: 6px; }
 .station:not(.quiet) .gallery img { height: 170px; }
 .station:not(.quiet) .gallery-dots { top: 146px; }
+
+/* Kompass antippen = Handy-Kompass einschalten */
+.compass-btn { appearance: none; border: none; background: none; padding: 0; border-radius: 50%; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.2s var(--ease); }
+.compass-btn:active { transform: scale(0.96); }
+.compass-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.compass-btn.live { cursor: default; }
+.compass-hint { display: inline-flex; align-items: center; gap: 6px; margin: 2px 16px 6px; padding: 6px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: 13px; font-weight: 800; text-align: center; line-height: 1.3; }
+.compass-hint.pulse { animation: hintPulse 2.4s ease-in-out infinite; }
+@keyframes hintPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
