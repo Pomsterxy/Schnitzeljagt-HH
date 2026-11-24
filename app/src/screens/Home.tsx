@@ -60,14 +60,14 @@ export function Home({
           <div className="dark-card continue-dark rise">
             <div className="ring-wrap">
               <svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true">
-                <circle cx="29" cy="29" r="24" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="7" />
+                <circle cx="29" cy="29" r="24" fill="none" stroke="rgba(30,42,74,0.1)" strokeWidth="7" />
                 <circle
                   className="ring"
                   cx="29"
                   cy="29"
                   r="24"
                   fill="none"
-                  stroke="#FF8A3D"
+                  stroke="#EF7A2F"
                   strokeWidth="7"
                   strokeLinecap="round"
                   strokeDasharray={151}
@@ -119,7 +119,7 @@ export function Home({
           <button
             type="button"
             className="btn ghost small rise"
-            style={{ alignSelf: 'center', color: '#FDBA74' }}
+            style={{ alignSelf: 'center', color: 'var(--accent-ink)' }}
             data-testid="home-quit"
             onClick={() => setQuit(true)}
           >

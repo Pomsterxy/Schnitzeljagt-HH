@@ -148,7 +148,16 @@ async function context_check(page) {
   await page.goto(URL);
   await page.getByTestId('new-tour').click();
   const colors = await page.getByTestId('chat-input').evaluate((e) => [getComputedStyle(e).backgroundColor, getComputedStyle(e).color]);
-  if (colors[0] === colors[1] || /255, 255, 255\)$/.test(colors[0])) fail('Chat-Eingabe unlesbar: ' + colors.join(' / '));
+  const lum = (c) => {
+    const [r, g, b] = c.match(/\d+/g).slice(0, 3).map((v) => {
+      const x = Number(v) / 255;
+      return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const [l1, l2] = [lum(colors[0]), lum(colors[1])];
+  const contrast = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  if (contrast < 4.5) fail(`Chat-Eingabe schlecht lesbar (Kontrast ${contrast.toFixed(1)}): ${colors.join(' / ')}`);
   await page.getByRole('button', { name: 'Abbrechen' }).click();
   // bis zur Routenübersicht planen, aber noch nicht starten
   const sig = () => page.locator('.chat-stops').innerText();

@@ -5,7 +5,7 @@ Aufgaben bearbeiten, Info-Snacks lesen, Punkte und Abzeichen sammeln. Gedenkorte
 ruhigen Modus ohne Punkte.
 
 - **51 Stationen** mit echten Fakten, 56 Fotos und Lizenzangaben, darunter 10 Gedenkorte und 24 Architektur-Stationen
-- **Planung im Chat**: Lilli fragt nacheinander nach Teamname, Anzahl, Namen und Alter, Stadtteilen, Dauer (45 min – 4 h), Thema, Startpunkt und Extras; jede Antwort lässt sich antippen und ändern
+- **Planung im Chat**: nur 6 Fragen (Team, wer ist dabei, Stadtteile, Dauer, Start, Eltern-PIN); Thema, Weglänge, Navigation und Extras haben gute Standards und lassen sich bei der Route unter „Anpassen“ ändern
 - **Kurze, direkte Wege**: Im Chat legt ihr fest, ob Wege über 500 m okay sind (höchstens 500 m, bis 1 km oder egal). Bei kurzen Wegen ist keine Etappe länger als gewählt. Liegen Stationen weiter auseinander, führt der Weg ohne Zickzack über Zwischenziele (Spielplätze, Eisdielen u. a., keine Toiletten) mit kleinen Spielen für unterwegs; auf Wunsch mit Spielplatz- oder Eis-Pause
 - **Geocaching**: Schatz-Finale wie ein Multi-Cache. Jede Station liefert eine Cache-Zahl fürs Notizbuch, am Ende berechnet ihr die Koordinaten und sucht den Schatz nur mit Kompass und Entfernung. Dazu kommen Links zu echten Geocaches (Geocaching.com, Opencaching.de); mit eigenem Opencaching-Schlüssel zeigt die App Caches in der Nähe direkt an
 - **GPS-Freischaltung**: Aufgaben erscheinen erst am Ort; wenn das GPS spinnt, hilft die Eltern-PIN
@@ -17,7 +17,7 @@ ruhigen Modus ohne Punkte.
 - **Problem melden**: An jeder Station „Stimmt hier etwas nicht?“; Meldungen bleiben auf dem Handy und lassen sich unter „Mehr“ teilen. Zählaufgaben werten kleine Abweichungen großzügig
 - **Gesprächsstoff**: An jeder Station, an Zwischenzielen, in der Pause und am Ende eine Frage oder These zum gemeinsamen Diskutieren (passend zum Thema und Alter, ohne Wiederholung; an Gedenkorten nachdenkliche Fragen)
 - **Effekte**: Konfetti-Kanonen bei jeder gefundenen Station, fliegende Punkte bei richtigen Antworten, Herzen bei Familien-Momenten, Goldregen beim Schatz, großes Finale am Ende (bei „Bewegung reduzieren“ aus)
-- **Ruhiges Design** mit Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
+- **Ruhig & verspielt**: ein heller, einheitlicher Look mit runder Schrift (Fredoka/Nunito), Knöpfen mit kleiner Drück-Kante und der Sticker-Möwe **Lilli**; Stationen laufen Schritt für Schritt (Rätsel, Info, Gespräch, Familie) statt als lange Liste; Töne und Vibration abschaltbar
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert; beim Start einer Tour werden die Kartenausschnitte entlang der Route vorgeladen (sparsam, Zoom 15–17)
 - **Stabilität**: Stromsparmodus und Akku-Warnung (Android), „Rückgängig“ nach Löschen oder Überspringen, automatische Sicherungskopie des Spielstands und Sicherung als Datei unter „Mehr“

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { LatLng, Poi, Station } from '../data/types';
+import type { AgeGroup, LatLng, Poi, Station, Task } from '../data/types';
 import { bearing, compassWord, distance, formatDistance, isWithinUnlock, temperature, type Temperature } from '../lib/geo';
 import { enableCompass, setSimulatedPosition, startTracking, usePosition } from '../lib/location';
 import { POINTS, tasksFor, youngestGroup } from '../lib/scoring';
@@ -549,7 +549,6 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
   const clue = CACHE_CLUES[station.id];
   const familyGame = quiet ? undefined : game.familyGames?.[station.id];
   const familyState = game.familyDone?.[station.id];
-  const familyPending = !!familyGame && !familyState;
   const letters = game.cacheLetters ?? [];
   const letter = letters.find((l) => l.stationId === station.id)?.letter ?? LETTERS[letters.length % LETTERS.length];
 
@@ -570,10 +569,10 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
   const lilliText = quiet
     ? 'Hier sind wir leise. Lasst uns gemeinsam einen Moment innehalten.'
     : allDone
-      ? 'Super gemacht! Lest noch den Info-Happen, dann fliegen wir weiter.'
+      ? 'Super gemacht!'
       : ss.bonus
-        ? 'Juhu, gefunden – ganz ohne Hilfe! Das gibt einen Bonus. Jetzt genau hinschauen …'
-        : 'Juhu, gefunden! Jetzt genau hinschauen …';
+        ? 'Ganz ohne Hilfe gefunden – das gibt einen Bonus!'
+        : 'Juhu, gefunden! Schaut euch genau um …';
 
   return (
     <div className={`station${quiet ? ' quiet' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -610,94 +609,65 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         <Gallery ids={station.images} alt={station.title} />
       </div>
 
-      <LilliSays mood={quiet ? 'quiet' : allDone ? 'excited' : 'happy'} variant={quiet ? 'quiet' : 'light'}>
-        {lilliText}
-      </LilliSays>
-
       {quiet && (
-        <div className="card fade">
-          <p style={{ fontSize: 16, lineHeight: 1.55 }}>{station.snack}</p>
-          <div style={{ marginTop: 8 }}>
-            <ReadAloud text={station.snack} />
-          </div>
-        </div>
+        <LilliSays mood="quiet" variant="quiet">
+          {lilliText}
+        </LilliSays>
       )}
 
-      {tasks
-        .filter((t) => ss.tasks[t.id]?.done)
-        .map((t) => (
-          <TaskCard key={t.id} task={t} state={ss.tasks[t.id]} quiet={quiet} index={tasks.indexOf(t)} total={tasks.length} />
-        ))}
-      {current && <TaskCard key={current.id} task={current} state={ss.tasks[current.id]} quiet={quiet} index={tasks.indexOf(current)} total={tasks.length} />}
-
-      {allDone && !quiet && clue && hasFinal && (
-        <div className="cache-clue" data-testid="cache-clue">
-          <div className="letter-tile">{letter}</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 16 }}>
-              Notizbuch: {letter} = {clue.value}
-            </div>
-            <div className="muted" style={{ fontSize: 13 }}>
-              {clue.label}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {allDone && !quiet && (
-        <section className="card snack rise">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <h3>Wusstet ihr?</h3>
-            <ReadAloud text={station.snack + (station.kidsFact ? ' ' + station.kidsFact : '')} />
-          </div>
-          <p>{station.snack}</p>
-          {station.kidsFact && <p className="kids-fact">{station.kidsFact}</p>}
-        </section>
-      )}
-
-      {allDone && !quiet && (
-        <TalkCard pools={talkPools(station)} seed={game.config.seed + game.index} youngest={youngest} initial={tourTalk} />
-      )}
-
-      {allDone && familyGame && <FamilyGameCard stationId={station.id} gameId={familyGame} state={familyState} />}
-
-      {allDone && quiet && (
-        <div className="card fade" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {silence && (
-            <Breath />
-          )}
-          <button type="button" className="btn" style={{ background: '#E3E1DC' }} onClick={() => { play('soft'); setSilence(!silence); }}>
-            {silence ? 'Moment der Stille beenden' : 'Einen Moment der Stille'}
-          </button>
-        </div>
-      )}
-
-      {allDone && quiet && (
-        <TalkCard pools={['erinnern']} seed={game.config.seed + game.index} youngest={youngest} title="Zum Nachdenken" quiet initial={tourTalk} />
-      )}
-
-      {allDone && !familyPending && (
+      {quiet ? (
         <>
-          {!quiet && pts > 0 && (
-            <p className="caption" style={{ textAlign: 'center' }}>
-              Punkte an dieser Station: {pts}
-            </p>
+          <div className="card fade">
+            <p style={{ fontSize: 16, lineHeight: 1.55 }}>{station.snack}</p>
+            <div style={{ marginTop: 8 }}>
+              <ReadAloud text={station.snack} />
+            </div>
+          </div>
+          {tasks
+            .filter((t) => ss.tasks[t.id]?.done)
+            .map((t) => (
+              <TaskCard key={t.id} task={t} state={ss.tasks[t.id]} quiet index={tasks.indexOf(t)} total={tasks.length} />
+            ))}
+          {current && <TaskCard key={current.id} task={current} state={ss.tasks[current.id]} quiet index={tasks.indexOf(current)} total={tasks.length} />}
+          {allDone && (
+            <div className="card fade" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {silence && <Breath />}
+              <button type="button" className="btn" style={{ background: '#E3E1DC' }} onClick={() => { play('soft'); setSilence(!silence); }}>
+                {silence ? 'Moment der Stille beenden' : 'Einen Moment der Stille'}
+              </button>
+            </div>
           )}
-          <button
-            type="button"
-            className={`btn big ${quiet ? 'dark' : 'primary'}`}
-            onClick={() => {
-              play(quiet ? 'soft' : 'unlock');
-              nextStop();
-            }}
-          >
-            {quiet ? 'Leise weitergehen' : game.index + 1 < game.stops.length ? 'Weiter zum nächsten Ziel' : 'Tour abschließen'}
-            {!quiet && <Icon name="next" size={18} color="#fff" width={2.6} />}
-          </button>
+          {allDone && <TalkCard pools={['erinnern']} seed={game.config.seed + game.index} youngest={youngest} title="Zum Nachdenken" quiet initial={tourTalk} />}
+          {allDone && (
+            <button
+              type="button"
+              className="btn big dark"
+              onClick={() => {
+                play('soft');
+                nextStop();
+              }}
+            >
+              Leise weitergehen
+            </button>
+          )}
         </>
+      ) : (
+        <StationSteps
+          game={game}
+          station={station}
+          tasks={tasks}
+          hasFinal={hasFinal}
+          clue={clue}
+          letter={letter}
+          talk={tourTalk}
+          youngest={youngest}
+          familyGame={familyGame}
+          familyState={familyState}
+          pts={pts}
+        />
       )}
 
-      {!quiet && <NearbyCaches center={station.coords} />}
+      {!quiet && allDone && (!familyGame || familyState) && <NearbyCaches center={station.coords} />}
       <ReportButton station={station} />
       <details className="sources">
         <summary>Quellen</summary>
@@ -712,6 +682,137 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         </ul>
       </details>
     </div>
+  );
+}
+
+type Step = { id: string; label: string; kind: 'task' | 'info' | 'talk' | 'family'; task?: Task };
+
+/** Normale Station: eins nach dem anderen (Rätsel, Info, Gespräch, Familien-Moment) statt einer langen Liste */
+function StationSteps({
+  game,
+  station,
+  tasks,
+  hasFinal,
+  clue,
+  letter,
+  talk,
+  youngest,
+  familyGame,
+  familyState,
+  pts,
+}: {
+  game: Game;
+  station: Station;
+  tasks: Task[];
+  hasFinal: boolean;
+  clue?: { value: number; label: string };
+  letter: string;
+  talk: ReturnType<typeof talksForTour>[number];
+  youngest: AgeGroup;
+  familyGame?: string;
+  familyState?: 'done' | 'skipped';
+  pts: number;
+}) {
+  const ss = game.stopStates[stopKey(currentStop(game)!)];
+  const steps: Step[] = [
+    ...tasks.map((t, i): Step => ({ id: t.id, label: tasks.length > 1 ? `Rätsel ${i + 1}` : 'Rätsel', kind: 'task', task: t })),
+    { id: 'info', label: 'Info', kind: 'info' },
+    { id: 'talk', label: 'Reden', kind: 'talk' },
+    ...(familyGame ? [{ id: 'family', label: 'Familie', kind: 'family' } as Step] : []),
+  ];
+  const firstOpen = tasks.findIndex((t) => !ss.tasks[t.id]?.done);
+  const [at, setAt] = useState(firstOpen >= 0 ? firstOpen : tasks.length);
+  const [reached, setReached] = useState(at);
+  const step = steps[Math.min(at, steps.length - 1)];
+  const isLast = at >= steps.length - 1;
+  const stepDone = (st: Step) => (st.kind === 'task' ? !!ss.tasks[st.id]?.done : st.kind === 'family' ? !!familyState : steps.indexOf(st) < reached);
+  const canGo = stepDone(step) || step.kind === 'info' || step.kind === 'talk';
+  const go = (i: number) => {
+    play('tap');
+    setAt(i);
+    setReached((r) => Math.max(r, i));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <>
+      <div className="step-pills" role="tablist" aria-label="Schritte an dieser Station">
+        {steps.map((st, i) => (
+          <button
+            key={st.id}
+            type="button"
+            role="tab"
+            aria-selected={i === at}
+            className={`step-pill${i === at ? ' on' : ''}${stepDone(st) && i !== at ? ' done' : ''}`}
+            disabled={i > reached}
+            onClick={() => go(i)}
+          >
+            {stepDone(st) && i !== at ? '✓ ' : ''}
+            {st.label}
+          </button>
+        ))}
+      </div>
+
+      <div key={step.id} className="step-body rise">
+        {step.kind === 'task' && step.task && (
+          <TaskCard task={step.task} state={ss.tasks[step.task.id]} quiet={false} index={tasks.indexOf(step.task)} total={tasks.length} />
+        )}
+        {step.kind === 'info' && (
+          <>
+            {clue && hasFinal && (
+              <div className="cache-clue" data-testid="cache-clue">
+                <div className="letter-tile">{letter}</div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 16 }}>
+                    Notizbuch: {letter} = {clue.value}
+                  </div>
+                  <div className="muted" style={{ fontSize: 13 }}>
+                    {clue.label}
+                  </div>
+                </div>
+              </div>
+            )}
+            <section className="card snack">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <h3>Wusstet ihr?</h3>
+                <ReadAloud text={station.snack + (station.kidsFact ? ' ' + station.kidsFact : '')} />
+              </div>
+              <p>{station.snack}</p>
+              {station.kidsFact && <p className="kids-fact">{station.kidsFact}</p>}
+            </section>
+          </>
+        )}
+        {step.kind === 'talk' && <TalkCard pools={talkPools(station)} seed={game.config.seed + game.index} youngest={youngest} initial={talk} />}
+        {step.kind === 'family' && familyGame && <FamilyGameCard stationId={station.id} gameId={familyGame} state={familyState} />}
+      </div>
+
+      <div className="step-bar">
+        {isLast && canGo ? (
+          <>
+            {pts > 0 && (
+              <p className="caption" style={{ textAlign: 'center' }}>
+                Punkte an dieser Station: {pts}
+              </p>
+            )}
+            <button
+              type="button"
+              className="btn big primary"
+              onClick={() => {
+                play('unlock');
+                nextStop();
+              }}
+            >
+              {game.index + 1 < game.stops.length ? 'Weiter zum nächsten Ziel' : 'Tour abschließen'}
+              <Icon name="next" size={18} color="#fff" width={2.6} />
+            </button>
+          </>
+        ) : (
+          <button type="button" className="btn big primary" data-testid="step-next" disabled={!canGo} onClick={() => go(at + 1)}>
+            {canGo ? `Weiter: ${steps[at + 1]?.label}` : step.kind === 'family' ? 'Erst spielen oder überspringen' : 'Erst das Rätsel lösen'}
+          </button>
+        )}
+      </div>
+    </>
   );
 }
 

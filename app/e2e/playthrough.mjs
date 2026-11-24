@@ -157,59 +157,71 @@ while (guard++ < 40) {
     await page.getByTestId('temperature').waitFor();
     await snap('hotcold');
   }
+  let clueSeen = false;
   // 2) Am Ziel: automatische Freischaltung per GPS
   await context.setGeolocation({ latitude: coords[0] + 0.00005, longitude: coords[1], accuracy: 8 });
   await page.getByTestId('arrived').waitFor({ timeout: 8000 });
   stations++;
-  // Aufgaben lösen
-  for (let k = 0; k < 8; k++) {
+  // Station Schritt für Schritt: Rätsel lösen, "Weiter", Info, Reden, Familie
+  let k = 0;
+  for (let guard = 0; guard < 16; guard++) {
+    if (await page.getByTestId('cache-clue').count()) clueSeen = true;
     const open = page.locator('.task-card:not(.done)').last();
-    if (!(await open.count())) break;
-    const tid = await open.getAttribute('data-testid');
-    const card = page.getByTestId(tid);
-    const opts = card.locator('.btn.option');
-    if (await opts.count()) {
-      await opts.nth(k % 2 === 0 ? 0 : 1).click();
-      // evtl. zweiter Versuch
-      if (await card.locator('.btn.option').count()) await card.locator('.btn.option').first().click();
-    } else if (await card.getByRole('button', { name: /Ohne Foto/ }).count()) {
-      if (!photoUploaded) {
-        // echtes Foto hochladen testen
-        await card.locator('input[type=file]').setInputFiles('public/icon-512.png');
-        await page.locator(`[data-testid="${tid}"].done`).waitFor();
-        photoUploaded = true;
-      } else await card.getByRole('button', { name: /Ohne Foto/ }).click();
-    } else if (await card.locator('textarea').count()) {
-      await card.locator('textarea').fill('Wir denken an sie.');
-      await card.getByRole('button', { name: 'Weiter' }).click();
-    } else if (await card.locator('.stepper').count()) {
-      await card.getByRole('button', { name: 'Prüfen' }).click();
-      if (!(await card.evaluate((el) => el.classList.contains('done')))) {
-        for (let i = 0; i < 6; i++) await card.getByRole('button', { name: 'Eins mehr' }).click();
+    if (await open.count()) {
+      const tid = await open.getAttribute('data-testid');
+      const card = page.getByTestId(tid);
+      const opts = card.locator('.btn.option');
+      if (await opts.count()) {
+        await opts.nth(k % 2 === 0 ? 0 : 1).click();
+        if (await card.locator('.btn.option').count()) await card.locator('.btn.option').first().click();
+      } else if (await card.getByRole('button', { name: /Ohne Foto/ }).count()) {
+        if (!photoUploaded) {
+          await card.locator('input[type=file]').setInputFiles('public/icon-512.png');
+          await page.locator(`[data-testid="${tid}"].done`).waitFor();
+          photoUploaded = true;
+        } else await card.getByRole('button', { name: /Ohne Foto/ }).click();
+      } else if (await card.locator('textarea').count()) {
+        await card.locator('textarea').fill('Wir denken an sie.');
+        await card.getByRole('button', { name: 'Weiter' }).click();
+      } else if (await card.locator('.stepper').count()) {
         await card.getByRole('button', { name: 'Prüfen' }).click();
-      }
-    } else if (await card.locator('input').count()) {
-      if (k === 0 && (await card.getByRole('button', { name: /Hinweis/ }).count())) await card.getByRole('button', { name: /Hinweis/ }).click();
-      await card.locator('input').fill('6');
-      await card.getByRole('button', { name: 'Prüfen' }).click();
-      if (!(await card.evaluate((el) => el.classList.contains('done')))) {
-        await card.locator('input').fill('7');
+        if (!(await card.evaluate((el) => el.classList.contains('done')))) {
+          for (let i = 0; i < 6; i++) await card.getByRole('button', { name: 'Eins mehr' }).click();
+          await card.getByRole('button', { name: 'Prüfen' }).click();
+        }
+      } else if (await card.locator('input').count()) {
+        if (k === 0 && (await card.getByRole('button', { name: /Hinweis/ }).count())) await card.getByRole('button', { name: /Hinweis/ }).click();
+        await card.locator('input').fill('6');
         await card.getByRole('button', { name: 'Prüfen' }).click();
+        if (!(await card.evaluate((el) => el.classList.contains('done')))) {
+          await card.locator('input').fill('7');
+          await card.getByRole('button', { name: 'Prüfen' }).click();
+        }
       }
+      k++;
+      await page.waitForTimeout(150);
+      continue;
     }
-    await page.waitForTimeout(150);
+    // Familien-Moment: mitspielen
+    const fam = page.locator('[data-testid=family-game]:not([data-state])');
+    if (await fam.count()) {
+      families++;
+      if (families === 1) await snap(`family-${state.stop.id}`);
+      const noPhoto = fam.getByRole('button', { name: /Gespielt, ohne Foto/ });
+      if (await noPhoto.count()) await noPhoto.click();
+      else await fam.getByRole('button', { name: /Geschafft/ }).click();
+      await page.locator('[data-testid=family-game][data-state=done]').waitFor();
+      continue;
+    }
+    const nextStep = page.getByTestId('step-next');
+    if ((await nextStep.count()) && (await nextStep.isEnabled())) {
+      await nextStep.click();
+      await page.waitForTimeout(100);
+      continue;
+    }
+    break;
   }
-  // Familien-Moment: mitspielen
-  const fam = page.locator('[data-testid=family-game]:not([data-state])');
-  if (await fam.count()) {
-    families++;
-    if (families === 1) await snap(`family-${state.stop.id}`);
-    const noPhoto = fam.getByRole('button', { name: /Gespielt, ohne Foto/ });
-    if (await noPhoto.count()) await noPhoto.click();
-    else await fam.getByRole('button', { name: /Geschafft/ }).click();
-    await page.locator('[data-testid=family-game][data-state=done]').waitFor();
-  }
-  if (await page.getByTestId('cache-clue').count()) clues++;
+  if (clueSeen) clues++;
   if (stations <= 2) {
     await page.waitForTimeout(900);
     await snap(`station-${state.stop.id}`);

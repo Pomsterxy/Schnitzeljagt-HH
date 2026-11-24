@@ -15,7 +15,6 @@ import { Icon } from '../components/Icon';
 import { Lilli } from '../components/Lilli';
 
 const AVATARS = ['🦊', '🐧', '🦉', '🐙', '🦁', '🐳', '🦄', '🐢', '🐝', '🦭'];
-const AGE_LABEL: Record<AgeGroup, string> = { kids: 'Kind 6–9', tweens: 'Kind 10–13', adults: 'Teen / Erwachsen' };
 const DURATIONS = [
   { v: 45, name: '45 Minuten' },
   { v: 60, name: '1 Stunde' },
@@ -42,29 +41,38 @@ const LEGS = [
   { v: 0, name: 'Egal, auch weiter' },
 ];
 
-type Q =
-  | { id: 'team' }
-  | { id: 'count' }
-  | { id: 'member'; i: number }
-  | { id: 'avatar' }
-  | { id: 'districts' }
-  | { id: 'minutes' }
-  | { id: 'legs' }
-  | { id: 'theme' }
-  | { id: 'start' }
-  | { id: 'nav' }
-  | { id: 'cache' }
-  | { id: 'pause' }
-  | { id: 'quiet' }
-  | { id: 'pin' }
-  | { id: 'route' };
+/** Nur 6 Fragen; alles andere hat gute Standards und lässt sich bei der Route ändern */
+type Q = { id: 'team' } | { id: 'people' } | { id: 'districts' } | { id: 'minutes' } | { id: 'start' } | { id: 'pin' } | { id: 'route' };
+
+const AGE_ORDER: AgeGroup[] = ['adults', 'tweens', 'kids'];
+const AGE_PLURAL: Record<AgeGroup, [string, string]> = { adults: ['Erwachsener', 'Erwachsene'], tweens: ['Kind (10–13)', 'Kinder (10–13)'], kids: ['Kind (6–9)', 'Kinder (6–9)'] };
+/** Beschriftung der Zähler-Zeilen */
+const AGE_ROW: Record<AgeGroup, string> = { adults: 'Erwachsene & Teens', tweens: 'Kinder 10–13', kids: 'Kinder 6–9' };
+type Counts = Record<AgeGroup, number>;
+function countsOf(members: Member[]): Counts {
+  const c: Counts = { adults: 0, tweens: 0, kids: 0 };
+  for (const m of members) c[m.age]++;
+  return c;
+}
+/** Mitspieler aus den Anzahlen bauen (Namen von früher bleiben erhalten) */
+function membersFrom(c: Counts, old: Member[]): Member[] {
+  return AGE_ORDER.flatMap((age) => {
+    const named = old.filter((m) => m.age === age);
+    return Array.from({ length: c[age] }, (_, i) => named[i] ?? { name: '', age });
+  });
+}
+function peopleText(c: Counts): string {
+  return AGE_ORDER.filter((a) => c[a] > 0)
+    .map((a) => `${c[a]} ${AGE_PLURAL[a][c[a] === 1 ? 0 : 1]}`)
+    .join(' · ');
+}
 
 /** Lilli fragt der Reihe nach, wie im Chat. Ältere Antworten lassen sich antippen und ändern. */
 export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel: () => void }) {
   const prev = lastTeam();
   const [step, setStep] = useState(0);
   const [team, setTeam] = useState<Team>(prev ?? { name: '', avatar: AVATARS[0], members: [] });
-  const [count, setCount] = useState(prev?.members.length ?? 0);
+  const [counts, setCounts] = useState<Counts>(() => (prev?.members.length ? countsOf(prev.members) : { adults: 1, tweens: 0, kids: 1 }));
   const [districts, setDistricts] = useState<DistrictId[]>([]);
   const [minutes, setMinutes] = useState(90);
   const [nav, setNav] = useState<NavMode>('map');
@@ -78,18 +86,10 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e9));
   const pos = usePosition();
 
-  const questions: Q[] = useMemo(() => {
-    const q: Q[] = [{ id: 'team' }, { id: 'count' }];
-    for (let i = 0; i < count; i++) q.push({ id: 'member', i });
-    q.push({ id: 'avatar' }, { id: 'districts' }, { id: 'minutes' }, { id: 'legs' }, { id: 'theme' }, { id: 'start' }, { id: 'nav' }, { id: 'cache' });
-    if (minutes >= 60) q.push({ id: 'pause' });
-    if (theme !== 'erinnern') q.push({ id: 'quiet' });
-    q.push({ id: 'pin' }, { id: 'route' });
-    return q;
-  }, [count, minutes, theme]);
+  const questions: Q[] = [{ id: 'team' }, { id: 'people' }, { id: 'districts' }, { id: 'minutes' }, { id: 'start' }, { id: 'pin' }, { id: 'route' }];
 
   const current = questions[Math.min(step, questions.length - 1)];
-  const members = team.members.slice(0, count);
+  const members = useMemo(() => membersFrom(counts, prev?.members ?? []), [counts, prev?.members]);
   const groups = members.map((m) => m.age);
   const youngest = youngestGroup(groups.length ? groups : ['adults']);
 
@@ -169,12 +169,6 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     setNoOther(false);
     setStep((s) => s + 1);
   };
-  const setMember = (i: number, m: Member) => {
-    const list = team.members.slice();
-    while (list.length <= i) list.push({ name: '', age: 'kids' });
-    list[i] = m;
-    setTeam({ ...team, members: list });
-  };
 
   /** Frage von Lilli (Text) */
   const ask = (q: Q): string => {
@@ -182,35 +176,19 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     switch (q.id) {
       case 'team':
         return prev ? `Moin, ${prev.name}! Schön, dass ihr wieder da seid. Bleibt es bei eurem Teamnamen?` : 'Moin! Ich bin Lilli, eure Schatzsuch-Möwe. Wie heißt euer Team?';
-      case 'count':
-        return `${n} – klingt nach echten Entdeckern! Wie viele seid ihr?`;
-      case 'member':
-        return q.i === 0 ? 'Wer ist dabei? Verrate mir Namen und Alter. Der Name ist freiwillig.' : `Und Person ${q.i + 1}?`;
-      case 'avatar':
-        return `Ich passe die Rätsel an die Jüngsten an (${AGE_LABEL[youngest]}). Welches Maskottchen nehmt ihr mit?`;
+      case 'people':
+        return `${n} – klingt nach echten Entdeckern! Wer ist dabei? Die Rätsel richten sich nach den Jüngsten.`;
       case 'districts':
         return 'Wo wollen wir suchen? Ihr könnt auch mehrere Stadtteile antippen.';
       case 'minutes':
         return 'Wie lange haben eure Beine Lust?';
-      case 'legs':
-        return 'Sind auch Wege über 500 Meter bis zum nächsten Ziel okay? Bei kurzen Wegen baue ich kleine Zwischenziele ein, damit niemand quengelt.';
-      case 'theme':
-        return 'Habt ihr ein Lieblingsthema?';
       case 'start':
         return 'Wo startet ihr?';
-      case 'nav':
-        return 'Wie wollt ihr die Orte finden? Mit Karte ist es leichter, im Abenteuer-Modus gibt es nur Rätsel und Hinweise.';
-      case 'cache':
-        return 'Soll am Ende ein Schatz-Finale warten? Dafür sammelt ihr unterwegs Zahlen und berechnet die Koordinaten wie beim Geocaching.';
-      case 'pause':
-        return 'Sollen wir eine Pause an einem Spielplatz oder einer Eisdiele einplanen?';
-      case 'quiet':
-        return 'Möchtet ihr auch Gedenkorte besuchen, zum Beispiel Stolpersteine? Dort ist es ruhig und es gibt keine Punkte.';
       case 'pin':
         return 'Zum Schluss: Ein Erwachsener legt eine 4-stellige Eltern-PIN fest. Damit schaltet ihr Stationen frei, wenn das GPS mal spinnt.';
       case 'route':
         return route && route.stops.some((s) => s.kind === 'station')
-          ? `Eure Route steht!${maxLeg ? ` Kein Weg ist länger als ${maxLeg === 1000 ? '1 Kilometer' : `${maxLeg} Meter`}.` : ''} Den Schatz-Ort verrate ich natürlich noch nicht …`
+          ? `Eure Route steht!${maxLeg ? ` Kein Weg ist länger als ${maxLeg === 1000 ? '1 Kilometer' : `${maxLeg} Meter`}.` : ''} Unten könnt ihr Thema, Wege und Extras anpassen.`
           : 'Hm, für diese Auswahl finde ich keine passende Route. Tippt oben auf eine Antwort, um etwas zu ändern.';
     }
   };
@@ -220,32 +198,14 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     switch (q.id) {
       case 'team':
         return team.name.trim();
-      case 'count':
-        return count === 1 ? 'Nur ich' : `Wir sind ${count}`;
-      case 'member': {
-        const m = members[q.i];
-        return m ? `${m.name.trim() || `Person ${q.i + 1}`} · ${AGE_LABEL[m.age]}` : '';
-      }
-      case 'avatar':
-        return team.avatar;
+      case 'people':
+        return peopleText(counts);
       case 'districts':
         return districts.map((d) => DISTRICTS.find((x) => x.id === d)!.name).join(', ');
       case 'minutes':
         return DURATIONS.find((d) => d.v === minutes)!.name;
-      case 'legs':
-        return LEGS.find((l) => l.v === maxLeg)!.name;
-      case 'theme':
-        return THEMES.find((t) => t.id === theme)!.name;
       case 'start':
         return start?.label ?? 'Mein Standort';
-      case 'nav':
-        return nav === 'map' ? 'Mit Karte' : 'Abenteuer';
-      case 'cache':
-        return cache ? 'Ja, mit Schatz!' : 'Nein, danke';
-      case 'pause':
-        return includePause ? 'Ja, Pause muss sein' : 'Keine Pause';
-      case 'quiet':
-        return includeQuiet ? 'Ja' : 'Lieber nicht';
       case 'pin':
         return '••••';
       case 'route':
@@ -401,6 +361,37 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             )}
           </div>
         )}
+        {current.id === 'route' && start && (
+          <details className="tour-settings rise" data-testid="tour-settings">
+            <summary>
+              <span>Anpassen</span>
+              <small>
+                {THEMES.find((t) => t.id === theme)!.name} · {LEGS.find((l) => l.v === maxLeg)!.name} · {nav === 'map' ? 'Mit Karte' : 'Abenteuer'}
+              </small>
+            </summary>
+            <SettingGroup label="Thema" testId="set-theme" options={THEMES.map((t) => ({ id: t.id, label: t.name }))} value={theme} onPick={(v) => setTheme(v as Category | 'mix')} />
+            <SettingGroup label="Wege bis zum nächsten Ziel" testId="set-legs" options={LEGS.map((l) => ({ id: String(l.v), label: l.name }))} value={String(maxLeg)} onPick={(v) => setMaxLeg(Number(v))} />
+            <SettingGroup
+              label="Orte finden"
+              testId="set-nav"
+              options={[
+                { id: 'map', label: 'Mit Karte' },
+                { id: 'adventure', label: 'Abenteuer (nur Rätsel)' },
+              ]}
+              value={nav}
+              onPick={(v) => setNav(v as NavMode)}
+            />
+            <div className="setting-group">
+              <div className="setting-label">Extras</div>
+              <div className="chips start">
+                <Toggle label="Schatz-Finale" on={cache} onChange={setCache} testId="cache-toggle" />
+                {minutes >= 60 && <Toggle label="Pause (Spielplatz/Eis)" on={includePause} onChange={setIncludePause} />}
+                {theme !== 'erinnern' && <Toggle label="Gedenkorte" on={includeQuiet} onChange={setIncludeQuiet} />}
+              </div>
+            </div>
+            <SettingGroup label="Maskottchen" options={AVATARS.map((a) => ({ id: a, label: a }))} value={team.avatar} onPick={(a) => setTeam({ ...team, avatar: a })} />
+          </details>
+        )}
         <div ref={endRef} />
       </div>
 
@@ -426,43 +417,43 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             }}
           />
         );
-      case 'count':
+      case 'people':
         return (
-          <Chips
-            options={Array.from({ length: MAX_PEOPLE }, (_, i) => ({ id: String(i + 1), label: i === 0 ? 'Nur ich' : String(i + 1) }))}
-            selected={count ? [String(count)] : []}
-            onPick={(id) => {
-              const c = Number(id);
-              setCount(c);
-              const list = team.members.slice(0, c);
-              while (list.length < c) list.push({ name: '', age: list.length === 0 ? 'adults' : 'kids' });
-              setTeam({ ...team, members: list });
-              next();
-            }}
-          />
-        );
-      case 'member':
-        return (
-          <MemberAnswer
-            i={q.i}
-            m={team.members[q.i] ?? { name: '', age: q.i === 0 ? 'adults' : 'kids' }}
-            onPick={(m) => {
-              setMember(q.i, m);
-              next();
-            }}
-          />
-        );
-      case 'avatar':
-        return (
-          <Chips
-            options={AVATARS.map((a) => ({ id: a, label: a }))}
-            selected={[team.avatar]}
-            big
-            onPick={(a) => {
-              setTeam({ ...team, avatar: a });
-              next();
-            }}
-          />
+          <>
+            <div className="people-picker" data-testid="people">
+              {AGE_ORDER.map((age) => (
+                <div key={age} className="people-row">
+                  <span>{AGE_ROW[age]}</span>
+                  <button
+                    type="button"
+                    aria-label={`${AGE_ROW[age]}: eins weniger`}
+                    disabled={counts[age] === 0}
+                    onClick={() => {
+                      play('tap');
+                      setCounts({ ...counts, [age]: counts[age] - 1 });
+                    }}
+                  >
+                    −
+                  </button>
+                  <strong data-testid={`count-${age}`}>{counts[age]}</strong>
+                  <button
+                    type="button"
+                    aria-label={`${AGE_ROW[age]}: eins mehr`}
+                    disabled={members.length >= MAX_PEOPLE}
+                    onClick={() => {
+                      play('tap');
+                      setCounts({ ...counts, [age]: counts[age] + 1 });
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button type="button" className="btn pill big primary" disabled={members.length === 0} onClick={next}>
+              Passt so
+            </button>
+          </>
         );
       case 'districts':
         return (
@@ -492,28 +483,6 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             }}
           />
         );
-      case 'legs':
-        return (
-          <Chips
-            options={LEGS.map((l) => ({ id: String(l.v), label: l.name }))}
-            selected={[String(maxLeg)]}
-            onPick={(v) => {
-              setMaxLeg(Number(v));
-              next();
-            }}
-          />
-        );
-      case 'theme':
-        return (
-          <Chips
-            options={THEMES.map((t) => ({ id: t.id, label: t.name }))}
-            selected={[theme]}
-            onPick={(v) => {
-              setTheme(v as Category | 'mix');
-              next();
-            }}
-          />
-        );
       case 'start': {
         const spots = START_POINTS.filter((s) => districts.includes(s.district));
         return (
@@ -535,26 +504,6 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
           </>
         );
       }
-      case 'nav':
-        return (
-          <Chips
-            options={[
-              { id: 'map', label: '🗺️ Mit Karte' },
-              { id: 'adventure', label: '🧭 Abenteuer' },
-            ]}
-            selected={[nav]}
-            onPick={(v) => {
-              setNav(v as NavMode);
-              next();
-            }}
-          />
-        );
-      case 'cache':
-        return <YesNo yes="Ja, mit Schatz!" no="Nein, danke" value={cache} testId="cache-toggle" onPick={(v) => { setCache(v); next(); }} />;
-      case 'pause':
-        return <YesNo yes="Ja, Pause muss sein" no="Keine Pause" value={includePause} onPick={(v) => { setIncludePause(v); next(); }} />;
-      case 'quiet':
-        return <YesNo yes="Ja" no="Lieber nicht" value={includeQuiet} onPick={(v) => { setIncludeQuiet(v); next(); }} />;
       case 'pin':
         return (
           <TextAnswer
@@ -594,20 +543,6 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
 
 }
 
-function MemberAnswer({ i, m, onPick }: { i: number; m: Member; onPick: (m: Member) => void }) {
-  const [name, setName] = useState(m.name);
-  return (
-    <>
-      <input className="chat-input" data-testid="chat-input" value={name} placeholder={`Name ${i + 1} (freiwillig)`} onChange={(e) => setName(e.target.value)} />
-      <Chips
-        options={(Object.keys(AGE_LABEL) as AgeGroup[]).map((a) => ({ id: a, label: AGE_LABEL[a] }))}
-        selected={[m.age]}
-        onPick={(a) => onPick({ name, age: a as AgeGroup })}
-      />
-    </>
-  );
-}
-
 function Chips({
   options,
   selected,
@@ -635,19 +570,6 @@ function Chips({
           {o.label}
         </button>
       ))}
-    </div>
-  );
-}
-
-function YesNo({ yes, no, value, onPick, testId }: { yes: string; no: string; value: boolean; onPick: (v: boolean) => void; testId?: string }) {
-  return (
-    <div className="chips" data-testid={testId}>
-      <button type="button" className={`chip${value ? ' on' : ''}`} onClick={() => { play('select'); onPick(true); }}>
-        {yes}
-      </button>
-      <button type="button" className="chip" onClick={() => { play('select'); onPick(false); }}>
-        {no}
-      </button>
     </div>
   );
 }
@@ -702,5 +624,47 @@ function TextAnswer({
         </button>
       </form>
     </>
+  );
+}
+
+function SettingGroup({ label, options, value, onPick, testId }: { label: string; options: { id: string; label: string }[]; value: string; onPick: (id: string) => void; testId?: string }) {
+  return (
+    <div className="setting-group" data-testid={testId}>
+      <div className="setting-label">{label}</div>
+      <div className="chips start">
+        {options.map((o) => (
+          <button
+            key={o.id}
+            type="button"
+            className={`chip${o.id === value ? ' on' : ''}`}
+            aria-pressed={o.id === value}
+            onClick={() => {
+              play('select');
+              onPick(o.id);
+            }}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Toggle({ label, on, onChange, testId }: { label: string; on: boolean; onChange: (v: boolean) => void; testId?: string }) {
+  return (
+    <button
+      type="button"
+      className={`chip toggle${on ? ' on' : ''}`}
+      aria-pressed={on}
+      data-testid={testId}
+      onClick={() => {
+        play('select');
+        onChange(!on);
+      }}
+    >
+      {on ? '✓ ' : ''}
+      {label}
+    </button>
   );
 }
