@@ -109,18 +109,25 @@ let compassOn = false;
 
 /** Gerätekompass (für den Richtungspfeil), iOS braucht eine Erlaubnis per Tipp */
 export async function enableCompass(): Promise<boolean> {
+  return (await enableCompassResult()) === 'ok';
+}
+
+/** Wie enableCompass, sagt aber, warum es nicht geklappt hat */
+export async function enableCompassResult(): Promise<'ok' | 'denied' | 'unsupported'> {
   type DOE = typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> };
   const D = (typeof DeviceOrientationEvent !== 'undefined' ? DeviceOrientationEvent : undefined) as DOE | undefined;
-  if (!D) return false;
+  if (!D) return 'unsupported';
+  let result: 'ok' | 'denied' = 'ok';
   try {
     if (D.requestPermission) {
       const r = await D.requestPermission();
-      if (r !== 'granted') return false;
+      if (r !== 'granted') result = 'denied';
     }
   } catch {
-    return false;
+    result = 'denied';
   }
-  if (compassOn) return true;
+  // Auch bei "verweigert" trotzdem lauschen: Manche Browser liefern die Daten dennoch
+  if (compassOn) return result;
   compassOn = true;
   // Android liefert absolute (nordbezogene) und relative Werte: Sobald absolute kommen, die relativen ignorieren
   let absolute = false;
@@ -135,5 +142,5 @@ export async function enableCompass(): Promise<boolean> {
   };
   window.addEventListener('deviceorientationabsolute', handler as EventListener, true);
   window.addEventListener('deviceorientation', handler as EventListener, true);
-  return true;
+  return result;
 }
