@@ -5,9 +5,9 @@
  */
 export const IMPRESSUM = {
   /** Vor- und Nachname der verantwortlichen Person */
-  name: '',
+  name: 'Thorben Poschmann',
   /** Straße, PLZ und Ort */
   address: '',
   /** E-Mail-Adresse oder ein anderer Kontaktweg */
-  contact: '',
+  contact: 'Poschmannthorben@gmail.com',
 };
