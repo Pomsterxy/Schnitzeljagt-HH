@@ -2,6 +2,9 @@ import { useState } from 'react';
 import type { LatLng } from '../data/types';
 import { distance, formatDistance } from '../lib/geo';
 import { loadJSON } from '../lib/storage';
+import { MapView } from './MapView';
+import { Icon } from './Icon';
+import { CacheDetail, TYPE_ICON, foundCaches } from './CacheDetail';
 
 export const OC_KEY_STORAGE = 'hh-hunt:opencachingKey';
 /** Öffentlicher Opencaching-Schlüssel der App (OKAPI Level 1, kein Geheimnis – identifiziert nur die App) */
@@ -64,6 +67,8 @@ export function NearbyCaches({ center, title = '🌍 Echte Geocaches in der Näh
   const [list, setList] = useState<OcCache[] | null>(null);
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [open, setOpen] = useState<string | null>(null);
+  const [found, setFound] = useState<string[]>(foundCaches);
   const load = async () => {
     setBusy(true);
     setErr('');
@@ -85,16 +90,12 @@ export function NearbyCaches({ center, title = '🌍 Echte Geocaches in der Näh
     >
       <summary>{title}</summary>
       <p className="muted">
-        Echte Geocaches sind Verstecke, die andere Menschen angelegt haben, meist eine Dose mit Logbuch. Zum Suchen und Loggen braucht
-        ihr ein (kostenloses) Konto bei Geocaching.com oder Opencaching.de. Bitte legt den Cache nach dem Finden genau so zurück, wie
-        ihr ihn vorgefunden habt.
+        Echte Geocaches sind Verstecke, die andere Menschen angelegt haben, meist eine Dose mit Logbuch. Tippt einen Cache an: Die App
+        führt euch hin und zeigt Beschreibung, Hinweis und Logbuch.
       </p>
       <div className="row">
         <a className="btn small" href={geocachingMapUrl(center)} target="_blank" rel="noreferrer">
-          Karte auf Geocaching.com
-        </a>
-        <a className="btn small" href={opencachingMapUrl(center)} target="_blank" rel="noreferrer">
-          Karte auf Opencaching.de
+          Weitere Caches auf Geocaching.com
         </a>
       </div>
       {busy && (
@@ -110,25 +111,51 @@ export function NearbyCaches({ center, title = '🌍 Echte Geocaches in der Näh
       {err && <p className="error">{err}</p>}
       {list && list.length === 0 && <p className="muted">Keine Opencaching-Caches im Umkreis von 2 km.</p>}
       {list && list.length > 0 && (
-        <ul className="cache-list" data-testid="cache-list">
-          {list.map((c) => {
-            const [la, lo] = c.location.split('|').map(Number);
-            return (
-              <li key={c.code}>
-                <a href={c.url} target="_blank" rel="noreferrer">
-                  <strong>{c.name}</strong>
-                </a>{' '}
-                ({c.code})<br />
-                <small>
-                  {TYPE_DE[c.type] ?? c.type} · Schwierigkeit {c.difficulty} · Gelände {c.terrain} · {formatDistance(distance(center, [la, lo]))}
-                </small>
-              </li>
-            );
-          })}
-          <li className="muted">
-            <small>Daten: Opencaching.de, Inhalte der jeweiligen Cache-Besitzer.</small>
-          </li>
-        </ul>
+        <>
+          <MapView
+            markers={list.map((c) => ({ id: c.code, coords: c.location.split('|').map(Number) as LatLng, emoji: TYPE_ICON[c.type] ?? '📍', label: c.name, done: found.includes(c.code) }))}
+            fit={[center, ...list.map((c) => c.location.split('|').map(Number) as LatLng)]}
+            onMarkerClick={setOpen}
+            height={200}
+          />
+          <ul className="cache-list" data-testid="cache-list">
+            {list.map((c) => {
+              const [la, lo] = c.location.split('|').map(Number);
+              return (
+                <li key={c.code}>
+                  <button type="button" className="cache-item" onClick={() => setOpen(c.code)}>
+                    <span className="cache-icon" aria-hidden="true">
+                      {TYPE_ICON[c.type] ?? '📍'}
+                    </span>
+                    <span className="cache-text">
+                      <strong>
+                        {found.includes(c.code) ? '✓ ' : ''}
+                        {c.name}
+                      </strong>
+                      <small>
+                        {TYPE_DE[c.type] ?? c.type} · D {c.difficulty} · T {c.terrain} · {formatDistance(distance(center, [la, lo]))}
+                      </small>
+                    </span>
+                    <Icon name="next" size={16} color="var(--label2)" />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="muted" style={{ fontSize: 12 }}>
+            Daten: Opencaching.de, Inhalte der jeweiligen Cache-Besitzer (CC BY-NC-ND).
+          </p>
+        </>
+      )}
+      {open && (
+        <CacheDetail
+          code={open}
+          apiKey={key}
+          onClose={() => {
+            setOpen(null);
+            setFound(foundCaches());
+          }}
+        />
       )}
     </details>
   );
