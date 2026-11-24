@@ -976,3 +976,63 @@ details[open] > :not(summary) { animation: rise 0.35s var(--ease) both; }
 .cache-attrib { font-size: 11px; color: var(--label2); text-align: center; }
 .cache-attrib a { color: inherit; }
 .btn.found { background: var(--teal); color: #fff; box-shadow: 0 4px 0 #0f7b71; }
+
+/* =====================================================================
+   Layout-Feinschliff nach Prüfung in 6 Bildschirmgrößen
+   ===================================================================== */
+/* Mindest-Schriftgröße 12 px */
+.tabbar button { font-size: 12px; }
+.action small, .badge small { font-size: 12px; }
+.gallery figcaption { font-size: 12px; }
+
+/* Tipp-Flächen mindestens ~44 px */
+details > summary { min-height: 44px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.tour-settings summary { min-height: 52px; justify-content: center; align-items: flex-start; }
+.chat-head .back { min-height: 44px; padding: 0 4px; }
+.segmented { height: 44px; border-radius: 12px; }
+.segmented .thumb { border-radius: 10px; }
+/* Bild-Punkte: kleine Optik, große Tipp-Fläche */
+.dot { position: relative; background-clip: content-box; }
+.dot::before { content: ''; position: absolute; inset: -16px -10px; }
+.gallery-dots { gap: 10px; }
+
+/* Header im Spiel: Teamname nicht umbrechen */
+.play-head .mid .caption { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; display: block; }
+
+/* Sehr schmale Handys (iPhone SE & Co.) */
+@media (max-width: 360px) {
+  .collection .btn { font-size: 13px; padding: 0 8px; gap: 4px; }
+  .large-title, .home-hello h1 { font-size: 26px; }
+  .chip { font-size: 14px; padding: 8px 12px; }
+  .step-bar .btn.big, .btn.big { min-height: 54px; font-size: 18px; }
+  .cache-facts span { font-size: 12px; }
+}
+
+/* Niedrige Bildschirme (kleine Handys, Querformat): weniger Höhe für Deko */
+@media (max-height: 700px) {
+  .compass-svg { width: 170px; height: 170px; }
+  .big-dist { font-size: 38px; }
+  .action { min-height: 56px; }
+  .action-bar { padding-top: 8px; }
+  .step-bar { padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+  .station:not(.quiet) .gallery img { height: 140px; }
+  .station:not(.quiet) .gallery-dots { top: 118px; }
+}
+@media (max-height: 500px) {
+  .sky-scene { height: 190px; min-height: 0; }
+  .sky-lilli svg { width: 120px; height: 120px; }
+  .sky-lilli { bottom: 14px; }
+  .compass-svg { width: 130px; height: 130px; }
+  .big-dist { font-size: 30px; }
+  .action { min-height: 48px; }
+  .action small { display: none; }
+  .tabbar button { min-height: 40px; }
+  .chat-log { padding-bottom: 8px; }
+}
+/* Leisten im Spiel passend zum hellen Grund */
+.play-head { background: rgba(255, 248, 238, 0.92); }
+.action-bar { background: rgba(255, 248, 238, 0.94); border-top-color: var(--sep); }
+.quiet-screen .play-head { background: rgba(238, 237, 234, 0.92); }
+@media (max-width: 360px) {
+  .collection .btn { white-space: normal; line-height: 1.15; text-align: center; }
+}

@@ -163,7 +163,8 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     // ganz nach unten, damit die Antwortleiste nichts verdeckt
     const t = setTimeout(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }), 60);
     return () => clearTimeout(t);
-  }, [step, route]);
+    // nach dem "Tippen" wird Lillis Nachricht länger: dann noch einmal nach unten
+  }, [step, route, typing]);
 
   const next = () => {
     play('tap');
