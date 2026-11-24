@@ -75,7 +75,7 @@ export function Legal() {
             der angezeigte Kartenausschnitt übertragen.
           </li>
           <li>
-            <strong>Opencaching.de</strong> wird nur abgefragt, wenn ihr dafür selbst einen Schlüssel eintragt.
+            <strong>Opencaching.de</strong> wird nur abgefragt, wenn ihr an einer Station „Echte Geocaches in der Nähe“ aufklappt. Übertragen wird dabei der Ort der Station, nicht euer Standort, und wie bei jeder Website eure IP-Adresse.
           </li>
           <li>Links zu Wikipedia, Geocaching.com oder Quellen öffnen sich nur, wenn ihr sie antippt.</li>
         </ul>
