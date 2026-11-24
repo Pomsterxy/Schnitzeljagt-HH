@@ -416,3 +416,22 @@ describe('Tour teilen', () => {
     expect(decodeTour('kaputt')).toBeNull();
   });
 });
+
+describe('Tageslicht', () => {
+  it('berechnet den Sonnenuntergang in Hamburg auf wenige Minuten genau', async () => {
+    const { sunset } = await import('./daylight');
+    const hh: [number, number] = [53.59, 10.02];
+    // Sommeranfang: ca. 21:53 MESZ = 19:53 UTC; Winteranfang: ca. 15:59 MEZ = 14:59 UTC
+    const s = sunset(new Date('2026-06-21T10:00:00Z'), hh);
+    expect(Math.abs(s.getUTCHours() * 60 + s.getUTCMinutes() - (19 * 60 + 53))).toBeLessThan(8);
+    const w = sunset(new Date('2026-12-21T10:00:00Z'), hh);
+    expect(Math.abs(w.getUTCHours() * 60 + w.getUTCMinutes() - (14 * 60 + 59))).toBeLessThan(8);
+  });
+  it('warnt nur, wenn die Tour in die Dunkelheit läuft', async () => {
+    const { daylightWarning } = await import('./daylight');
+    const hh: [number, number] = [53.59, 10.02];
+    expect(daylightWarning(new Date('2026-12-21T10:00:00Z'), 90, hh)).toBeNull();
+    expect(daylightWarning(new Date('2026-12-21T14:00:00Z'), 120, hh)).toMatch(/Sonne geht um/);
+    expect(daylightWarning(new Date('2026-12-21T17:00:00Z'), 60, hh)).toMatch(/schon untergegangen/);
+  });
+});

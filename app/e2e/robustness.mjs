@@ -332,6 +332,18 @@ async function context_check(page) {
     },
   });
   if (!link.includes('?tour=')) fail('Kein Einladungslink erzeugt: ' + link);
+  // Regen-Hinweis (mit nachgestellter Vorhersage)
+  {
+    const rctx = await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ['geolocation'], geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 } });
+    const rp = await rctx.newPage();
+    await rp.goto(URL);
+    await planTour(rp, { team: 'Regen', rain: true, snap: async (n) => {
+      if (n !== 'chat-route') return;
+      await rp.getByTestId('rain-warn').waitFor({ timeout: 5000 });
+      console.log('✓ Regen-Hinweis:', (await rp.getByTestId('rain-warn').innerText()).slice(0, 60));
+    } });
+    await rctx.close();
+  }
   const friend = await (await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ['geolocation'], geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 } })).newPage();
   await friend.goto(link);
   await friend.getByTestId('chat-input').fill('Eingeladene');

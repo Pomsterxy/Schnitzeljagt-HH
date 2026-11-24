@@ -5,6 +5,7 @@ import type { AgeGroup, Category, DistrictId, LatLng } from '../data/types';
 import { formatDistance, distance } from '../lib/geo';
 import { generateRoute, measure, type RouteStop } from '../lib/route';
 import { encodeTour, shareLink, tourLink, type SharedTour } from '../lib/share';
+import { daylightWarning, rainWarning } from '../lib/daylight';
 import { speedFor, youngestGroup } from '../lib/scoring';
 import { usePosition, startTracking } from '../lib/location';
 import { play } from '../lib/feedback';
@@ -240,6 +241,22 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
     onStarted();
   };
 
+  // Tageslicht und Regen für die geplante Tour
+  const daylight = route && start ? daylightWarning(new Date(), route.minutes, start.coords) : null;
+  const [rain, setRain] = useState<string | null>(null);
+  const routeMinutes = route ? Math.round(route.minutes) : 0;
+  useEffect(() => {
+    if (!routeMinutes || !start || navigator.onLine === false) return;
+    let alive = true;
+    rainWarning(start.coords, routeMinutes)
+      .then((w) => alive && setRain(w))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeMinutes, start?.label]);
+
   const stationCount = route?.stops.filter((s) => s.kind === 'station').length ?? 0;
   const waypointCount = route?.stops.filter((s) => s.kind === 'waypoint').length ?? 0;
   const firstStop = route?.stops[0];
@@ -347,6 +364,16 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
               Längste Etappe: {formatDistance(longest)}
               {maxLeg && firstLeg > maxLeg ? ` · Der erste Weg vom Start ist ${formatDistance(firstLeg * 1.3)} lang.` : ''}
             </p>
+            {daylight && (
+              <p className="tour-warn" data-testid="daylight-warn">
+                🌇 {daylight}
+              </p>
+            )}
+            {rain && (
+              <p className="tour-warn" data-testid="rain-warn">
+                🌧️ {rain}
+              </p>
+            )}
             {noOther && (
               <p className="dark-caption reroll-note" data-testid="no-other-route">
                 Hier passt gerade keine andere Route in die Zeit. Nehmt einen weiteren Stadtteil dazu oder ändert die Dauer.

@@ -33,6 +33,7 @@ import { Breath } from '../components/Breath';
 import { Compass } from '../components/Compass';
 import { DotLoader, RollingNumber } from '../components/Micro';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { formatDegMin } from '../lib/cache';
 import { encodeTour, shareLink, tourLink } from '../lib/share';
 import type { RouteStop } from '../lib/route';
 import { backdropClose } from '../lib/backdrop';
@@ -80,7 +81,8 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
   const sound = useSoundOn();
   const [menu, setMenu] = useState(false);
   const [quit, setQuit] = useState(false);
-  const [pinFor, setPinFor] = useState<null | 'unlock' | 'skip'>(null);
+  const [pinFor, setPinFor] = useState<null | 'unlock' | 'skip' | 'parent'>(null);
+  const [parentView, setParentView] = useState(false);
   const [notebook, setNotebook] = useState(false);
   const powerSave = usePowerSave();
   const tiles = useTilePrefetch();
@@ -227,6 +229,11 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
               <button type="button" onClick={() => { setMenu(false); setPinFor('skip'); }}>
                 <Icon name="skip" size={20} color="var(--accent)" /> Diesen Stopp überspringen (Eltern-PIN)
               </button>
+              {hasFinal && (
+                <button type="button" data-testid="parent-treasure" onClick={() => { setMenu(false); setPinFor('parent'); }}>
+                  <Icon name="lock" size={20} color="var(--accent)" /> Für Eltern: Wo liegt der Schatz? (Eltern-PIN)
+                </button>
+              )}
               <button type="button" role="switch" aria-checked={powerSave} data-testid="power-toggle" onClick={() => setPowerSave(!powerSave)}>
                 <Icon name="steps" size={20} color="var(--accent)" /> Stromsparmodus {powerSave ? 'ausschalten' : 'einschalten'}
               </button>
@@ -297,18 +304,24 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
         </div>
       )}
 
+      {parentView && <ParentTreasure game={game} onClose={() => setParentView(false)} />}
+
       {pinFor && (
         <PinDialog
-          title={pinFor === 'unlock' ? 'Station freischalten' : 'Stopp überspringen'}
+          title={pinFor === 'unlock' ? 'Station freischalten' : pinFor === 'parent' ? 'Nur für Eltern' : 'Stopp überspringen'}
           text={
             pinFor === 'unlock'
               ? 'Ihr steht am Ziel, aber das GPS will nicht? Ein Erwachsener kann mit der PIN freischalten.'
-              : 'Der Ort ist gesperrt, zu weit oder es regnet in Strömen? Mit der PIN geht es direkt zum nächsten Stopp.'
+              : pinFor === 'parent'
+                ? 'Hier seht ihr, wo der Schatz liegt – zum Beispiel, um dort vorher heimlich eine kleine Überraschung zu verstecken. Kinder bitte weggucken!'
+                : 'Der Ort ist gesperrt, zu weit oder es regnet in Strömen? Mit der PIN geht es direkt zum nächsten Stopp.'
           }
           pin={game.config.pin}
           onCancel={() => setPinFor(null)}
           onOk={() => {
-            if (pinFor === 'unlock') {
+            if (pinFor === 'parent') {
+              setParentView(true);
+            } else if (pinFor === 'unlock') {
               if (stop.kind === 'final') {
                 play('treasure');
                 treasureFound('pin');
@@ -845,6 +858,34 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
 }
 
 const WAYPOINT_RADIUS = 35;
+
+/** Nur für Eltern: Ort des Schatzes, um dort vorab eine Überraschung zu verstecken */
+function ParentTreasure({ game, onClose }: { game: Game; onClose: () => void }) {
+  const fin = game.stops.find((s) => s.kind === 'final');
+  const poi = fin ? resolveStop(fin).poi : undefined;
+  if (!poi) return null;
+  const left = game.stops.slice(game.index).filter((s) => s.kind === 'station').length;
+  return (
+    <div className="overlay" role="dialog" aria-modal="true" aria-label="Schatz-Ort für Eltern" {...backdropClose(onClose)}>
+      <div className="dialog" onClick={(e) => e.stopPropagation()} data-testid="parent-view">
+        <div className="grabber" />
+        <h3>💎 Hier liegt der Schatz</h3>
+        <p>
+          <strong>{poi.title}</strong>
+          <br />
+          <span className="muted">{formatDegMin(poi.coords)}</span>
+        </p>
+        <MapView markers={[{ id: poi.id, coords: poi.coords, emoji: '💎', active: true }]} fit={[poi.coords]} height={220} />
+        <p className="muted" style={{ fontSize: 14 }}>
+          Noch {left} {left === 1 ? 'Station' : 'Stationen'} bis zum Finale. Tipp: Versteckt die Überraschung in Sichtweite, nicht in Gebüsch oder an Spielgeräten, und nehmt sie mit, falls ihr nicht mehr hinkommt.
+        </p>
+        <button type="button" className="btn big primary" onClick={onClose}>
+          Fertig
+        </button>
+      </div>
+    </div>
+  );
+}
 
 /** Laufende Tour als Einladungs-Link teilen (gleiche Stationen, gleiche Reihenfolge) */
 export async function shareGame(game: Game) {
