@@ -63,6 +63,7 @@ export function MapView({
   path,
   fit,
   onMapClick,
+  onMarkerClick,
   height = 300,
 }: {
   markers: MapMarker[];
@@ -73,6 +74,7 @@ export function MapView({
   path?: LatLng[];
   fit: LatLng[];
   onMapClick?: (c: LatLng) => void;
+  onMarkerClick?: (id: string) => void;
   height?: number | string;
 }) {
   const center = fit[0] ?? [53.595, 10.02];
@@ -89,7 +91,7 @@ export function MapView({
         {path && path.length > 1 && <Polyline positions={path} pathOptions={{ color: '#c2410c', weight: 4, dashArray: '2 9', lineCap: 'round' }} />}
         {target && radius && <Circle center={target} radius={radius} pathOptions={{ color: '#c2410c', weight: 2, fillOpacity: 0.1 }} />}
         {markers.map((m) => (
-          <Marker key={m.id} position={m.coords} icon={emojiIcon(m.emoji, m.active, m.done)}>
+          <Marker key={m.id} position={m.coords} icon={emojiIcon(m.emoji, m.active, m.done)} eventHandlers={onMarkerClick ? { click: () => onMarkerClick(m.id) } : undefined}>
             {m.label && <Tooltip>{m.label}</Tooltip>}
           </Marker>
         ))}

@@ -194,6 +194,60 @@ async function context_check(page) {
   await page.getByTestId('compass-hint').waitFor({ state: 'detached', timeout: 3000 });
   console.log('✓ Kompass antippen schaltet den Handy-Kompass ein');
 
+  // Echte Geocaches in der App (Opencaching-Antworten nachgestellt, inkl. bösartigem HTML)
+  await page.route(/opencaching\.de\/okapi\/services\/caches\/shortcuts/, (r) =>
+    r.fulfill({ contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ OCTEST1: { code: 'OCTEST1', name: 'Test-Dose', location: '53.5912|10.0160', type: 'Traditional', difficulty: 1.5, terrain: 2, size2: 'small', url: 'https://www.opencaching.de/viewcache.php?wp=OCTEST1', status: 'Available' } }) }),
+  );
+  await page.route(/opencaching\.de\/okapi\/services\/caches\/geocache\?/, (r) =>
+    r.fulfill({
+      contentType: 'application/json',
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({
+        code: 'OCTEST1', name: 'Test-Dose', location: '53.5912|10.0160', type: 'Traditional', status: 'Available', owner: { username: 'Tester' }, size2: 'small', difficulty: 1.5, terrain: 2,
+        short_description: 'Kurz', description: '<p>Hallo<script>window.__xss=1</script><img src="x" onerror="window.__xss=2"><a href="javascript:window.__xss=3">böse</a></p>',
+        hint2: 'Unter dem Stein', images: [], attrnames: ['Kinderfreundlich'], latest_logs: [{ uuid: 'l1', date: '2026-01-01T10:00:00+01:00', user: { username: 'Finder' }, type: 'Found it', comment: '<b>TFTC</b><script>window.__xss=4</script>' }],
+        date_hidden: '2020-05-01T00:00:00+02:00', founds: 3, notfounds: 0, recommendations: 1, attribution_note: '&copy; Tester', url: 'https://www.opencaching.de/viewcache.php?wp=OCTEST1', req_passwd: false,
+      }),
+    }),
+  );
+  await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('hh-hunt:game')); return s.index; });
+  // Station freischalten (per GPS) und bis zum Ende klicken, dann Caches öffnen
+  {
+    const t = (await page.locator('.play').getAttribute('data-target')).split(',').map(Number);
+    await page.context().setGeolocation({ latitude: t[0], longitude: t[1], accuracy: 8 });
+    await page.getByTestId('arrived').waitFor();
+    for (let g = 0; g < 16; g++) {
+      const o = page.locator('.task-card:not(.done) .btn.option').first();
+      if (await o.count()) { await o.click(); await page.waitForTimeout(150); if (await page.locator('.task-card:not(.done) .btn.option').count()) await page.locator('.task-card:not(.done) .btn.option').first().click(); continue; }
+      const card = page.locator('.task-card:not(.done)');
+      if (await card.count()) {
+        if (await card.locator('.stepper').count()) { await card.getByRole('button', { name: 'Prüfen' }).click(); await page.waitForTimeout(120); if (await page.locator('.task-card:not(.done) .stepper').count()) await page.locator('.task-card:not(.done)').getByRole('button', { name: 'Prüfen' }).click(); continue; }
+        if (await card.getByRole('button', { name: /Ohne Foto/ }).count()) { await card.getByRole('button', { name: /Ohne Foto/ }).click(); continue; }
+        if (await card.locator('input').count()) { await card.locator('input').first().fill('7'); await card.getByRole('button', { name: 'Prüfen' }).click(); await page.waitForTimeout(120); if (await page.locator('.task-card:not(.done) input').count()) { await page.locator('.task-card:not(.done) input').first().fill('6'); await page.locator('.task-card:not(.done)').getByRole('button', { name: 'Prüfen' }).click(); } continue; }
+      }
+      const fam = page.locator('[data-testid=family-game]:not([data-state])');
+      if (await fam.count()) { const np = fam.getByRole('button', { name: /Gespielt, ohne Foto/ }); if (await np.count()) await np.click(); else await fam.getByRole('button', { name: /Geschafft/ }).click(); continue; }
+      const n = page.getByTestId('step-next'); if ((await n.count()) && (await n.isEnabled())) { await n.click(); continue; }
+      break;
+    }
+  }
+  await page.locator('.nearby-caches summary').click();
+  await page.locator('.cache-item').first().click();
+  await page.getByTestId('cache-detail').waitFor();
+  await page.locator('.cache-title').waitFor();
+  await page.getByRole('button', { name: 'Hinweis zeigen' }).click();
+  if ((await page.getByTestId('cache-hint').innerText()).indexOf('Unter dem Stein') < 0) fail('Cache-Hinweis fehlt');
+  await page.waitForTimeout(300);
+  const xss = await page.evaluate(() => window.__xss ?? 0);
+  if (xss) fail('Fremdes HTML wurde ausgeführt: ' + xss);
+  if (await page.locator('.cache-html script, .cache-html [onerror]').count()) fail('Gefährliches HTML nicht entfernt');
+  await page.getByTestId('cache-found').click();
+  if (!(await page.evaluate(() => (localStorage.getItem('hh-hunt:foundCaches') || '').includes('OCTEST1')))) fail('Gefunden nicht gespeichert');
+  await page.getByTestId('cache-back').click();
+  await page.getByTestId('cache-detail').waitFor({ state: 'detached' });
+  if (!(await page.locator('.cache-item').first().innerText()).includes('✓')) fail('Gefunden-Haken fehlt in der Liste');
+  console.log('✓ Echte Geocaches in der App: Liste, Details, Hinweis, Gefunden, HTML bereinigt');
+
   // Mitten in der Tour: beenden und Punkte behalten
   await page.getByLabel('Menü').click();
   await page.getByTestId('quit-tour').click();
