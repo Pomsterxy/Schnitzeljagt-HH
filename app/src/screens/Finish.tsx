@@ -116,7 +116,7 @@ export function Finish({ onHome }: { onHome: () => void }) {
         {rank.next ? ` Noch ${rank.next.min - career.points} Punkte bis „${rank.next.title}“.` : ''}
       </LilliSays>
       <StarRating id={game.id} />
-      <Leaderboard results={board} />
+      <Leaderboard results={board} hint />
       <button type="button" className="btn" data-testid="finish-share" onClick={() => void shareResult(game)}>
         Ergebnis schicken und andere Teams herausfordern
       </button>

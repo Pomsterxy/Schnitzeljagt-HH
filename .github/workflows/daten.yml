@@ -1,0 +1,47 @@
+name: Offene Daten auffrischen
+
+# Einmal im Jahr (1. März) und auf Knopfdruck: lädt Denkmaltafeln, Kunstwerke, Stolpersteine,
+# Trinkbrunnen und Zusatzinfos neu, prüft sie mit den Tests und legt bei Änderungen
+# einen Zweig "daten-auffrischung" an. Daraus kann man einen Pull Request öffnen.
+on:
+  schedule:
+    - cron: '17 4 1 3 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - run: node scripts/import-open-data.mjs
+      - run: npx vitest run
+      - name: Änderungen in einen eigenen Zweig legen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- src/data/open ':!src/data/open/meta.json'; then
+            echo "Keine inhaltlichen Änderungen an den Daten."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B daten-auffrischung
+          git add src/data/open
+          git commit -m "Offene Daten aufgefrischt ($(date +%Y-%m-%d))"
+          git push -f origin daten-auffrischung
+          gh pr create --base main --head daten-auffrischung --title "Offene Daten aufgefrischt" \
+            --body "Automatisch neu geladen. Bitte kurz in der App prüfen (neue Tafeln, Kunstwerke, Stolpersteine)." \
+            || echo "Pull Request bitte von Hand öffnen (Zweig daten-auffrischung)."

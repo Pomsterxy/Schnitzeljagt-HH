@@ -1088,3 +1088,4 @@ input, textarea, select { font-size: max(16px, 1em); }
 .leaderboard .small-chip { align-self: flex-start; font-size: 12px; padding: 0 8px; min-height: 0; margin: 2px 0; }
 .leaderboard .pts { font-family: 'Fredoka', system-ui, sans-serif; font-weight: 700; font-size: 22px; color: var(--accent, #ef7a2f); }
 .leaderboard > p { margin: 8px 0 0; font-size: 14px; }
+.legal a[href^='mailto:'] { display: inline-block; padding: 12px 0; }

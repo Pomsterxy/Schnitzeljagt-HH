@@ -40,7 +40,7 @@ export function Compare({ code, onPlay, onHome }: { code: string; onPlay: (t: Sh
       <LilliSays mood="excited">
         {played
           ? 'Ihr habt diese Tour auch gespielt. So steht es zwischen euch:'
-          : `${r.team} fordert euch heraus! Spielt genau dieselbe Tour und schickt euer Ergebnis zurück.`}
+          : `Herausforderung von „${r.team}“! Spielt genau dieselbe Tour und schickt euer Ergebnis zurück.`}
       </LilliSays>
       <Leaderboard results={board} title="Rangliste dieser Tour" />
       {!played && tour && (

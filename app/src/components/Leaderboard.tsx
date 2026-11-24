@@ -3,7 +3,7 @@ import { formatDistance } from '../lib/geo';
 import { formatDuration } from '../lib/pedometer';
 
 /** Rangliste aller Teams, die dieselbe Tour gespielt haben */
-export function Leaderboard({ results, title = 'Team-Vergleich' }: { results: TeamResult[]; title?: string }) {
+export function Leaderboard({ results, title = 'Team-Vergleich', hint = false }: { results: TeamResult[]; title?: string; hint?: boolean }) {
   if (!results.length) return null;
   const medal = ['🥇', '🥈', '🥉'];
   return (
@@ -29,7 +29,7 @@ export function Leaderboard({ results, title = 'Team-Vergleich' }: { results: Te
           </li>
         ))}
       </ol>
-      {results.length === 1 && <p className="muted">Schickt euer Ergebnis an andere Familien: Sie bekommen dieselbe Tour und tauchen hier auf, sobald sie euch ihr Ergebnis zurückschicken.</p>}
+      {hint && results.length === 1 && <p className="muted">Schickt euer Ergebnis an andere Familien: Sie bekommen dieselbe Tour und tauchen hier auf, sobald sie euch ihr Ergebnis zurückschicken.</p>}
     </section>
   );
 }
