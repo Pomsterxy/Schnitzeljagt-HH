@@ -12,6 +12,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@fontsource/fredoka": "^5.2.8",
     "@fontsource/nunito": "^5.1.0",
     "idb-keyval": "^6.2.1",
     "leaflet": "^1.9.4",
