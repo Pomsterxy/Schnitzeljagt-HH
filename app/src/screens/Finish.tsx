@@ -168,11 +168,17 @@ export function Finish({ onHome }: { onHome: () => void }) {
         type="button"
         className="btn big tinted"
         onClick={async () => {
-          const b = await drawCertificate(game, stations.length, { steps: stats.steps, estimated: stats.estimated, meters: stats.meters, time: formatDuration(stats.ms) });
-          if (b) await shareOrDownload(b, `urkunde-${game.team.name.replace(/\W+/g, '-')}.png`);
+          const b = await drawCertificate(
+            game,
+            stations.length,
+            { steps: stats.steps, estimated: stats.estimated, meters: stats.meters, time: formatDuration(stats.ms) },
+            stations.map((st) => st.title),
+          );
+          if (b) await shareOrDownload(b, `schnitzeljagd-${game.team.name.replace(/\W+/g, '-')}.png`);
         }}
+        data-testid="memory-card"
       >
-        <Icon name="share" size={18} /> Urkunde teilen
+        <Icon name="share" size={18} /> Erinnerungskarte teilen
       </button>
       <h2 className="section-title">Fotoalbum</h2>
       <PhotoGrid photos={game.photos} />

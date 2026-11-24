@@ -5,9 +5,12 @@ import { BADGES, rankFor } from '../data/badges';
 import { useGame } from '../state/game';
 import { play } from '../lib/feedback';
 import { backdropClose } from '../lib/backdrop';
+import { Lilli } from '../components/Lilli';
+import { OUTFITS, outfitUnlocked, setOutfit, unlockText, useOutfit } from '../components/Outfits';
 
 export function Album({ mode }: { mode: 'cards' | 'badges' }) {
   const { career } = useGame();
+  const outfit = useOutfit();
   const [open, setOpen] = useState<string | null>(null);
   const rank = rankFor(career.points);
   const sel = STATIONS.find((s) => s.id === open);
@@ -19,6 +22,34 @@ export function Album({ mode }: { mode: 'cards' | 'badges' }) {
         </div>
         <h1 className="large-title">{mode === 'cards' ? 'Album' : 'Abzeichen'}</h1>
       </div>
+
+      {mode === 'badges' && (
+        <section className="card wardrobe rise" data-testid="wardrobe">
+          <div className="caption">Lillis Kleiderschrank</div>
+          <div className="wardrobe-grid">
+            {OUTFITS.map((o) => {
+              const ok = outfitUnlocked(o, career);
+              return (
+                <button
+                  key={o.id}
+                  type="button"
+                  className={`outfit${outfit === o.id ? ' on' : ''}${ok ? '' : ' locked'}`}
+                  disabled={!ok}
+                  aria-pressed={outfit === o.id}
+                  onClick={() => {
+                    play('select');
+                    setOutfit(o.id);
+                  }}
+                >
+                  <Lilli size={64} outfit={o.id} />
+                  <span>{o.name}</span>
+                  {!ok && <small>🔒 {unlockText(o)}</small>}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {mode === 'badges' && (
         <div className="badges">

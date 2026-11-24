@@ -1,9 +1,13 @@
+import { OutfitLayer, useOutfit, type OutfitId } from './Outfits';
 /** Lilli, die Möwe – Begleiterin durch die Tour (Sticker-Stil: klare Konturen, großer Kopf) */
 export type LilliMood = 'happy' | 'excited' | 'quiet' | 'night';
 
 const INK = '#1E2A4A';
 
-export function Lilli({ size = 56, mood = 'happy', label }: { size?: number; mood?: LilliMood; label?: string }) {
+export function Lilli({ size = 56, mood = 'happy', label, outfit }: { size?: number; mood?: LilliMood; label?: string; outfit?: OutfitId }) {
+  const worn = useOutfit();
+  // an Gedenkorten ohne Kostüm
+  const dress = mood === 'quiet' ? 'none' : (outfit ?? worn);
   const quiet = mood === 'quiet';
   const excited = mood === 'excited';
   const ink = quiet ? '#5A6170' : INK;
@@ -72,6 +76,7 @@ export function Lilli({ size = 56, mood = 'happy', label }: { size?: number; moo
         <path d="M82 90 Q96 82 110 90 Q96 110 82 90 Z" fill={beak} stroke={ink} strokeWidth="4" strokeLinejoin="round" />
       )}
       {!quiet && <circle cx="99" cy={excited ? 101 : 97} r="3" fill="#FF4F4F" />}
+      <OutfitLayer id={dress} />
       {/* Funkeln bei Begeisterung, Stern bei Nacht */}
       {excited && (
         <g stroke="#F5B000" strokeWidth="5" strokeLinecap="round" className="sparkle">

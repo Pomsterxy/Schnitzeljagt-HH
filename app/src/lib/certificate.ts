@@ -1,9 +1,54 @@
 import type { Game } from '../state/game';
 import { BADGES } from '../data/badges';
 import { formatDistance } from './geo';
+import { loadPhoto } from './storage';
 
-/** Zeichnet die Urkunde als PNG (Canvas) */
-export async function drawCertificate(game: Game, stations: number, walk?: { steps: number; estimated: boolean; meters: number; time: string }): Promise<Blob | null> {
+const INK = '#1E2A4A';
+const ACCENT = '#EF7A2F';
+const MUTED = '#5B6683';
+
+function loadImage(src: string): Promise<HTMLImageElement | null> {
+  return new Promise((res) => {
+    const img = new Image();
+    img.onload = () => res(img);
+    img.onerror = () => res(null);
+    img.src = src;
+  });
+}
+
+/** Lilli so, wie sie gerade auf dem Bildschirm steht (mit Kostüm), als Bild */
+async function lilliImage(): Promise<HTMLImageElement | null> {
+  const svg = document.querySelector('svg.lilli');
+  if (!svg) return null;
+  const clone = svg.cloneNode(true) as SVGElement;
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  clone.setAttribute('width', '400');
+  clone.setAttribute('height', '400');
+  return loadImage(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(clone.outerHTML)}`);
+}
+
+function roundRect(x: CanvasRenderingContext2D, px: number, py: number, w: number, h: number, r: number) {
+  x.beginPath();
+  x.roundRect(px, py, w, h, r);
+}
+
+function fitText(x: CanvasRenderingContext2D, text: string, max: number): string {
+  if (x.measureText(text).width <= max) return text;
+  let t = text;
+  while (t.length > 3 && x.measureText(t + '…').width > max) t = t.slice(0, -1);
+  return t + '…';
+}
+
+/**
+ * Erinnerungskarte (1080 × 1350, gut für Messenger und Ausdruck):
+ * Lilli, Team, bis zu drei Fotos als Polaroids, besuchte Orte, Zahlen und Abzeichen.
+ */
+export async function drawCertificate(
+  game: Game,
+  stations: number,
+  walk?: { steps: number; estimated: boolean; meters: number; time: string },
+  places: string[] = [],
+): Promise<Blob | null> {
   const W = 1080;
   const H = 1350;
   const c = document.createElement('canvas');
@@ -11,49 +56,145 @@ export async function drawCertificate(game: Game, stations: number, walk?: { ste
   c.height = H;
   const x = c.getContext('2d');
   if (!x) return null;
-  x.fillStyle = '#fffaf0';
-  x.fillRect(0, 0, W, H);
-  x.strokeStyle = '#0b6e99';
-  x.lineWidth = 18;
-  x.strokeRect(30, 30, W - 60, H - 60);
-  x.strokeStyle = '#e07a00';
-  x.lineWidth = 4;
-  x.strokeRect(62, 62, W - 124, H - 124);
-  x.textAlign = 'center';
-  x.fillStyle = '#0b3d5c';
-  x.font = 'bold 76px system-ui, sans-serif';
-  x.fillText('URKUNDE', W / 2, 200);
-  x.font = '38px system-ui, sans-serif';
-  x.fillText('Schnitzeljagd Hamburg', W / 2, 260);
-  x.font = '150px system-ui, sans-serif';
-  x.fillText(game.team.avatar, W / 2, 450);
-  x.font = 'bold 64px system-ui, sans-serif';
-  x.fillStyle = '#e07a00';
-  x.fillText(game.team.name, W / 2, 560);
-  x.fillStyle = '#0b3d5c';
-  x.font = '36px system-ui, sans-serif';
-  const names = game.team.members.map((m) => m.name.trim()).filter(Boolean).join(', ');
-  if (names) x.fillText(names, W / 2, 615);
-  x.font = '40px system-ui, sans-serif';
-  x.fillText(`hat ${stations} Stationen gefunden`, W / 2, 700);
-  x.fillText(`und ${formatDistance(walk?.meters ?? (game.meters || game.plannedMeters))} zurückgelegt.`, W / 2, 755);
-  if (walk) {
-    x.font = '32px system-ui, sans-serif';
-    x.fillStyle = '#555';
-    x.fillText(`${walk.estimated ? 'ca. ' : ''}${walk.steps.toLocaleString('de-DE')} Schritte · ${walk.time}`, W / 2, 805);
-    x.fillStyle = '#0b3d5c';
+  try {
+    await document.fonts?.ready;
+  } catch {
+    /* egal */
   }
-  x.font = 'bold 90px system-ui, sans-serif';
-  x.fillText(`⭐ ${game.points} Punkte`, W / 2, 880);
+  const display = '"Fredoka", "Nunito", system-ui, sans-serif';
+  const body = '"Nunito", system-ui, sans-serif';
+
+  // Hintergrund: Himmel oben, cremefarbener Grund
+  x.fillStyle = '#FFF8EE';
+  x.fillRect(0, 0, W, H);
+  const sky = x.createLinearGradient(0, 0, 0, 420);
+  sky.addColorStop(0, '#A9DBFF');
+  sky.addColorStop(1, '#E6F5FF');
+  x.fillStyle = sky;
+  x.fillRect(0, 0, W, 420);
+  x.fillStyle = '#FFD23F';
+  x.beginPath();
+  x.arc(1010, 50, 56, 0, Math.PI * 2);
+  x.fill();
+  x.fillStyle = '#6FB6F0';
+  x.beginPath();
+  x.moveTo(0, 380);
+  x.bezierCurveTo(260, 330, 520, 370, 760, 355);
+  x.bezierCurveTo(900, 345, 1000, 340, W, 360);
+  x.lineTo(W, 420);
+  x.lineTo(0, 420);
+  x.fill();
+  x.fillStyle = '#FFF8EE';
+  x.beginPath();
+  x.moveTo(0, 410);
+  x.bezierCurveTo(300, 380, 600, 400, W, 392);
+  x.lineTo(W, 440);
+  x.lineTo(0, 440);
+  x.fill();
+
+  const lilli = await lilliImage();
+  if (lilli) x.drawImage(lilli, 70, 110, 300, 300);
+
+  x.textAlign = 'left';
+  x.fillStyle = INK;
+  x.font = `600 44px ${body}`;
+  x.fillText('Schnitzeljagd Hamburg', 400, 140);
+  // Teamname: lieber kleiner als abgeschnitten
+  const team = `${game.team.avatar} ${game.team.name}`;
+  let fs = 76;
+  x.font = `700 ${fs}px ${display}`;
+  while (fs > 40 && x.measureText(team).width > 620) {
+    fs -= 4;
+    x.font = `700 ${fs}px ${display}`;
+  }
+  x.fillText(fitText(x, team, 620), 400, 230);
+  x.font = `700 40px ${body}`;
+  x.fillStyle = MUTED;
+  x.fillText(new Date(game.finishedAt ?? Date.now()).toLocaleDateString('de-DE', { dateStyle: 'long' }), 400, 290);
+
+  // Fotos als Polaroids
+  const photos: HTMLImageElement[] = [];
+  for (const p of game.photos.slice(0, 3)) {
+    const blob = await loadPhoto(p.id);
+    if (!blob) continue;
+    const url = URL.createObjectURL(blob);
+    const img = await loadImage(url);
+    if (img) photos.push(img);
+  }
+  let y = 470;
+  if (photos.length) {
+    const n = photos.length;
+    const pw = n === 1 ? 520 : n === 2 ? 420 : 300;
+    const gap = 30;
+    const total = n * pw + (n - 1) * gap;
+    photos.forEach((img, i) => {
+      const px = (W - total) / 2 + i * (pw + gap);
+      const tilt = (i - (n - 1) / 2) * 0.05;
+      x.save();
+      x.translate(px + pw / 2, y + pw / 2);
+      x.rotate(tilt);
+      x.shadowColor = 'rgba(30,42,74,0.18)';
+      x.shadowBlur = 18;
+      x.shadowOffsetY = 8;
+      x.fillStyle = '#FFFFFF';
+      x.fillRect(-pw / 2 - 14, -pw / 2 - 14, pw + 28, pw + 60);
+      x.shadowColor = 'transparent';
+      const s = Math.min(img.width, img.height);
+      x.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, -pw / 2, -pw / 2, pw, pw);
+      x.restore();
+    });
+    y += pw + 90;
+  }
+
+  // Zahlen
+  const stats: [string, string][] = [
+    [String(game.points), 'Punkte'],
+    [String(stations), 'Stationen'],
+    [formatDistance(walk?.meters ?? (game.meters || game.plannedMeters)), 'zu Fuß'],
+  ];
+  if (walk) stats.push([`${walk.estimated ? 'ca. ' : ''}${walk.steps.toLocaleString('de-DE')}`, 'Schritte']);
+  const bw = (W - 140 - (stats.length - 1) * 20) / stats.length;
+  stats.forEach(([v, l], i) => {
+    const bx = 70 + i * (bw + 20);
+    x.fillStyle = '#FFFFFF';
+    roundRect(x, bx, y, bw, 150, 28);
+    x.fill();
+    x.textAlign = 'center';
+    x.fillStyle = i === 0 ? ACCENT : INK;
+    x.font = `600 ${v.length > 7 ? 44 : 58}px ${display}`;
+    x.fillText(v, bx + bw / 2, y + 78);
+    x.fillStyle = MUTED;
+    x.font = `700 30px ${body}`;
+    x.fillText(l, bx + bw / 2, y + 122);
+  });
+  y += 210;
+
+  // Orte
+  x.textAlign = 'left';
+  if (places.length && y < H - 200) {
+    x.fillStyle = INK;
+    x.font = `600 38px ${display}`;
+    x.fillText('Unterwegs entdeckt', 70, y);
+    y += 50;
+    x.font = `600 32px ${body}`;
+    x.fillStyle = MUTED;
+    for (const p of places.slice(0, Math.max(1, Math.floor((H - 160 - y) / 44)))) {
+      x.fillText(fitText(x, `• ${p}`, W - 140), 70, y);
+      y += 44;
+    }
+  }
+
+  // Abzeichen unten
   const badges = BADGES.filter((b) => game.earnedBadges.includes(b.id));
-  x.font = '64px system-ui, sans-serif';
-  const row = badges.map((b) => b.icon).join(' ');
-  if (row) x.fillText(row.slice(0, 40), W / 2, 1000);
-  x.font = '30px system-ui, sans-serif';
-  x.fillText(badges.map((b) => b.title).slice(0, 5).join(' · '), W / 2, 1060);
-  x.font = '30px system-ui, sans-serif';
-  x.fillStyle = '#555';
-  x.fillText(new Date(game.finishedAt ?? Date.now()).toLocaleDateString('de-DE', { dateStyle: 'long' }), W / 2, 1200);
+  x.textAlign = 'center';
+  if (badges.length) {
+    x.font = `56px ${body}`;
+    x.fillText(badges.map((b) => b.icon).slice(0, 10).join(' '), W / 2, H - 80);
+  } else {
+    x.fillStyle = MUTED;
+    x.font = `700 32px ${body}`;
+    x.fillText('Bis zur nächsten Tour! – Lilli', W / 2, H - 80);
+  }
   return new Promise((res) => c.toBlob((b) => res(b), 'image/png'));
 }
 

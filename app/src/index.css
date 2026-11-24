@@ -1056,3 +1056,12 @@ input, textarea, select { font-size: max(16px, 1em); }
 .map-loading { background: var(--fill); border-radius: var(--r-card); }
 .screen-loading { min-height: 100dvh; }
 .tour-warn { margin: 0; background: #fff4de; color: #7a4300; border-radius: 14px; padding: 10px 12px; font-size: 14px; font-weight: 700; line-height: 1.4; }
+
+/* Lillis Kleiderschrank */
+.wardrobe { display: flex; flex-direction: column; gap: 10px; }
+.wardrobe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.outfit { appearance: none; border: 2px solid transparent; background: var(--fill2); border-radius: 18px; padding: 8px 6px; display: flex; flex-direction: column; align-items: center; gap: 4px; font: inherit; font-size: 12px; font-weight: 800; color: var(--label); cursor: pointer; box-shadow: 0 3px 0 var(--sep); }
+.outfit.on { border-color: var(--accent); background: var(--accent-soft); }
+.outfit.locked { opacity: 0.55; cursor: default; box-shadow: none; }
+.outfit.locked svg { filter: grayscale(1); }
+.outfit small { font-size: 12px; color: var(--label2); font-weight: 700; }
