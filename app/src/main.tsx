@@ -12,6 +12,9 @@ import './index.css';
 import App from './App.tsx';
 import { registerSW } from 'virtual:pwa-register';
 import { restoreMirrorIfEmpty } from './lib/storage';
+import { watchKeyboard } from './lib/keyboard';
+
+watchKeyboard();
 
 // Neue Versionen zuverlässig laden: beim Start, beim Zurückkehren in die App und alle 30 Minuten
 registerSW({

@@ -1,4 +1,5 @@
 import { play } from '../lib/feedback';
+import { backdropClose } from '../lib/backdrop';
 
 export interface SheetAction {
   label: string;
@@ -10,7 +11,7 @@ export interface SheetAction {
 /** Bottom-Sheet zum Bestätigen (statt des System-Dialogs, der in Home-Bildschirm-Apps oft fehlt) */
 export function ConfirmSheet({ title, text, actions, onClose }: { title: string; text: string; actions: SheetAction[]; onClose: () => void }) {
   return (
-    <div className="overlay" role="dialog" aria-modal="true" aria-label={title} onClick={onClose}>
+    <div className="overlay" role="dialog" aria-modal="true" aria-label={title} {...backdropClose(onClose)}>
       <div className="dialog confirm-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="grabber" />
         <h3>{title}</h3>
