@@ -6,6 +6,7 @@ import { formatDistance, distance } from '../lib/geo';
 import { generateRoute, measure, type RouteStop } from '../lib/route';
 import { encodeTour, shareLink, tourLink, type SharedTour } from '../lib/share';
 import { daylightWarning, rainWarning } from '../lib/daylight';
+import { seasonFor, seasonNote } from '../lib/season';
 import { speedFor, youngestGroup } from '../lib/scoring';
 import { usePosition, startTracking } from '../lib/location';
 import { play } from '../lib/feedback';
@@ -109,6 +110,13 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startId, pos.coords]);
 
+  // Jahreszeit und Dunkelheit (zum Testen: ?datum=2026-07-15T14:00)
+  const season = useMemo(() => {
+    if (!start) return undefined;
+    const q = new URLSearchParams(location.search).get('datum');
+    const now = q && !Number.isNaN(Date.parse(q)) ? new Date(q) : new Date();
+    return seasonFor(now, minutes, start.coords);
+  }, [start, minutes]);
   const [avoid, setAvoid] = useState<string[]>([]);
   const [noOther, setNoOther] = useState(false);
   const plan = (sd: number, av: string[]) =>
@@ -124,6 +132,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
       cache,
       maxLeg: maxLeg || Infinity,
       avoid: av,
+      season,
     });
   const route = useMemo(() => {
     if (current.id !== 'route' || !start || !districts.length) return null;
@@ -133,7 +142,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
     }
     return plan(seed, avoid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache, maxLeg, avoid]);
+  }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache, maxLeg, avoid, season]);
 
   /** Neu würfeln: so lange probieren, bis eine wirklich andere Route herauskommt */
   const sig = (r: NonNullable<typeof route>) => r.stops.map((x) => (x.kind === 'station' ? x.station.id : x.kind)).join('>');
@@ -367,6 +376,11 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
             {daylight && (
               <p className="tour-warn" data-testid="daylight-warn">
                 🌇 {daylight}
+              </p>
+            )}
+            {season && !shared && seasonNote(season) && (
+              <p className="tour-warn season-note" data-testid="season-note">
+                {season.summer ? '☀️' : season.dark ? '🔦' : '🧣'} {seasonNote(season)}
               </p>
             )}
             {rain && (
