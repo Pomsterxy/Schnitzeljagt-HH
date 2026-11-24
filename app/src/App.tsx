@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Home } from './screens/Home';
-import { Setup } from './screens/Setup';
-import { Play } from './screens/Play';
-import { Finish } from './screens/Finish';
-import { Album } from './screens/Album';
-import { Settings } from './screens/Settings';
+const Setup = lazy(() => import('./screens/Setup').then((m) => ({ default: m.Setup })));
+const Play = lazy(() => import('./screens/Play').then((m) => ({ default: m.Play })));
+const Finish = lazy(() => import('./screens/Finish').then((m) => ({ default: m.Finish })));
+const Album = lazy(() => import('./screens/Album').then((m) => ({ default: m.Album })));
+const Settings = lazy(() => import('./screens/Settings').then((m) => ({ default: m.Settings })));
 import { TabBar, type Tab } from './components/TabBar';
 import { getGame } from './state/game';
 import { setSimulated } from './lib/location';
+import { decodeTour } from './lib/share';
 import { EffectsLayer } from './components/EffectsLayer';
 import { clearEffects } from './lib/effects';
 import { UndoToast } from './components/UndoToast';
@@ -16,10 +17,19 @@ import { useRipple } from './components/Micro';
 type Screen = Tab | 'setup' | 'play' | 'finish';
 
 export default function App() {
+  // Einladung per Link (?tour=…): direkt in die Planung mit fester Route
+  const [shared, setShared] = useState(() => {
+    const code = new URLSearchParams(location.search).get('tour');
+    return code ? decodeTour(code) : null;
+  });
   const [screen, setScreen] = useState<Screen>(() => {
+    if (shared) return 'setup';
     const g = getGame();
     return g && !g.finishedAt && g.index < g.stops.length ? 'play' : 'home';
   });
+  useEffect(() => {
+    if (new URLSearchParams(location.search).has('tour')) history.replaceState(null, '', location.pathname);
+  }, []);
 
   useEffect(() => {
     // ?test=1 schaltet den Testmodus ein (Standort simulieren)
@@ -34,7 +44,7 @@ export default function App() {
     // Dunkle Bildschirme: Seitenhintergrund und Statusleiste ebenfalls dunkel (nicht auf :has() verlassen)
     const dark = screen === 'home' || screen === 'setup';
     document.documentElement.toggleAttribute('data-dark', dark);
-    document.querySelector('meta[name=theme-color]')?.setAttribute('content', dark ? '#101b33' : '#f2f2f7');
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#fff8ee');
   }, [screen]);
 
   useRipple();
@@ -44,7 +54,19 @@ export default function App() {
   let content: React.ReactNode;
   switch (screen) {
     case 'setup':
-      content = <Setup onStarted={() => setScreen('play')} onCancel={() => setScreen('home')} />;
+      content = (
+        <Setup
+          shared={shared}
+          onStarted={() => {
+            setShared(null);
+            setScreen('play');
+          }}
+          onCancel={() => {
+            setShared(null);
+            setScreen('home');
+          }}
+        />
+      );
       break;
     case 'play':
       content = <Play onFinish={() => setScreen('finish')} onHome={() => setScreen('home')} />;
@@ -70,7 +92,7 @@ export default function App() {
   return (
     <>
       <div key={screen} className="screen-enter">
-        {content}
+        <Suspense fallback={<div className="screen-loading" aria-hidden="true" />}>{content}</Suspense>
       </div>
       {tab && <TabBar active={tab} onChange={setScreen} dark={tab === 'home'} />}
       <EffectsLayer />

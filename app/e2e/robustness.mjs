@@ -213,6 +213,14 @@ async function context_check(page) {
   await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('hh-hunt:game')); return s.index; });
   // Station freischalten (per GPS) und bis zum Ende klicken, dann Caches öffnen
   {
+    // Zwischenziele und Pausen davor überspringen
+    for (let i = 0; i < 8; i++) {
+      const kind = await page.evaluate(() => { const g = JSON.parse(localStorage.getItem('hh-hunt:game')); return g.stops[g.index].kind; });
+      if (kind === 'station') break;
+      const sk = page.getByRole('button', { name: /Zwischenziel auslassen|Pause überspringen/ });
+      if (await sk.count()) await sk.first().click();
+      await page.waitForTimeout(400);
+    }
     const t = (await page.locator('.play').getAttribute('data-target')).split(',').map(Number);
     await page.context().setGeolocation({ latitude: t[0], longitude: t[1], accuracy: 8 });
     await page.getByTestId('arrived').waitFor();
@@ -305,6 +313,58 @@ async function context_check(page) {
   if (!careerAfter || JSON.parse(careerAfter).tours !== JSON.parse(careerBefore).tours) fail('Sicherung nicht korrekt eingespielt');
   console.log('✓ Sicherung speichern und laden funktioniert');
   if (errs.length) fail('Seitenfehler: ' + errs.join(' / '));
+  await ctx.close();
+}
+
+// 7) Tour per Link teilen: Freunde bekommen genau dieselbe Route
+{
+  const ctx = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    permissions: ['geolocation', 'clipboard-read', 'clipboard-write'],
+    geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 },
+  });
+  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 204, body: '' }));
+  const page = await ctx.newPage();
+  await page.goto(URL);
+  let link = '';
+  let stopsA = [];
+  await planTour(page, {
+    team: 'Einlader',
+    snap: async (n) => {
+      if (n !== 'chat-route') return;
+      stopsA = await page.locator('.chat-stops li').allInnerTexts();
+      await page.evaluate(() => { delete navigator.share; });
+      await page.getByTestId('share-tour').click();
+      await page.getByTestId('share-msg').waitFor();
+      link = (await page.evaluate(() => navigator.clipboard.readText())).split(' ').pop();
+    },
+  });
+  if (!link.includes('?tour=')) fail('Kein Einladungslink erzeugt: ' + link);
+  // Regen-Hinweis (mit nachgestellter Vorhersage)
+  {
+    const rctx = await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ['geolocation'], geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 } });
+    const rp = await rctx.newPage();
+    await rp.goto(URL);
+    await planTour(rp, { team: 'Regen', rain: true, snap: async (n) => {
+      if (n !== 'chat-route') return;
+      await rp.getByTestId('rain-warn').waitFor({ timeout: 5000 });
+      console.log('✓ Regen-Hinweis:', (await rp.getByTestId('rain-warn').innerText()).slice(0, 60));
+    } });
+    await rctx.close();
+  }
+  const friend = await (await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ['geolocation'], geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 } })).newPage();
+  await friend.goto(link);
+  await friend.getByTestId('chat-input').fill('Eingeladene');
+  await friend.getByRole('button', { name: 'Senden' }).click();
+  await friend.getByRole('button', { name: 'Passt so' }).click();
+  await friend.getByTestId('chat-input').fill('1111');
+  await friend.getByRole('button', { name: 'Senden' }).click();
+  await friend.getByRole('button', { name: "Los geht's!" }).waitFor();
+  if (await friend.getByTestId('reroll').count()) fail('Eingeladene sollen die Route nicht neu würfeln');
+  const stopsB = await friend.locator('.chat-stops li').allInnerTexts();
+  if (JSON.stringify(stopsA) !== JSON.stringify(stopsB)) fail(`Andere Route beim Freund:\n${stopsA}\n${stopsB}`);
+  if (friend.url().includes('tour=')) fail('Einladungscode bleibt in der Adresse stehen');
+  console.log(`✓ Tour per Link geteilt: Freunde bekommen dieselben ${stopsB.length} Ziele`);
   await ctx.close();
 }
 

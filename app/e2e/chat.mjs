@@ -16,6 +16,19 @@ export async function planTour(page, o = {}) {
     pin = '1234',
     snap = async () => {},
   } = o;
+  // Wettervorhersage im Test nachstellen (kein Regen, außer o.rain)
+  await page.route(/api\.open-meteo\.com/, (r) => {
+    const t = new Date();
+    const time = [];
+    for (let i = 0; i < 24; i++) {
+      const d = new Date(t.valueOf() + i * 3600000);
+      const p2 = (n) => String(n).padStart(2, '0');
+      time.push(`${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}T${p2(d.getHours())}:00`);
+    }
+    const p = time.map((_, i) => (o.rain && i === 1 ? 80 : 5));
+    const mm = time.map((_, i) => (o.rain && i === 1 ? 1.2 : 0));
+    return r.fulfill({ contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ hourly: { time, precipitation_probability: p, precipitation: mm } }) });
+  });
   await page.getByTestId('new-tour').click();
   // 1. Team
   await page.getByTestId('chat-input').fill(team);

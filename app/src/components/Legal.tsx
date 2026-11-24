@@ -77,6 +77,9 @@ export function Legal() {
           <li>
             <strong>Opencaching.de</strong> wird nur abgefragt, wenn ihr an einer Station „Echte Geocaches in der Nähe“ aufklappt oder einen Cache öffnet. Übertragen wird der Ort der Station bzw. der Code des Caches (nicht euer Standort) und wie bei jeder Website eure IP-Adresse; Bilder aus Cache-Beschreibungen kommen ebenfalls von dort. Euer Standort für den Kompass zum Cache bleibt auf dem Handy.
           </li>
+          <li>
+            <strong>Open-Meteo</strong> liefert die Regenvorhersage für die Routenplanung. Gesendet wird nur der grob gerundete Startpunkt (etwa auf 1 km genau).
+          </li>
           <li>Links zu Wikipedia, Geocaching.com oder Quellen öffnen sich nur, wenn ihr sie antippt.</li>
         </ul>
         <p>Schriften und Bilder der Stationen sind in der App enthalten und werden nicht von fremden Servern geladen.</p>

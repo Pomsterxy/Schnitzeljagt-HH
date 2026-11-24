@@ -4,7 +4,11 @@ import { distance, formatDistance } from '../lib/geo';
 import { loadJSON } from '../lib/storage';
 import { MapView } from './MapView';
 import { Icon } from './Icon';
-import { CacheDetail, TYPE_ICON, foundCaches } from './CacheDetail';
+import { lazy, Suspense } from 'react';
+import { TYPE_ICON, foundCaches } from './cache-shared';
+
+// Detailansicht (mit HTML-Bereinigung) erst bei Bedarf laden
+const CacheDetail = lazy(() => import('./CacheDetail').then((m) => ({ default: m.CacheDetail })));
 
 export const OC_KEY_STORAGE = 'hh-hunt:opencachingKey';
 /** Öffentlicher Opencaching-Schlüssel der App (OKAPI Level 1, kein Geheimnis – identifiziert nur die App) */
@@ -148,6 +152,7 @@ export function NearbyCaches({ center, title = '🌍 Echte Geocaches in der Näh
         </>
       )}
       {open && (
+        <Suspense fallback={null}>
         <CacheDetail
           code={open}
           apiKey={key}
@@ -156,6 +161,7 @@ export function NearbyCaches({ center, title = '🌍 Echte Geocaches in der Näh
             setFound(foundCaches());
           }}
         />
+        </Suspense>
       )}
     </details>
   );

@@ -402,3 +402,46 @@ describe('Offline-Karten', () => {
     expect(urls.every((u) => /^https:\/\/tile\.openstreetmap\.org\/1[5-7]\/\d+\/\d+\.png$/.test(u))).toBe(true);
   });
 });
+
+describe('Tour teilen', () => {
+  it('kodiert eine Route als Link und baut sie identisch wieder auf', async () => {
+    const { encodeTour, decodeTour } = await import('./share');
+    const start = START_POINTS[0].coords;
+    const r = generateRoute(STATIONS, POIS, { districts: ['winterhude'], start, minutes: 120, kmh: 3.5, includeQuiet: true, includePause: true, seed: 9, cache: true });
+    const code = encodeTour({ d: ['winterhude'], m: 120, s: 'U Borgweg', c: start, stops: r.stops, n: 'map', sd: 9, t: 'mix', ml: 500 });
+    expect(code).toMatch(/^[A-Za-z0-9_-]+$/);
+    const back = decodeTour(code)!;
+    expect(back.tour.sd).toBe(9);
+    expect(back.stops.map((s) => s.kind + (s.kind === 'station' ? s.station.id : s.poi.id))).toEqual(r.stops.map((s) => s.kind + (s.kind === 'station' ? s.station.id : s.poi.id)));
+    expect(decodeTour('kaputt')).toBeNull();
+  });
+});
+
+describe('Tageslicht', () => {
+  it('berechnet den Sonnenuntergang in Hamburg auf wenige Minuten genau', async () => {
+    const { sunset } = await import('./daylight');
+    const hh: [number, number] = [53.59, 10.02];
+    // Sommeranfang: ca. 21:53 MESZ = 19:53 UTC; Winteranfang: ca. 15:59 MEZ = 14:59 UTC
+    const s = sunset(new Date('2026-06-21T10:00:00Z'), hh);
+    expect(Math.abs(s.getUTCHours() * 60 + s.getUTCMinutes() - (19 * 60 + 53))).toBeLessThan(8);
+    const w = sunset(new Date('2026-12-21T10:00:00Z'), hh);
+    expect(Math.abs(w.getUTCHours() * 60 + w.getUTCMinutes() - (14 * 60 + 59))).toBeLessThan(8);
+  });
+  it('warnt nur, wenn die Tour in die Dunkelheit läuft', async () => {
+    const { daylightWarning } = await import('./daylight');
+    const hh: [number, number] = [53.59, 10.02];
+    expect(daylightWarning(new Date('2026-12-21T10:00:00Z'), 90, hh)).toBeNull();
+    expect(daylightWarning(new Date('2026-12-21T14:00:00Z'), 120, hh)).toMatch(/Sonne geht um/);
+    expect(daylightWarning(new Date('2026-12-21T17:00:00Z'), 60, hh)).toMatch(/schon untergegangen/);
+  });
+});
+
+describe('Gesprächsfragen pro Station', () => {
+  it('hat für jede normale Station eine eigene Frage', async () => {
+    const { STATION_TALK } = await import('../data/talk');
+    const normal = STATIONS.filter((s) => s.mode === 'normal');
+    const missing = normal.filter((s) => !STATION_TALK[s.id]).map((s) => s.id);
+    expect(missing).toEqual([]);
+    for (const id of Object.keys(STATION_TALK)) expect(STATIONS.some((s) => s.id === id)).toBe(true);
+  });
+});

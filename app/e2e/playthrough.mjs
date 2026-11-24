@@ -250,6 +250,8 @@ if (THEME === 'architektur') {
 // Reload-Test: Album zeigt gesammelte Karten
 await page.getByRole('button', { name: 'Zum Hauptmenü' }).click();
 await page.locator('.tabbar').getByRole('button', { name: 'Album' }).click();
+await page.locator('.cardlet').first().waitFor();
+await page.waitForTimeout(300);
 const cards = await page.locator('.cardlet:not(.locked)').count();
 if (photoUploaded) console.log('Foto hochgeladen und im Album gespeichert');
 console.log('Gesammelte Karten im Album:', cards);

@@ -3,7 +3,9 @@ import { DISTRICTS, START_POINTS } from '../data/districts';
 import { POIS, STATIONS } from '../data';
 import type { AgeGroup, Category, DistrictId, LatLng } from '../data/types';
 import { formatDistance, distance } from '../lib/geo';
-import { generateRoute } from '../lib/route';
+import { generateRoute, measure, type RouteStop } from '../lib/route';
+import { encodeTour, shareLink, tourLink, type SharedTour } from '../lib/share';
+import { daylightWarning, rainWarning } from '../lib/daylight';
 import { speedFor, youngestGroup } from '../lib/scoring';
 import { usePosition, startTracking } from '../lib/location';
 import { play } from '../lib/feedback';
@@ -69,25 +71,30 @@ function peopleText(c: Counts): string {
 }
 
 /** Lilli fragt der Reihe nach, wie im Chat. Ältere Antworten lassen sich antippen und ändern. */
-export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel: () => void }) {
+export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; onCancel: () => void; shared?: { tour: SharedTour; stops: RouteStop[] } | null }) {
+  const st = shared?.tour;
   const prev = lastTeam();
   const [step, setStep] = useState(0);
   const [team, setTeam] = useState<Team>(prev ?? { name: '', avatar: AVATARS[0], members: [] });
   const [counts, setCounts] = useState<Counts>(() => (prev?.members.length ? countsOf(prev.members) : { adults: 1, tweens: 0, kids: 1 }));
-  const [districts, setDistricts] = useState<DistrictId[]>([]);
-  const [minutes, setMinutes] = useState(90);
-  const [nav, setNav] = useState<NavMode>('map');
-  const [includeQuiet, setIncludeQuiet] = useState(true);
-  const [includePause, setIncludePause] = useState(true);
+  const [districts, setDistricts] = useState<DistrictId[]>(st?.d ?? []);
+  const [minutes, setMinutes] = useState(st?.m ?? 90);
+  const [nav, setNav] = useState<NavMode>(st?.n ?? 'map');
+  const [includeQuiet, setIncludeQuiet] = useState(shared ? shared.stops.some((x) => x.kind === 'station' && x.station.mode === 'quiet') : true);
+  const [includePause, setIncludePause] = useState(shared ? shared.stops.some((x) => x.kind === 'pause') : true);
   const [pin, setPin] = useState('');
   const [startId, setStartId] = useState<string>('');
-  const [theme, setTheme] = useState<Category | 'mix'>('mix');
-  const [cache, setCache] = useState(true);
-  const [maxLeg, setMaxLeg] = useState(500);
-  const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e9));
+  const [theme, setTheme] = useState<Category | 'mix'>(st?.t ?? 'mix');
+  const [cache, setCache] = useState(shared ? shared.stops.some((x) => x.kind === 'final') : true);
+  const [maxLeg, setMaxLeg] = useState(st?.ml ?? 500);
+  const [seed, setSeed] = useState(() => st?.sd ?? Math.floor(Math.random() * 1e9));
+  const [shareMsg, setShareMsg] = useState('');
   const pos = usePosition();
 
-  const questions: Q[] = [{ id: 'team' }, { id: 'people' }, { id: 'districts' }, { id: 'minutes' }, { id: 'start' }, { id: 'pin' }, { id: 'route' }];
+  // Eingeladen per Link: Route steht schon fest, nur Team, Mitspieler und PIN fehlen
+  const questions: Q[] = shared
+    ? [{ id: 'team' }, { id: 'people' }, { id: 'pin' }, { id: 'route' }]
+    : [{ id: 'team' }, { id: 'people' }, { id: 'districts' }, { id: 'minutes' }, { id: 'start' }, { id: 'pin' }, { id: 'route' }];
 
   const current = questions[Math.min(step, questions.length - 1)];
   const members = useMemo(() => membersFrom(counts, prev?.members ?? []), [counts, prev?.members]);
@@ -95,9 +102,11 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
   const youngest = youngestGroup(groups.length ? groups : ['adults']);
 
   const start: { coords: LatLng; label: string } | null = useMemo(() => {
+    if (st) return { coords: st.c, label: st.s };
     if (startId === 'gps') return pos.coords ? { coords: pos.coords, label: 'Euer Standort' } : null;
     const sp = START_POINTS.find((s) => s.id === startId);
     return sp ? { coords: sp.coords, label: sp.title } : null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startId, pos.coords]);
 
   const [avoid, setAvoid] = useState<string[]>([]);
@@ -118,6 +127,10 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     });
   const route = useMemo(() => {
     if (current.id !== 'route' || !start || !districts.length) return null;
+    if (shared) {
+      const m = measure(start.coords, shared.stops, speedFor(youngest));
+      return { stops: shared.stops, meters: m.meters, minutes: m.minutes };
+    }
     return plan(seed, avoid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current.id, start, districts, minutes, youngest, includeQuiet, includePause, seed, theme, cache, maxLeg, avoid]);
@@ -177,6 +190,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     const n = team.name.trim() || 'ihr';
     switch (q.id) {
       case 'team':
+        if (shared) return `Moin! Ihr wurdet zu einer Schatzsuche eingeladen: ${shared.stops.filter((x) => x.kind === 'station').length} Stationen ab ${shared.tour.s}. Wie heißt euer Team?`;
         return prev ? `Moin, ${prev.name}! Schön, dass ihr wieder da seid. Bleibt es bei eurem Teamnamen?` : 'Moin! Ich bin Lilli, eure Schatzsuch-Möwe. Wie heißt euer Team?';
       case 'people':
         return `${n} – klingt nach echten Entdeckern! Wer ist dabei? Die Rätsel richten sich nach den Jüngsten.`;
@@ -190,7 +204,9 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
         return 'Zum Schluss: Ein Erwachsener legt eine 4-stellige Eltern-PIN fest. Damit schaltet ihr Stationen frei, wenn das GPS mal spinnt.';
       case 'route':
         return route && route.stops.some((s) => s.kind === 'station')
-          ? `Eure Route steht!${maxLeg ? ` Kein Weg ist länger als ${maxLeg === 1000 ? '1 Kilometer' : `${maxLeg} Meter`}.` : ''} Unten könnt ihr Thema, Wege und Extras anpassen.`
+          ? shared
+            ? 'Das ist eure Tour, genau wie bei den Freunden, die euch eingeladen haben. Wer schafft mehr Punkte?'
+            : `Eure Route steht!${maxLeg ? ` Kein Weg ist länger als ${maxLeg === 1000 ? '1 Kilometer' : `${maxLeg} Meter`}.` : ''} Unten könnt ihr Thema, Wege und Extras anpassen.`
           : 'Hm, für diese Auswahl finde ich keine passende Route. Tippt oben auf eine Antwort, um etwas zu ändern.';
     }
   };
@@ -224,6 +240,22 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
     startGame({ ...team, name: team.name.trim(), members }, config, route);
     onStarted();
   };
+
+  // Tageslicht und Regen für die geplante Tour
+  const daylight = route && start ? daylightWarning(new Date(), route.minutes, start.coords) : null;
+  const [rain, setRain] = useState<string | null>(null);
+  const routeMinutes = route ? Math.round(route.minutes) : 0;
+  useEffect(() => {
+    if (!routeMinutes || !start || navigator.onLine === false) return;
+    let alive = true;
+    rainWarning(start.coords, routeMinutes)
+      .then((w) => alive && setRain(w))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeMinutes, start?.label]);
 
   const stationCount = route?.stops.filter((s) => s.kind === 'station').length ?? 0;
   const waypointCount = route?.stops.filter((s) => s.kind === 'waypoint').length ?? 0;
@@ -332,6 +364,16 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
               Längste Etappe: {formatDistance(longest)}
               {maxLeg && firstLeg > maxLeg ? ` · Der erste Weg vom Start ist ${formatDistance(firstLeg * 1.3)} lang.` : ''}
             </p>
+            {daylight && (
+              <p className="tour-warn" data-testid="daylight-warn">
+                🌇 {daylight}
+              </p>
+            )}
+            {rain && (
+              <p className="tour-warn" data-testid="rain-warn">
+                🌧️ {rain}
+              </p>
+            )}
             {noOther && (
               <p className="dark-caption reroll-note" data-testid="no-other-route">
                 Hier passt gerade keine andere Route in die Zeit. Nehmt einen weiteren Stadtteil dazu oder ändert die Dauer.
@@ -363,7 +405,7 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
             )}
           </div>
         )}
-        {current.id === 'route' && start && (
+        {current.id === 'route' && start && !shared && (
           <details className="tour-settings rise" data-testid="tour-settings">
             <summary>
               <span>Anpassen</span>
@@ -535,17 +577,39 @@ export function Setup({ onStarted, onCancel }: { onStarted: () => void; onCancel
                 Los geht's!
               </button>
             )}
-            <button
-              type="button"
-              className="btn pill outline"
-              data-testid="reroll"
-              onClick={() => {
-                play('select');
-                reroll();
-              }}
-            >
-              Andere Route würfeln
-            </button>
+            {!shared && (
+              <button
+                type="button"
+                className="btn pill outline"
+                data-testid="reroll"
+                onClick={() => {
+                  play('select');
+                  reroll();
+                }}
+              >
+                Andere Route würfeln
+              </button>
+            )}
+            {route && stationCount > 0 && start && (
+              <button
+                type="button"
+                className="btn pill outline"
+                data-testid="share-tour"
+                onClick={async () => {
+                  play('select');
+                  const code = encodeTour({ d: districts, m: minutes, s: start.label, c: start.coords, stops: route.stops, n: nav, sd: seed, t: theme, ml: maxLeg });
+                  const r = await shareLink(tourLink(code), 'Kommt mit auf unsere Schatzsuche durch Hamburg!');
+                  setShareMsg(r === 'copied' ? 'Link kopiert – jetzt z. B. in WhatsApp einfügen.' : r === 'shared' ? 'Geteilt!' : '');
+                }}
+              >
+                Tour mit Freunden teilen
+              </button>
+            )}
+            {shareMsg && (
+              <p className="muted fade" role="status" data-testid="share-msg" style={{ textAlign: 'center' }}>
+                {shareMsg}
+              </p>
+            )}
           </>
         );
     }

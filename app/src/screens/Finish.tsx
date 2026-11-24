@@ -10,6 +10,7 @@ import { youngestGroup } from '../lib/scoring';
 import { LilliSays } from '../components/Lilli';
 import { TalkCard } from '../components/TalkCard';
 import { StarRating } from '../components/Micro';
+import { shareGame } from './Play';
 import { Icon } from '../components/Icon';
 import { celebrateFinish } from '../lib/effects';
 
@@ -108,6 +109,9 @@ export function Finish({ onHome }: { onHome: () => void }) {
         {rank.next ? ` Noch ${rank.next.min - career.points} Punkte bis „${rank.next.title}“.` : ''}
       </LilliSays>
       <StarRating id={game.id} />
+      <button type="button" className="btn" data-testid="finish-share" onClick={() => void shareGame(game)}>
+        Diese Tour an Freunde weitergeben
+      </button>
       <TalkCard pools={['finish']} seed={game.config.seed} youngest={youngestGroup(game.team.members.map((m) => m.age))} title="Zum Nachklang" />
       <section className="card walk-stats rise" aria-label="Eure Tour in Zahlen">
         <div className="caption">Eure Tour in Zahlen</div>
@@ -164,11 +168,17 @@ export function Finish({ onHome }: { onHome: () => void }) {
         type="button"
         className="btn big tinted"
         onClick={async () => {
-          const b = await drawCertificate(game, stations.length, { steps: stats.steps, estimated: stats.estimated, meters: stats.meters, time: formatDuration(stats.ms) });
-          if (b) await shareOrDownload(b, `urkunde-${game.team.name.replace(/\W+/g, '-')}.png`);
+          const b = await drawCertificate(
+            game,
+            stations.length,
+            { steps: stats.steps, estimated: stats.estimated, meters: stats.meters, time: formatDuration(stats.ms) },
+            stations.map((st) => st.title),
+          );
+          if (b) await shareOrDownload(b, `schnitzeljagd-${game.team.name.replace(/\W+/g, '-')}.png`);
         }}
+        data-testid="memory-card"
       >
-        <Icon name="share" size={18} /> Urkunde teilen
+        <Icon name="share" size={18} /> Erinnerungskarte teilen
       </button>
       <h2 className="section-title">Fotoalbum</h2>
       <PhotoGrid photos={game.photos} />
