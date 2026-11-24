@@ -14,6 +14,12 @@ ruhigen Modus ohne Punkte.
 - **Aufgabentypen**: Quiz, Schätzen, Zählen, Beobachten, Foto, Nachdenken
 - **Familien-Momente**: an etwa jeder dritten Station ein gemeinsames Spiel (Mini-Versteckspiel, Lillis Freeze-Tanz, Grimassen-Selfie, Geräusche-Detektive, Komplimente-Runde u. a.) mit Timer, Musik oder Foto
 - **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 23 Abzeichen, Ränge, Sammelalbum, Urkunde
+- **Tour teilen**: Eine geplante oder gespielte Tour als Link weitergeben; Freunde spielen genau dieselbe Route und vergleichen Punkte
+- **Lillis Kleiderschrank**: Halstuch, Kapitänsmütze, Sonnenbrille, Piratentuch, Krone u. a. als Belohnung für Touren und Abzeichen
+- **Erinnerungskarte**: Am Ende ein teilbares Bild mit Lilli, euren Fotos, Orten und Zahlen
+- **Für Eltern**: Schatz-Ort per Eltern-PIN ansehen, um dort vorab eine Überraschung zu verstecken
+- **Tageslicht und Wetter**: Hinweis, wenn die Tour in die Dunkelheit läuft oder Regen droht (Open-Meteo)
+- **Gesprächsfragen pro Station**: jede Station hat ihre eigene Frage oder These
 - **Problem melden**: An jeder Station „Stimmt hier etwas nicht?“; Meldungen bleiben auf dem Handy und lassen sich unter „Mehr“ teilen. Zählaufgaben werten kleine Abweichungen großzügig
 - **Gesprächsstoff**: An jeder Station, an Zwischenzielen, in der Pause und am Ende eine Frage oder These zum gemeinsamen Diskutieren (passend zum Thema und Alter, ohne Wiederholung; an Gedenkorten nachdenkliche Fragen)
 - **Mikro-Animationen**: Welle beim Antippen, selbstzeichnendes Häkchen, rollende Punktzahl, Herz-Burst beim Abstimmen, Schimmer beim Laden der Fotos, Ladepunkte und Sterne-Bewertung am Ende
@@ -58,7 +64,11 @@ Zweig `gh-pages`. GitHub Pages zeigt diesen Zweig an. Unter *Settings → Pages*
 npm test                      # Logik- und Datentests (Routengenerator, GPS-Freischaltung, Punkte, Datenintegrität)
 npm run build && npm run preview &
 npm run e2e                   # Kompletter Spieldurchlauf im Browser (Karte + Abenteuer) und Sonderfälle
+node e2e/keyboard.mjs http://localhost:4173/       # Bildschirmtastatur verdeckt keine Eingabefelder
+node e2e/layout-audit.mjs http://localhost:4173/   # Layout in 6 Bildschirmgrößen prüfen
 ```
+
+Bei jeder Änderung auf `main` laufen Lint, Unit-Tests, Spieldurchläufe, Sonderfälle und der Tastatur-Test automatisch (GitHub Actions). Nur wenn alles grün ist, wird die App veröffentlicht.
 
 ## Projektstruktur
 

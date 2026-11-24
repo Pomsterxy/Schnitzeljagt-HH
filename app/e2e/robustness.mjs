@@ -213,6 +213,14 @@ async function context_check(page) {
   await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('hh-hunt:game')); return s.index; });
   // Station freischalten (per GPS) und bis zum Ende klicken, dann Caches öffnen
   {
+    // Zwischenziele und Pausen davor überspringen
+    for (let i = 0; i < 8; i++) {
+      const kind = await page.evaluate(() => { const g = JSON.parse(localStorage.getItem('hh-hunt:game')); return g.stops[g.index].kind; });
+      if (kind === 'station') break;
+      const sk = page.getByRole('button', { name: /Zwischenziel auslassen|Pause überspringen/ });
+      if (await sk.count()) await sk.first().click();
+      await page.waitForTimeout(400);
+    }
     const t = (await page.locator('.play').getAttribute('data-target')).split(',').map(Number);
     await page.context().setGeolocation({ latitude: t[0], longitude: t[1], accuracy: 8 });
     await page.getByTestId('arrived').waitFor();

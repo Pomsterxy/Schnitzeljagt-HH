@@ -435,3 +435,13 @@ describe('Tageslicht', () => {
     expect(daylightWarning(new Date('2026-12-21T17:00:00Z'), 60, hh)).toMatch(/schon untergegangen/);
   });
 });
+
+describe('Gesprächsfragen pro Station', () => {
+  it('hat für jede normale Station eine eigene Frage', async () => {
+    const { STATION_TALK } = await import('../data/talk');
+    const normal = STATIONS.filter((s) => s.mode === 'normal');
+    const missing = normal.filter((s) => !STATION_TALK[s.id]).map((s) => s.id);
+    expect(missing).toEqual([]);
+    for (const id of Object.keys(STATION_TALK)) expect(STATIONS.some((s) => s.id === id)).toBe(true);
+  });
+});

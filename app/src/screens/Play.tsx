@@ -43,7 +43,7 @@ import { ReportButton } from '../components/ReportButton';
 import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effects';
 import { WALK_GAMES } from '../data/walk-games';
 import { TalkCard } from '../components/TalkCard';
-import { talksForTour, type TalkPool } from '../data/talk';
+import { STATION_TALK, talksForTour, type TalkPool } from '../data/talk';
 import { STATION_BY_ID } from '../data';
 import { FamilyGameCard } from '../components/FamilyGameCard';
 import { Lilli, LilliSays } from '../components/Lilli';
@@ -774,7 +774,7 @@ function StationSteps({
             </section>
           </>
         )}
-        {step.kind === 'talk' && <TalkCard pools={talkPools(station)} seed={game.config.seed + game.index} youngest={youngest} initial={talk} />}
+        {step.kind === 'talk' && <TalkCard pools={talkPools(station)} seed={game.config.seed + game.index} youngest={youngest} initial={STATION_TALK[station.id] ?? talk} />}
         {step.kind === 'family' && familyGame && <FamilyGameCard stationId={station.id} gameId={familyGame} state={familyState} />}
       </div>
 
