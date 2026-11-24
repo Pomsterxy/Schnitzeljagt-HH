@@ -17,7 +17,7 @@ ruhigen Modus ohne Punkte.
 - **Problem melden**: An jeder Station „Stimmt hier etwas nicht?“; Meldungen bleiben auf dem Handy und lassen sich unter „Mehr“ teilen. Zählaufgaben werten kleine Abweichungen großzügig
 - **Gesprächsstoff**: An jeder Station, an Zwischenzielen, in der Pause und am Ende eine Frage oder These zum gemeinsamen Diskutieren (passend zum Thema und Alter, ohne Wiederholung; an Gedenkorten nachdenkliche Fragen)
 - **Effekte**: Konfetti-Kanonen bei jeder gefundenen Station, fliegende Punkte bei richtigen Antworten, Herzen bei Familien-Momenten, Goldregen beim Schatz, großes Finale am Ende (bei „Bewegung reduzieren“ aus)
-- **Ruhiges Design** mit Atem-Intro, Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
+- **Ruhiges Design** mit Himmelsszene und dunkler Fläche, runder Schrift und Pillen-Knöpfen; mit der Möwe **Lilli** als Begleiterin, Animationen (Konfetti, Kompass-Radar, Zahlenschloss, Schatzkiste) sowie Tönen und Vibration (abschaltbar)
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert; beim Start einer Tour werden die Kartenausschnitte entlang der Route vorgeladen (sparsam, Zoom 15–17)
 - **Stabilität**: Stromsparmodus und Akku-Warnung (Android), „Rückgängig“ nach Löschen oder Überspringen, automatische Sicherungskopie des Spielstands und Sicherung als Datei unter „Mehr“
