@@ -3,8 +3,10 @@
  * sodass andere sie genau so nachspielen können. Ergebnisse derselben Tour (gleiche Stopps)
  * werden auf dem Handy gesammelt und als Rangliste gezeigt.
  */
-import { useSyncExternalStore } from 'react';
-import { b64url, unb64url } from './share';
+import { useMemo, useSyncExternalStore } from 'react';
+import { hashString } from '../data/util';
+import type { RouteStop } from './route';
+import { b64url, KIND, unb64url } from './share';
 import { loadJSON, saveJSON } from './storage';
 
 export interface TeamResult {
@@ -32,11 +34,8 @@ function commit() {
 }
 
 /** Fingerabdruck aus den Stopps ([Art, ID]), unabhängig von der Darstellung */
-export function tourFingerprint(stops: { kind: string; id: string }[]): string {
-  const s = stops.map((x) => `${x.kind[0]}:${x.id}`).join('|');
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
-  return (h >>> 0).toString(36) + stops.length.toString(36);
+export function tourFingerprint(stops: { kind: RouteStop['kind']; id: string }[]): string {
+  return hashString(stops.map((x) => `${KIND[x.kind]}:${x.id}`).join('|')).toString(36) + stops.length.toString(36);
 }
 
 export function saveResult(r: TeamResult): void {
@@ -53,7 +52,7 @@ export function useResults(fp: string | null): TeamResult[] {
     },
     () => results,
   );
-  return fp ? all.filter((r) => r.fp === fp).sort((a, b) => b.points - a.points || a.ms - b.ms) : [];
+  return useMemo(() => (fp ? all.filter((r) => r.fp === fp).sort((a, b) => b.points - a.points || a.ms - b.ms) : []), [all, fp]);
 }
 
 export function hasOwnResult(fp: string): boolean {
@@ -62,9 +61,7 @@ export function hasOwnResult(fp: string): boolean {
 
 /** Link-Inhalt: Ergebnis + Tour-Code */
 export function encodeResult(r: TeamResult, tourCode: string): string {
-  const { mine: _mine, ...rest } = r;
-  void _mine;
-  return b64url(JSON.stringify({ v: 1, r: rest, t: tourCode }));
+  return b64url(JSON.stringify({ v: 1, r: { ...r, mine: undefined }, t: tourCode }));
 }
 
 export function decodeResult(code: string): { result: TeamResult; tourCode: string } | null {

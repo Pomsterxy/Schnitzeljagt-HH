@@ -3,7 +3,7 @@ import { logError } from '../lib/errorlog';
 
 /**
  * Fängt Abstürze einer Ansicht ab, statt einen weißen Bildschirm zu zeigen.
- * Nach einem Update fehlen manchmal alte Programmteile: dann einmal automatisch neu laden.
+ * (Fehlende Programmteile nach einem Update behandelt main.tsx über "vite:preloadError".)
  */
 export class ErrorBoundary extends Component<{ children: ReactNode; onHome: () => void }, { failed: boolean }> {
   state = { failed: false };
@@ -14,17 +14,6 @@ export class ErrorBoundary extends Component<{ children: ReactNode; onHome: () =
 
   componentDidCatch(error: unknown) {
     logError(error, 'Ansicht');
-    const msg = String((error as Error)?.message ?? '');
-    if (/dynamically imported module|Importing a module script failed|error loading dynamically/i.test(msg)) {
-      try {
-        if (!sessionStorage.getItem('hh-hunt:reloaded')) {
-          sessionStorage.setItem('hh-hunt:reloaded', '1');
-          location.reload();
-        }
-      } catch {
-        /* egal */
-      }
-    }
   }
 
   render() {

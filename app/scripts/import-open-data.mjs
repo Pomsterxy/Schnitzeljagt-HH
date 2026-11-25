@@ -11,6 +11,8 @@ mkdirSync(OUT, { recursive: true });
 const API = 'https://api.hamburg.de/datasets/v1';
 const DISTRICTS = { Winterhude: 'winterhude', 'Barmbek-Nord': 'barmbek-nord', Alsterdorf: 'alsterdorf' };
 const BBOX = '9.98,53.575,10.075,53.63';
+const [W, S, E, N] = BBOX.split(',');
+const WD_BOX = `SERVICE wikibase:box { ?i wdt:P625 ?c . bd:serviceParam wikibase:cornerSouthWest "Point(${W} ${S})"^^geo:wktLiteral; wikibase:cornerNorthEast "Point(${E} ${N})"^^geo:wktLiteral . }`;
 
 const getJson = async (url, headers = {}) => {
   for (let i = 0; i < 4; i++) {
@@ -59,6 +61,21 @@ const centroid = (g) => {
   return [ring.reduce((a, p) => a + p[0], 0) / n, ring.reduce((a, p) => a + p[1], 0) / n];
 };
 const round = (x) => Math.round(x * 1e6) / 1e6;
+/** Wikidata-Koordinate "Point(lon lat)" → [lat, lon] */
+const wkt = (v) => {
+  const m = /Point\(([-\d.]+) ([-\d.]+)\)/.exec(v);
+  return [Number(m[2]), Number(m[1])];
+};
+/** Nächster Eintrag mit .coords innerhalb von maxM Metern */
+const nearest = (list, c, maxM) => {
+  let best = null;
+  let bestD = maxM;
+  for (const x of list) {
+    const d = dist(x.coords, c);
+    if (d < bestD) [best, bestD] = [x, d];
+  }
+  return best;
+};
 
 console.log('Stadtteilgrenzen …');
 const stt = (await getJson(`${API}/verwaltungsgrenzen/collections/stadtteile/items?f=json&limit=200`)).features.filter((f) => DISTRICTS[f.properties.stadtteil_name]);
@@ -141,19 +158,16 @@ console.log('  Spielplätze mit Beschreibung:', spielplaetze.length, '| Trinkbru
 // ---------- 4) Kunstwerke, Skulpturen, Brunnen (Wikidata) ----------
 console.log('Kunstwerke (Wikidata) …');
 const ART_TYPES = ['wd:Q838948', 'wd:Q860861', 'wd:Q4989906', 'wd:Q483453', 'wd:Q179700', 'wd:Q1428238', 'wd:Q241045', 'wd:Q4370428', 'wd:Q1307276'];
-const art = await sparql(`SELECT ?i ?iLabel ?c ?creatorLabel ?year ?typeLabel ?descr WHERE {
-  SERVICE wikibase:box { ?i wdt:P625 ?c . bd:serviceParam wikibase:cornerSouthWest "Point(9.98 53.575)"^^geo:wktLiteral; wikibase:cornerNorthEast "Point(10.075 53.63)"^^geo:wktLiteral . }
+const art = await sparql(`SELECT ?i ?iLabel ?c ?creatorLabel ?year WHERE {
+  ${WD_BOX}
   ?i wdt:P31 ?type . VALUES ?type { ${ART_TYPES.join(' ')} }
   OPTIONAL { ?i wdt:P170 ?creator }
   OPTIONAL { ?i wdt:P571 ?inc . BIND(YEAR(?inc) AS ?year) }
-  OPTIONAL { ?i schema:description ?descr . FILTER(LANG(?descr) = "de") }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }`);
 const artMap = new Map();
 for (const b of art) {
   const q = b.i.value.split('/').pop();
-  const m = /Point\(([-\d.]+) ([-\d.]+)\)/.exec(b.c.value);
-  const lat = Number(m[2]);
-  const lon = Number(m[1]);
+  const [lat, lon] = wkt(b.c.value);
   const d = districtOf([lon, lat]);
   if (!d) continue;
   let label = (b.iLabel?.value ?? '').replace(/\bo\.\s?T\./, 'ohne Titel');
@@ -163,7 +177,7 @@ for (const b of art) {
   if (!label || /^Q\d+$/.test(label) || /im Garten \d/.test(label) || (/^Brunnen$/.test(label) && !b.creatorLabel)) continue;
   const prev = artMap.get(q);
   const creator = b.creatorLabel?.value && !/^Q\d+$/.test(b.creatorLabel.value) ? b.creatorLabel.value : prev?.creator;
-  artMap.set(q, { id: `kunst-${q}`, kind: 'kunst', title: label, creator, year: b.year ? Number(b.year.value) : prev?.year, type: b.typeLabel?.value, coords: [round(lat), round(lon)], district: d, wikidata: q });
+  artMap.set(q, { id: `kunst-${q}`, kind: 'kunst', title: label, creator, year: b.year ? Number(b.year.value) : prev?.year, coords: [round(lat), round(lon)], district: d });
 }
 const kunst = [...artMap.values()].filter((k) => !nearExisting(k.coords, 25));
 console.log('  Kunstwerke:', kunst.length);
@@ -171,14 +185,12 @@ console.log('  Kunstwerke:', kunst.length);
 // ---------- 5) Stolpersteine (Wikidata) ----------
 console.log('Stolpersteine (Wikidata) …');
 const st = await sparql(`SELECT ?i ?iLabel ?c ?ins ?addr WHERE {
-  SERVICE wikibase:box { ?i wdt:P625 ?c . bd:serviceParam wikibase:cornerSouthWest "Point(9.98 53.575)"^^geo:wktLiteral; wikibase:cornerNorthEast "Point(10.075 53.63)"^^geo:wktLiteral . }
+  ${WD_BOX}
   ?i wdt:P31 wd:Q26703203 . OPTIONAL { ?i wdt:P1684 ?ins } OPTIONAL { ?i wdt:P6375 ?addr }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "de". } }`);
 const byAddr = new Map();
 for (const b of st) {
-  const m = /Point\(([-\d.]+) ([-\d.]+)\)/.exec(b.c.value);
-  const lat = Number(m[2]);
-  const lon = Number(m[1]);
+  const [lat, lon] = wkt(b.c.value);
   const d = districtOf([lon, lat]);
   if (!d || !b.ins) continue;
   const addr = (b.addr?.value ?? '').replace(/,\s*\d{5}\s*Hamburg$/, '').trim();
@@ -191,25 +203,31 @@ for (const b of st) {
   }
   byAddr.set(key, e);
 }
-const stolpersteine = [...byAddr.values()]
-  .filter((s) => s.address && !nearExisting(s.coords, 40))
-  .map((s, i) => ({ id: `stein-${s.wikidata[0]}`, ...s, people: s.people.sort((a, b) => a.name.localeCompare(b.name, 'de')), idx: i }));
-console.log('  Stolperstein-Adressen:', stolpersteine.length, 'mit', stolpersteine.reduce((a, s) => a + s.people.length, 0), 'Steinen');
+/** Doppelte Wikidata-Einträge (gleicher Nachname + Jahrgang) zusammenfassen, längste Inschrift behalten */
+const uniquePeople = (people) => {
+  const key = (p) => `${p.name.split(' ').pop()}|${/Jg\.\s*(\d{4})/.exec(p.inscription)?.[1] ?? p.name}`;
+  const m = new Map();
+  for (const p of people) if (!m.has(key(p)) || p.inscription.length > m.get(key(p)).inscription.length) m.set(key(p), p);
+  return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, 'de'));
+};
+const groups = [...byAddr.values()].filter((s) => s.address).map((s) => ({ ...s, people: uniquePeople(s.people) }));
+// Gedenkstationen nur an Adressen mit mindestens drei Steinen (die übrigen erscheinen als Hinweis an Zwischenzielen)
+const STONE_MIN = 3;
+const stolpersteine = groups
+  .filter((s) => s.people.length >= STONE_MIN && !nearExisting(s.coords, 40))
+  .map((s) => ({ id: `stein-${s.wikidata[0]}`, ...s }));
+console.log('  Stolperstein-Adressen:', groups.length, '| Gedenkstationen:', stolpersteine.length);
 
 // ---------- 6) Zusatzinfos für Zwischenziele (POIs) ----------
 const pois = JSON.parse(readFileSync(new URL('../src/data/pois.json', import.meta.url), 'utf8'));
 const poiInfo = {};
 for (const p of [...pois, ...kunst, ...brunnen]) {
   const info = {};
-  if (p.kind === 'spielplatz') {
-    const sp = spielplaetze.filter((s) => dist(s.coords, p.coords) < 90).sort((a, b) => dist(a.coords, p.coords) - dist(b.coords, p.coords))[0];
-    if (sp) {
-      info.playground = { name: sp.name, text: sp.text };
-    }
-  }
-  const dk = denkmale.filter((x) => dist(x.coords, p.coords) < 70).sort((a, b) => dist(a.coords, p.coords) - dist(b.coords, p.coords))[0];
+  const sp = p.kind === 'spielplatz' ? nearest(spielplaetze, p.coords, 90) : null;
+  if (sp) info.playground = { name: sp.name, text: sp.text };
+  const dk = nearest(denkmale, p.coords, 70);
   if (dk) info.monument = { name: dk.name, year: dk.year, m: Math.round(dist(dk.coords, p.coords)) };
-  const sg = [...byAddr.values()].filter((x) => x.address && dist(x.coords, p.coords) < 50).sort((a, b) => dist(a.coords, p.coords) - dist(b.coords, p.coords))[0];
+  const sg = nearest(groups, p.coords, 50);
   if (sg) info.stones = { address: sg.address, names: sg.people.map((x) => x.name) };
   if (Object.keys(info).length) poiInfo[p.id] = info;
 }

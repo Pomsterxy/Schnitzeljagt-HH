@@ -1,4 +1,5 @@
 import type { Category, Station, Task } from './types';
+import { hashString } from './util';
 
 /**
  * Such-Aufträge für die Jüngsten (6–9 Jahre): Sie brauchen kein Vorwissen, nur Augen.
@@ -34,16 +35,10 @@ const POOLS: Partial<Record<Category, string[]>> = {
 };
 const FALLBACK = 'Ich sehe was, was du nicht siehst: Ein Kind wählt etwas aus, die anderen raten. Macht danach ein Foto davon.';
 
-function hash(s: string): number {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-  return h;
-}
-
 export function withKidsTask(s: Station): Station {
   if (s.mode !== 'normal' || s.tasks.some((t) => t.level === 'kids')) return s;
   const pool = s.categories.flatMap((c) => POOLS[c] ?? []);
-  const question = pool.length ? pool[hash(s.id) % pool.length] : FALLBACK;
+  const question = pool.length ? pool[hashString(s.id) % pool.length] : FALLBACK;
   const task: Task = { id: `${s.id}-kids`, type: 'photo', level: 'kids', question };
   return { ...s, tasks: [...s.tasks, task] };
 }

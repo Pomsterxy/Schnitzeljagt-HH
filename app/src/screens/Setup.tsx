@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DISTRICTS, START_POINTS } from '../data/districts';
-import { POIS, ROUTE_STATIONS } from '../data';
+import { POI_EMOJI, POIS, ROUTE_STATIONS } from '../data';
 import type { AgeGroup, Category, DistrictId, LatLng } from '../data/types';
 import { formatDistance, distance } from '../lib/geo';
 import { generateRoute, measure, type RouteStop } from '../lib/route';
@@ -338,7 +338,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
                       s.kind === 'station'
                         ? { id: s.station.id, coords: s.station.coords, emoji: s.station.mode === 'quiet' ? '🕯️' : String(route.stops.slice(0, i + 1).filter((x) => x.kind === 'station').length), label: s.station.title }
                         : s.kind === 'pause'
-                          ? { id: s.poi.id, coords: s.poi.coords, emoji: s.poi.kind === 'eis' ? '🍦' : '🛝', label: `Pause: ${s.poi.title}` }
+                          ? { id: s.poi.id, coords: s.poi.coords, emoji: POI_EMOJI[s.poi.kind], label: `Pause: ${s.poi.title}` }
                           : s.kind === 'waypoint'
                             ? { id: `${s.poi.id}-${i}`, coords: s.poi.coords, emoji: '·', label: `Zwischenziel: ${s.poi.title}` }
                             : null,
@@ -405,7 +405,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
                         </>
                       ) : s.kind === 'pause' ? (
                         <>
-                          <span className="num extra">{s.poi.kind === 'eis' ? '🍦' : '🛝'}</span>Pause: {s.poi.title}
+                          <span className="num extra">{POI_EMOJI[s.poi.kind]}</span>Pause: {s.poi.title}
                         </>
                       ) : (
                         <>

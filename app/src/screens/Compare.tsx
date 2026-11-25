@@ -1,14 +1,12 @@
 import { useEffect, useMemo } from 'react';
 import { decodeResult, hasOwnResult, saveResult, useResults } from '../lib/results';
-import { decodeTour } from '../lib/share';
+import { decodeTour, type DecodedTour } from '../lib/share';
 import { Leaderboard } from '../components/Leaderboard';
 import { LilliSays } from '../components/Lilli';
 import { getGame } from '../state/game';
 
-type Shared = NonNullable<ReturnType<typeof decodeTour>>;
-
 /** Ergebnis-Link eines anderen Teams: Rangliste zeigen und die Tour zum Nachspielen anbieten */
-export function Compare({ code, onPlay, onHome }: { code: string; onPlay: (t: Shared) => void; onHome: () => void }) {
+export function Compare({ code, onPlay, onHome }: { code: string; onPlay: (t: DecodedTour) => void; onHome: () => void }) {
   const data = useMemo(() => decodeResult(code), [code]);
   const tour = useMemo(() => (data ? decodeTour(data.tourCode) : null), [data]);
   useEffect(() => {

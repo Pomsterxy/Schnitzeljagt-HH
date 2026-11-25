@@ -1,5 +1,5 @@
 # Einmal im Monat nach Updates schauen und sie als Pull Request vorschlagen.
-# Vor jedem Zusammenführen laufen automatisch alle Tests (siehe Workflow "Tests für Pull Requests").
+# Vor jedem Zusammenführen laufen automatisch alle Tests (Workflow "App veröffentlichen", ohne Veröffentlichung).
 version: 2
 updates:
   - package-ecosystem: npm

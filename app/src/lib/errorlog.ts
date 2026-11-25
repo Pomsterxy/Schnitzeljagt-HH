@@ -3,6 +3,7 @@
  * und lassen sich zusammen mit den Meldungen teilen. Es geht nichts an einen Server.
  */
 import { useSyncExternalStore } from 'react';
+import { loadJSON, saveJSON } from './storage';
 
 export interface ErrorEntry {
   at: number;
@@ -14,20 +15,11 @@ export interface ErrorEntry {
 
 const KEY = 'hh-hunt:errors';
 const MAX = 30;
-let entries: ErrorEntry[] = [];
-try {
-  entries = JSON.parse(localStorage.getItem(KEY) ?? '[]') as ErrorEntry[];
-} catch {
-  entries = [];
-}
+let entries: ErrorEntry[] = loadJSON<ErrorEntry[]>(KEY, []);
 const listeners = new Set<() => void>();
 
 function save() {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(entries));
-  } catch {
-    /* Speicher voll: dann eben nicht */
-  }
+  saveJSON(KEY, entries);
   listeners.forEach((l) => l());
 }
 

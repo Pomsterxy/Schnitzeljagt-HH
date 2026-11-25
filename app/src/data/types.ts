@@ -92,6 +92,10 @@ export interface Station {
   /** Bild-IDs → public/img/stations/<id>.jpg, Lizenz in credits.json */
   images: string[];
   sources: string[];
+  /** Quellenangabe ohne Link (z. B. Lizenzhinweis einer Behörde) */
+  attribution?: string;
+  /** Text der blauen Denkmaltafel, die an dieser Station hängt */
+  tafel?: string;
   /** Aus offenen Daten erzeugt (Denkmaltafel, Stolpersteine): nicht im Album */
   origin?: 'tafel' | 'stolperstein';
 }
@@ -108,8 +112,6 @@ export interface Poi {
   /** Kunstwerke (Wikidata) */
   creator?: string;
   year?: number;
-  type?: string;
-  wikidata?: string;
 }
 
 export interface StartPoint {

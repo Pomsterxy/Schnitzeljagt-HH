@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { OPEN_POIS, OPEN_STATIONS, POI_INFO } from '../data/open';
-import { POIS, ROUTE_STATIONS, STATIONS, STATION_BY_ID } from '../data';
+import { inAlbum, POIS, ROUTE_STATIONS, STATIONS, STATION_BY_ID } from '../data';
 import { START_POINTS } from '../data/districts';
 import { distance } from './geo';
 import { generateRoute, MAX_LEG, MAX_QUIET } from './route';
@@ -60,5 +60,10 @@ describe('Offene Daten', () => {
   });
   it('gibt an jeder normalen Station etwas für die Jüngsten', () => {
     for (const s of ROUTE_STATIONS.filter((x) => x.mode === 'normal')) expect(s.tasks.some((t) => t.level === 'kids'), s.id).toBe(true);
+  });
+  it('nimmt Stationen aus offenen Daten nicht ins Album', () => {
+    for (const s of OPEN_STATIONS) expect(inAlbum(s.id), s.id).toBe(false);
+    for (const s of STATIONS) expect(inAlbum(s.id), s.id).toBe(true);
+    expect(STATIONS.some((s) => s.tafel)).toBe(true);
   });
 });

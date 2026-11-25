@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ALBUM_IDS, STATIONS, imageUrl } from '../data';
+import { STATIONS, imageUrl } from '../data';
 import { DISTRICTS } from '../data/districts';
 import { BADGES, rankFor } from '../data/badges';
 import { useGame } from '../state/game';
@@ -69,7 +69,7 @@ export function Album({ mode }: { mode: 'cards' | 'badges' }) {
       {mode === 'cards' && (
         <>
           <p className="muted rise">
-            {career.collected.filter((id) => ALBUM_IDS.has(id)).length} von {STATIONS.length} Karten gesammelt. Jede gefundene Station kommt hierher.
+            {career.collected.length} von {STATIONS.length} Karten gesammelt. Jede gefundene Station kommt hierher.
           </p>
           {DISTRICTS.map((d) => (
             <section key={d.id} className="rise" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

@@ -16,7 +16,7 @@ describe('Jahreszeiten', () => {
     expect(jul.dark).toBe(false);
     expect(seasonNote(jul)).toMatch(/Planschbecken/);
     expect(seasonNote(seasonFor(new Date('2026-05-10T11:00:00+02:00'), 120, start))).toBeNull();
-    expect(WET_PLAYGROUNDS.length).toBeGreaterThan(0);
+    expect(WET_PLAYGROUNDS.size).toBeGreaterThan(0);
   });
   it('plant im Winter keine Eis-Pause und im Dunkeln weniger Park-Stationen', () => {
     const winter = seasonFor(new Date('2026-01-10T15:30:00+01:00'), 150, start);
