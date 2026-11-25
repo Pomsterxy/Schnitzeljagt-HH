@@ -254,9 +254,9 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
     for (;;) {
       let best: { list: Station[]; ratio: number; s: Station } | null = null;
       const base = cost(list);
-      const quietCount = list.filter((x) => x.mode === 'quiet').length;
+      // Genug Gedenkorte: die übrigen gar nicht mehr durchrechnen
+      if (list.filter((x) => x.mode === 'quiet').length >= MAX_QUIET) for (const s of remaining) if (s.mode === 'quiet') remaining.delete(s);
       for (const s of remaining) {
-        if (s.mode === 'quiet' && quietCount >= MAX_QUIET) continue;
         for (let pos = 0; pos <= list.length; pos++) {
           const cand = list.slice(0, pos).concat([s], list.slice(pos));
           const c = cost(cand);
@@ -314,7 +314,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
 
   // Im Winter haben Eisdielen oft geschlossen: dann keine Eis-Pause
   const pauseOk = (p: Poi) => PAUSE_KINDS.has(p.kind) && !(season?.winter && p.kind === 'eis');
-  const wet = new Set(season?.summer ? season.wetIds : []);
+  const isWet = (p: Poi) => !!season?.summer && season.wet.has(p.id);
   const candidates = pois.filter((p) => opt.districts.includes(p.district) && pauseOk(p));
   const pauseList = candidates.length ? candidates : pois.filter(pauseOk);
 
@@ -366,7 +366,7 @@ function planRoute(all: Station[], pois: Poi[], opt: RouteOptions): Route {
         const da = distance(a, p.coords);
         const db = distance(p.coords, b);
         if (da > maxLeg || db > maxLeg) continue;
-        const score = da + db - distance(a, b) - (p.kind === 'eis' ? 60 : 0) - (p.kind === 'spielplatz' && p.title !== 'Spielplatz' ? 40 : 0) - (wet.has(p.id) ? 150 : 0);
+        const score = da + db - distance(a, b) - (p.kind === 'eis' ? 60 : 0) - (p.kind === 'spielplatz' && p.title !== 'Spielplatz' ? 40 : 0) - (isWet(p) ? 150 : 0);
         if (score < bestScore) {
           bestScore = score;
           bestPoi = p;

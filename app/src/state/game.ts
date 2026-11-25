@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import type { AgeGroup, Category, DistrictId, LatLng, Poi, Station, Task } from '../data/types';
-import { POI_BY_ID, STATION_BY_ID, STATIONS } from '../data';
+import { inAlbum, POI_BY_ID, STATION_BY_ID, STATIONS } from '../data';
 import { BADGES, type BadgeContext } from '../data/badges';
 import { CACHE_CLUES } from '../data/cache-clues';
 import { checkCoords, LETTERS, type CacheLetter } from '../lib/cache';
@@ -123,6 +123,8 @@ const TEAM_KEY = 'hh-hunt:lastTeam';
 
 let game: Game | null = loadJSON<Game | null>(GAME_KEY, null);
 let career: Career = loadJSON<Career>(CAREER_KEY, { points: 0, tours: 0, collected: [], badges: [] });
+// Ältere Spielstände enthalten auch Stationen aus offenen Daten: die gehören nicht ins Album
+career = { ...career, collected: career.collected.filter(inAlbum) };
 const listeners = new Set<() => void>();
 let snapshot = { game, career };
 
@@ -419,7 +421,7 @@ export function nextStop(skipped = false): void {
     const ss = st(g, stopKey(s));
     ss.done = true;
     ss.skipped = skipped;
-    if (!skipped && s.kind === 'station' && !career.collected.includes(s.id)) {
+    if (!skipped && s.kind === 'station' && inAlbum(s.id) && !career.collected.includes(s.id)) {
       career = { ...career, collected: [...career.collected, s.id] };
     }
     // Cache-Zahl ins Notizbuch (nur normale Stationen mit Hinweis, nur wenn ein Finale geplant ist)

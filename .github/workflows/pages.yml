@@ -3,8 +3,11 @@ name: App veröffentlichen (GitHub Pages)
 # Baut die App bei jeder Änderung auf main, testet sie (Unit- und Browser-Tests) und legt das Ergebnis
 # in den Zweig gh-pages. GitHub Pages zeigt diesen Zweig unter
 # https://<benutzer>.github.io/<repo>/ an.
+# Pull Requests (z. B. Paket-Updates von Dependabot) laufen durch dieselben Tests, werden aber nicht veröffentlicht.
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -12,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -50,10 +53,12 @@ jobs:
           node e2e/keyboard.mjs $URL
           node e2e/devices.mjs $URL
       - name: Für GitHub Pages vorbereiten
+        if: github.event_name != 'pull_request'
         run: |
           touch dist/.nojekyll
           cp dist/index.html dist/404.html
       - uses: JamesIves/github-pages-deploy-action@v4
+        if: github.event_name != 'pull_request'
         with:
           folder: app/dist
           branch: gh-pages

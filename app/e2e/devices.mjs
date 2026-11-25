@@ -24,11 +24,7 @@ for (const name of ['iPhone 13', 'Pixel 7']) {
     geolocation: { latitude: 53.59078, longitude: 10.01519, accuracy: 10 },
     locale: 'de-DE',
   });
-  let tileRequests = 0;
-  await ctx.route(/tile\.openstreetmap\.org/, (r) => {
-    tileRequests++;
-    return r.fulfill({ status: 200, body: PNG, contentType: 'image/png', headers: { 'Access-Control-Allow-Origin': '*' } });
-  });
+  await ctx.route(/tile\.openstreetmap\.org/, (r) => r.fulfill({ status: 200, body: PNG, contentType: 'image/png', headers: { 'Access-Control-Allow-Origin': '*' } }));
   const page = await ctx.newPage();
   const errs = [];
   page.on('pageerror', (e) => errs.push(e.message));
@@ -75,7 +71,6 @@ for (const name of ['iPhone 13', 'Pixel 7']) {
     await page.waitForTimeout(250);
   }
   // Kartenkacheln kommen jetzt aus dem Speicher
-  const reqBefore = tileRequests;
   await page.getByRole('button', { name: 'Karte', exact: true }).click();
   await page.waitForFunction(() => [...document.querySelectorAll('.leaflet-tile')].some((i) => i.complete && i.naturalWidth > 0), null, { timeout: 15000 });
   await page.waitForTimeout(1500);
@@ -84,7 +79,6 @@ for (const name of ['iPhone 13', 'Pixel 7']) {
     return [...document.querySelectorAll('.leaflet-tile')].map((i) => i.src).filter((u) => !have.has(u));
   });
   if (missing.length) fail(`${name}: Kacheln fehlen offline: ${missing.join(' ')}`);
-  void reqBefore;
   // Station freischalten, Bild prüfen
   const t = (await page.locator('.play').getAttribute('data-target')).split(',').map(Number);
   await ctx.setGeolocation({ latitude: t[0], longitude: t[1], accuracy: 8 });

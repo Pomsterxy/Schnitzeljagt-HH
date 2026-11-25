@@ -47,9 +47,9 @@ import { celebrateArrival, celebratePause, celebrateWaypoint } from '../lib/effe
 import { WALK_GAMES } from '../data/walk-games';
 import { TalkCard } from '../components/TalkCard';
 import { STATION_TALK, talksForTour, type TalkPool } from '../data/talk';
-import { POI_EMOJI, STATION_BY_ID } from '../data';
-import { DENKMAL_SOURCE, tafelNear } from '../data/open';
-import { WaypointExtras, hasExtras, useNearestTree } from '../components/WaypointExtras';
+import { POI_CAPTION, POI_EMOJI, STATION_BY_ID } from '../data';
+import { DENKMAL_SOURCE } from '../data/open';
+import { WaypointExtras, extraCards, useNearestTree } from '../components/WaypointExtras';
 import { FamilyGameCard } from '../components/FamilyGameCard';
 import { Lilli, LilliSays } from '../components/Lilli';
 import { Icon } from '../components/Icon';
@@ -671,15 +671,12 @@ function StationView({ game, station, hasFinal }: { game: Game; station: Station
         <ul>
           {station.sources.map((s) => (
             <li key={s}>
-              {/^https?:/.test(s) ? (
-                <a href={s} target="_blank" rel="noreferrer">
-                  {decodeURIComponent(s.replace(/^https?:\/\//, ''))}
-                </a>
-              ) : (
-                s
-              )}
+              <a href={s} target="_blank" rel="noreferrer">
+                {decodeURIComponent(s.replace(/^https?:\/\//, ''))}
+              </a>
             </li>
           ))}
+          {station.attribution && <li>{station.attribution}</li>}
         </ul>
       </details>
     </div>
@@ -781,7 +778,7 @@ function StationSteps({
               <p>{station.snack}</p>
               {station.kidsFact && <p className="kids-fact">{station.kidsFact}</p>}
             </section>
-            {!station.origin && <TafelCard station={station} />}
+            {station.tafel && <TafelCard text={station.tafel} />}
           </>
         )}
         {step.kind === 'talk' && <TalkCard pools={talkPools(station)} seed={game.config.seed + game.index} youngest={youngest} initial={STATION_TALK[station.id] ?? talk} />}
@@ -869,13 +866,11 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
 const WAYPOINT_RADIUS = 35;
 
 /** Hängt an dieser Station eine blaue Denkmaltafel? Dann ihren Text zeigen. */
-function TafelCard({ station }: { station: Station }) {
-  const t = tafelNear(station.coords);
-  if (!t) return null;
+function TafelCard({ text }: { text: string }) {
   return (
     <section className="card snack tafel-card" data-testid="tafel-card">
       <h3>Von der blauen Tafel</h3>
-      <p className="tafel-text">„{t.text}“</p>
+      <p className="tafel-text">„{text}“</p>
       <small className="muted">{DENKMAL_SOURCE}</small>
     </section>
   );
@@ -909,7 +904,6 @@ function ParentTreasure({ game, onClose }: { game: Game; onClose: () => void }) 
   );
 }
 
-/** Laufende Tour als Einladungs-Link teilen (gleiche Stationen, gleiche Reihenfolge) */
 /** Tour als Code (für Einladungs- und Ergebnis-Links) */
 export function tourCodeOf(game: Game): string {
   const stops: RouteStop[] = game.stops.flatMap((s): RouteStop[] => {
@@ -922,10 +916,14 @@ export function tourCodeOf(game: Game): string {
   return encodeTour({ d: c.districts, m: c.minutes, s: c.startLabel, c: c.start, stops, n: c.nav, sd: c.seed, t: c.theme ?? 'mix', ml: c.maxLeg ?? 500 });
 }
 
+/** Teilen; ohne Teilen-Menü landet der Link in der Zwischenablage (mit kurzer Bestätigung) */
+async function shareWithToast(url: string, text: string) {
+  if ((await shareLink(url, text)) === 'copied') alertToast('Link kopiert – jetzt z. B. in WhatsApp einfügen.');
+}
+
+/** Laufende Tour als Einladungs-Link teilen (gleiche Stationen, gleiche Reihenfolge) */
 export async function shareGame(game: Game) {
-  const code = tourCodeOf(game);
-  const r = await shareLink(tourLink(code), `Wir haben die Schatzsuche „${game.team.name}“ gespielt – schafft ihr mehr als ${game.points} Punkte?`);
-  if (r === 'copied') alertToast('Link kopiert – jetzt z. B. in WhatsApp einfügen.');
+  await shareWithToast(tourLink(tourCodeOf(game)), `Wir haben die Schatzsuche „${game.team.name}“ gespielt – schafft ihr mehr als ${game.points} Punkte?`);
 }
 
 /** Eigenes Ergebnis dieser Tour (für den Team-Vergleich) */
@@ -950,13 +948,11 @@ export function ownResult(game: Game): TeamResult {
 /** Ergebnis + Tour als Link: andere Familien spielen dieselbe Tour und schicken ihr Ergebnis zurück */
 export async function shareResult(game: Game) {
   const r = ownResult(game);
-  const link = resultLink(encodeResult(r, tourCodeOf(game)));
-  const res = await shareLink(link, `${game.team.avatar} ${game.team.name}: ${r.points} Punkte bei der Schnitzeljagd! Schafft ihr dieselbe Tour besser?`);
-  if (res === 'copied') alertToast('Link kopiert – jetzt z. B. in WhatsApp einfügen.');
+  await shareWithToast(resultLink(encodeResult(r, tourCodeOf(game))), `${game.team.avatar} ${game.team.name}: ${r.points} Punkte bei der Schnitzeljagd! Schafft ihr dieselbe Tour besser?`);
 }
 
 /** Kleine Bestätigung ohne eigenen Zustand */
-export function alertToast(text: string) {
+function alertToast(text: string) {
   const el = document.createElement('div');
   el.className = 'mini-toast';
   el.setAttribute('role', 'status');
@@ -981,7 +977,8 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
   const ahead = game.stops.slice(game.index + 1, game.stops.indexOf(nextStation!)).filter((s) => s.kind === 'waypoint').length;
   const nextTitle = nextStation ? STATION_BY_ID.get(nextStation.id)?.teaser : undefined;
   const tree = useNearestTree(poi.coords);
-  const extras = hasExtras(poi, tree);
+  const cards = extraCards(poi, tree);
+  const extras = cards.length > 0;
 
   useEffect(() => {
     if (!arrived && dist !== null && isWithinUnlock(dist, WAYPOINT_RADIUS, pos.accuracy)) {
@@ -1007,7 +1004,7 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
           <span className="points-pill">+{WAYPOINT_POINTS}</span>
           {extras && (
             <>
-              <WaypointExtras poi={poi} tree={tree} />
+              <WaypointExtras cards={cards} />
               <button type="button" className="btn big primary" data-testid="waypoint-next" onClick={() => { play('tap'); reachWaypoint(true); }}>
                 Weiter
               </button>
@@ -1021,7 +1018,7 @@ function WaypointView({ game, poi }: { game: Game; poi: Poi }) {
               {POI_EMOJI[poi.kind]}
             </span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="caption">{poi.kind === 'kunst' ? 'Lauft zum Kunstwerk' : poi.kind === 'trinkwasser' ? 'Lauft zum Trinkbrunnen' : 'Lauft zum Zwischenziel'}</div>
+              <div className="caption">{POI_CAPTION[poi.kind] ?? 'Lauft zum Zwischenziel'}</div>
               <strong>{poi.title}</strong>
               {nextTitle && (
                 <small className="muted">

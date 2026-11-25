@@ -10,14 +10,16 @@ export interface Season {
   summer: boolean;
   /** Ein Teil der Tour liegt nach Sonnenuntergang: unbeleuchtete Parks meiden */
   dark: boolean;
-  /** Spielplätze mit Planschbecken oder Wasserspiel */
-  wetIds: string[];
+  /** Spielplätze mit Planschbecken oder Wasserspiel (die Routenplanung kennt die Daten selbst nicht) */
+  wet: ReadonlySet<string>;
 }
 
 const WET = /Plansch|Wasserspiel|Wassermatsch|Matschanlage|Wasserpumpe/i;
-export const WET_PLAYGROUNDS: string[] = Object.entries(POI_INFO)
-  .filter(([, v]) => v.playground && WET.test(v.playground.text + ' ' + v.playground.name))
-  .map(([id]) => id);
+export const WET_PLAYGROUNDS: ReadonlySet<string> = new Set(
+  Object.entries(POI_INFO)
+    .filter(([, v]) => v.playground && WET.test(v.playground.text + ' ' + v.playground.name))
+    .map(([id]) => id),
+);
 
 export function seasonFor(now: Date, minutes: number, at: LatLng): Season {
   const m = now.getMonth() + 1;
@@ -25,7 +27,7 @@ export function seasonFor(now: Date, minutes: number, at: LatLng): Season {
   // dunkel, wenn mehr als ein Viertel der Tour nach Sonnenuntergang liegt
   const set = sunset(now, at).valueOf();
   const darkPart = Math.max(0, end - Math.max(set, now.valueOf())) / (minutes * 60000);
-  return { winter: m >= 11 || m <= 3, summer: m >= 6 && m <= 8, dark: darkPart > 0.25, wetIds: WET_PLAYGROUNDS };
+  return { winter: m >= 11 || m <= 3, summer: m >= 6 && m <= 8, dark: darkPart > 0.25, wet: WET_PLAYGROUNDS };
 }
 
 /** Kurzer Hinweis für die Planung (oder null) */

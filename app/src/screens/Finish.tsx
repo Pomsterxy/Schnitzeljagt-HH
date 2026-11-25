@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BADGES, rankFor } from '../data/badges';
 import { formatDistance } from '../lib/geo';
 import { drawCertificate, shareOrDownload } from '../lib/certificate';
@@ -11,7 +11,7 @@ import { LilliSays } from '../components/Lilli';
 import { TalkCard } from '../components/TalkCard';
 import { StarRating } from '../components/Micro';
 import { ownResult, shareResult } from './Play';
-import { saveResult, useResults } from '../lib/results';
+import { saveResult, tourFingerprint, useResults } from '../lib/results';
 import { Leaderboard } from '../components/Leaderboard';
 import { Icon } from '../components/Icon';
 import { celebrateFinish } from '../lib/effects';
@@ -89,7 +89,8 @@ export function Finish({ onHome }: { onHome: () => void }) {
   useEffect(() => {
     if (game?.finishedAt) saveResult(ownResult(game));
   }, [game?.finishedAt, game]);
-  const board = useResults(game ? ownResult(game).fp : null);
+  const fp = useMemo(() => (game ? tourFingerprint(game.stops) : null), [game?.stops]);
+  const board = useResults(fp);
   useEffect(() => {
     const t = setTimeout(celebrateFinish, 300);
     return () => clearTimeout(t);

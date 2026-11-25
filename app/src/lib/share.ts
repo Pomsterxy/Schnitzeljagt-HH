@@ -21,7 +21,7 @@ export interface SharedTour {
   ml: number;
 }
 
-const KIND: Record<RouteStop['kind'], string> = { station: 's', waypoint: 'w', pause: 'p', final: 'f' };
+export const KIND: Record<RouteStop['kind'], string> = { station: 's', waypoint: 'w', pause: 'p', final: 'f' };
 
 export function b64url(s: string): string {
   return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -52,7 +52,9 @@ export function tourLink(code: string): string {
   return `${location.origin}${location.pathname}?tour=${code}`;
 }
 
-export function decodeTour(code: string): { tour: SharedTour; stops: RouteStop[] } | null {
+export type DecodedTour = { tour: SharedTour; stops: RouteStop[] };
+
+export function decodeTour(code: string): DecodedTour | null {
   try {
     const t = JSON.parse(unb64url(code)) as SharedTour;
     if (t.v !== 1 || !Array.isArray(t.st) || !Array.isArray(t.c)) return null;

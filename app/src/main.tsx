@@ -18,6 +18,18 @@ import { watchErrors } from './lib/errorlog';
 watchErrors();
 watchKeyboard();
 
+// Nach einem Update fehlen alte Programmteile, die noch nachgeladen werden sollen: einmal neu laden
+window.addEventListener('vite:preloadError', (ev) => {
+  try {
+    if (sessionStorage.getItem('hh-hunt:reloaded')) return;
+    sessionStorage.setItem('hh-hunt:reloaded', '1');
+  } catch {
+    return;
+  }
+  ev.preventDefault();
+  location.reload();
+});
+
 // Neue Versionen zuverlässig laden: beim Start, beim Zurückkehren in die App und alle 30 Minuten
 registerSW({
   immediate: true,

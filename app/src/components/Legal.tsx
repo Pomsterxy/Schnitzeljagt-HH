@@ -11,30 +11,30 @@ export function Legal() {
       <details>
         <summary>Impressum</summary>
         {hasImprint ? (
-          <p>
-            Verantwortlich:
-            {IMPRESSUM.name && (
-              <>
-                <br />
-                {IMPRESSUM.name}
-              </>
-            )}
-            {IMPRESSUM.address && (
-              <>
-                <br />
-                {IMPRESSUM.address}
-              </>
-            )}
-            {IMPRESSUM.contact && (
-              <>
-                <br />
-                Kontakt: {IMPRESSUM.contact.includes('@') ? <a href={`mailto:${IMPRESSUM.contact}`}>{IMPRESSUM.contact}</a> : IMPRESSUM.contact}
-              </>
-            )}
-          </p>
-        ) : null}
-        {hasImprint ? (
-          <p>Privates, nicht-kommerzielles Familienprojekt, kostenlos und ohne Werbung.</p>
+          <>
+            <p>
+              Verantwortlich:
+              {IMPRESSUM.name && (
+                <>
+                  <br />
+                  {IMPRESSUM.name}
+                </>
+              )}
+              {IMPRESSUM.address && (
+                <>
+                  <br />
+                  {IMPRESSUM.address}
+                </>
+              )}
+              {IMPRESSUM.contact && (
+                <>
+                  <br />
+                  Kontakt: {IMPRESSUM.contact.includes('@') ? <a href={`mailto:${IMPRESSUM.contact}`}>{IMPRESSUM.contact}</a> : IMPRESSUM.contact}
+                </>
+              )}
+            </p>
+            <p>Privates, nicht-kommerzielles Familienprojekt, kostenlos und ohne Werbung.</p>
+          </>
         ) : (
           <p>Privates, nicht-kommerzielles Familienprojekt. Die App wird kostenlos und ohne Werbung im Freundes- und Bekanntenkreis geteilt.</p>
         )}

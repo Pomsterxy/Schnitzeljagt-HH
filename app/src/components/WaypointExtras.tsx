@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import type { LatLng, Poi } from '../data/types';
 import { POI_INFO } from '../data/open';
+import { POI_EMOJI } from '../data';
 import { distance } from '../lib/geo';
 
 /** Nächster Straßenbaum aus dem Straßenbaumkataster Hamburg (nur online) */
@@ -70,11 +71,6 @@ export function useNearestTree(c: LatLng): Tree | null {
   return tree;
 }
 
-/** Hat das Zwischenziel etwas zu erzählen? */
-export function hasExtras(poi: Poi, tree: Tree | null): boolean {
-  return poi.kind === 'kunst' || poi.kind === 'trinkwasser' || !!POI_INFO[poi.id] || !!tree;
-}
-
 function TreeCard({ tree }: { tree: Tree }) {
   const [open, setOpen] = useState(false);
   const age = tree.year ? new Date().getFullYear() - tree.year : null;
@@ -109,57 +105,69 @@ function TreeCard({ tree }: { tree: Tree }) {
   );
 }
 
-export function WaypointExtras({ poi, tree }: { poi: Poi; tree: Tree | null }) {
+/**
+ * Zusatzkarten für ein Zwischenziel (Kunst, Trinkbrunnen, Spielplatz, Baudenkmal, Stolpersteine, Baum).
+ * Eine leere Liste heißt: nichts zu erzählen, es geht automatisch weiter.
+ */
+export function extraCards(poi: Poi, tree: Tree | null): ReactElement[] {
   const info = POI_INFO[poi.id];
+  const cards: ReactElement[] = [];
+  if (poi.kind === 'kunst')
+    cards.push(
+      <section key="art" className="card extra-card" data-testid="art-card">
+        <div className="caption">{POI_EMOJI.kunst} Kunst am Weg</div>
+        <p>
+          <strong>{poi.title}</strong>
+          {poi.creator || poi.year ? <span className="muted"> · {[poi.creator, poi.year].filter(Boolean).join(', ')}</span> : null}
+        </p>
+        <p>Schaut genau hin: Woraus ist das Kunstwerk gemacht? Was oder wen zeigt es? Jeder sagt ein Wort, das ihm dazu einfällt.</p>
+        {poi.year && <p className="muted">Es ist schon {new Date().getFullYear() - poi.year} Jahre alt.</p>}
+      </section>,
+    );
+  if (poi.kind === 'trinkwasser')
+    cards.push(
+      <section key="water" className="card extra-card">
+        <div className="caption">{POI_EMOJI.trinkwasser} Trinkpause</div>
+        <p>Hier gibt es kostenloses Trinkwasser aus der Leitung – Flaschen auffüllen!</p>
+      </section>,
+    );
+  if (info?.playground)
+    cards.push(
+      <section key="play" className="card extra-card">
+        <div className="caption">
+          {POI_EMOJI.spielplatz} {info.playground.name}
+        </div>
+        <p>{info.playground.text}</p>
+      </section>,
+    );
+  if (info?.monument)
+    cards.push(
+      <section key="monument" className="card extra-card" data-testid="monument-card">
+        <div className="caption">🏛️ Wusstet ihr?</div>
+        <p>
+          {info.monument.m < 20 ? 'Hier' : `Gleich nebenan (ca. ${info.monument.m} m)`} steht ein Baudenkmal: <strong>{info.monument.name}</strong>
+          {info.monument.year ? `, gebaut ${info.monument.year.replace(/\s*\/\s*/g, '–')}` : ''}. Erkennt ihr, welches Gebäude gemeint ist?
+        </p>
+      </section>,
+    );
+  if (info?.stones)
+    cards.push(
+      <section key="stones" className="card extra-card quiet-extra" data-testid="stones-card">
+        <div className="caption">🕯️ Stolpersteine</div>
+        <p>
+          Vor {info.stones.address} erinnern {info.stones.names.length === 1 ? 'ein Stolperstein' : `${info.stones.names.length} Stolpersteine`} an{' '}
+          {info.stones.names.join(', ')}. Wenn ihr mögt, bleibt kurz stehen und lest die Namen leise.
+        </p>
+      </section>,
+    );
+  if (tree) cards.push(<TreeCard key="tree" tree={tree} />);
+  return cards;
+}
+
+export function WaypointExtras({ cards }: { cards: ReactElement[] }) {
   return (
     <div className="waypoint-extras" data-testid="waypoint-extras">
-      {poi.kind === 'kunst' && (
-        <section className="card extra-card" data-testid="art-card">
-          <div className="caption">🗿 Kunst am Weg</div>
-          <p>
-            <strong>{poi.title}</strong>
-            {poi.creator || poi.year ? (
-              <span className="muted">
-                {' '}
-                · {[poi.creator, poi.year].filter(Boolean).join(', ')}
-              </span>
-            ) : null}
-          </p>
-          <p>Schaut genau hin: Woraus ist das Kunstwerk gemacht? Was oder wen zeigt es? Jeder sagt ein Wort, das ihm dazu einfällt.</p>
-          {poi.year && <p className="muted">Es ist schon {new Date().getFullYear() - poi.year} Jahre alt.</p>}
-        </section>
-      )}
-      {poi.kind === 'trinkwasser' && (
-        <section className="card extra-card">
-          <div className="caption">🚰 Trinkpause</div>
-          <p>Hier gibt es kostenloses Trinkwasser aus der Leitung – Flaschen auffüllen!</p>
-        </section>
-      )}
-      {info?.playground && (
-        <section className="card extra-card">
-          <div className="caption">🛝 {info.playground.name}</div>
-          <p>{info.playground.text}</p>
-        </section>
-      )}
-      {info?.monument && (
-        <section className="card extra-card" data-testid="monument-card">
-          <div className="caption">🏛️ Wusstet ihr?</div>
-          <p>
-            {info.monument.m < 20 ? 'Hier' : `Gleich nebenan (ca. ${info.monument.m} m)`} steht ein Baudenkmal: <strong>{info.monument.name}</strong>
-            {info.monument.year ? `, gebaut ${info.monument.year.replace(/\s*\/\s*/g, '–')}` : ''}. Erkennt ihr, welches Gebäude gemeint ist?
-          </p>
-        </section>
-      )}
-      {info?.stones && (
-        <section className="card extra-card quiet-extra" data-testid="stones-card">
-          <div className="caption">🕯️ Stolpersteine</div>
-          <p>
-            Vor {info.stones.address} erinnern {info.stones.names.length === 1 ? 'ein Stolperstein' : `${info.stones.names.length} Stolpersteine`} an{' '}
-            {info.stones.names.join(', ')}. Wenn ihr mögt, bleibt kurz stehen und lest die Namen leise.
-          </p>
-        </section>
-      )}
-      {tree && <TreeCard tree={tree} />}
+      {cards}
     </div>
   );
 }
