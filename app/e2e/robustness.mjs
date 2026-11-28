@@ -2,7 +2,7 @@
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
-import { planTour } from './chat.mjs';
+import { answerQuiz, planTour } from './chat.mjs';
 
 const URL = process.argv[2] ?? 'http://localhost:4173/';
 // PW_PROXY: optionaler Proxy (z. B. in abgeschotteten Umgebungen)
@@ -225,8 +225,7 @@ async function context_check(page) {
     await page.context().setGeolocation({ latitude: t[0], longitude: t[1], accuracy: 8 });
     await page.getByTestId('arrived').waitFor();
     for (let g = 0; g < 16; g++) {
-      const o = page.locator('.task-card:not(.done) .btn.option').first();
-      if (await o.count()) { await o.click(); await page.waitForTimeout(150); if (await page.locator('.task-card:not(.done) .btn.option').count()) await page.locator('.task-card:not(.done) .btn.option').first().click(); continue; }
+      if (await page.locator('.task-card:not(.done) .btn.option').count()) { await answerQuiz(page, page.locator('.task-card:not(.done)').first()); continue; }
       const card = page.locator('.task-card:not(.done)');
       if (await card.count()) {
         if (await card.locator('.stepper').count()) { await card.getByRole('button', { name: 'Prüfen' }).click(); await page.waitForTimeout(120); if (await page.locator('.task-card:not(.done) .stepper').count()) await page.locator('.task-card:not(.done)').getByRole('button', { name: 'Prüfen' }).click(); continue; }

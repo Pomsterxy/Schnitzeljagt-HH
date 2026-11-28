@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 import { mkdirSync } from 'node:fs';
-import { planTour } from './chat.mjs';
+import { answerQuiz, planTour } from './chat.mjs';
 
 const URL = process.argv[2] ?? 'http://localhost:4173/';
 const NAV = process.argv[3] ?? 'map';
@@ -185,8 +185,7 @@ while (guard++ < 40) {
       const card = page.getByTestId(tid);
       const opts = card.locator('.btn.option');
       if (await opts.count()) {
-        await opts.nth(k % 2 === 0 ? 0 : 1).click();
-        if (await card.locator('.btn.option').count()) await card.locator('.btn.option').first().click();
+        await answerQuiz(page, card, k % 2 === 0 ? 0 : 1);
       } else if (await card.getByRole('button', { name: /Ohne Foto/ }).count()) {
         if (!photoUploaded) {
           await card.locator('input[type=file]').setInputFiles('public/icon-512.png');

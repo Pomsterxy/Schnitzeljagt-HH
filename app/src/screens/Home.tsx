@@ -4,7 +4,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { BADGES, rankFor } from '../data/badges';
 import { abandonGame, useGame } from '../state/game';
 import { Icon } from '../components/Icon';
-import { SkyScene } from '../components/Scene';
+import { Lilli } from '../components/Lilli';
 import { play, setSoundOn, useSoundOn } from '../lib/feedback';
 import { requestMotionPermission } from '../lib/pedometer';
 
@@ -37,92 +37,116 @@ export function Home({
   const nextStation = next?.kind === 'station' ? STATION_BY_ID.get(next.id) : undefined;
   const g = greeting();
 
+  const nextLine = nextStation
+    ? nextStation.teaser
+    : next?.kind === 'final'
+      ? 'Nächstes Ziel: der Schatz!'
+      : next?.kind === 'waypoint'
+        ? 'Nächster Halt: Zwischenziel'
+        : 'Nächster Halt: Pause';
+  const start = () => {
+    play('select');
+    onNew();
+  };
+
   return (
-    <div className="home-dark with-tabs">
-      <SkyScene>
-        <button
-          type="button"
-          className="icon-btn sky-sound"
-          aria-label={sound ? 'Ton ausschalten' : 'Ton einschalten'}
-          onClick={() => setSoundOn(!sound)}
-        >
-          <Icon name={sound ? 'speaker' : 'mute'} size={20} color="#101B33" />
+    <div className="home-v4 with-tabs">
+      <header className="home-top rise">
+        <div className="home-avatar" aria-hidden="true">
+          <Lilli size={46} mood="happy" />
+        </div>
+        <div className="home-who">
+          <strong>{running ? `${game.team.avatar} ${game.team.name}` : 'Lilli & ihr'}</strong>
+          <small>{rank.title}</small>
+        </div>
+        <span className="points-pill" aria-label={`${career.points} Punkte gesammelt`}>
+          {career.points} <span className="star" aria-hidden="true">★</span>
+        </span>
+        <button type="button" className="icon-btn plain" aria-label={sound ? 'Ton ausschalten' : 'Ton einschalten'} onClick={() => setSoundOn(!sound)}>
+          <Icon name={sound ? 'speaker' : 'mute'} size={18} />
         </button>
-      </SkyScene>
+      </header>
 
       <div className="home-body">
-        <div className="home-hello rise">
-          <h1>{running ? `Weiter geht's, ${game.team.name}!` : g.title}</h1>
-          <p>{running ? 'Lilli hat das nächste Ziel schon im Blick.' : g.sub}</p>
-        </div>
+        <section className="hero-card rise">
+          <div className="hero-text">
+            <h1>{running ? 'Weiter geht\'s!' : g.title}</h1>
+            <p>{running ? `${done}/${total} geschafft · ${game.points} Punkte` : g.sub}</p>
+            {running && <p className="hero-next">{nextLine}</p>}
+            {running ? (
+              <button
+                type="button"
+                className="btn pill hero-btn"
+                aria-label="Weiterspielen"
+                onClick={() => {
+                  play('select');
+                  void requestMotionPermission();
+                  onContinue();
+                }}
+              >
+                Weiterspielen
+              </button>
+            ) : (
+              <button type="button" className="btn pill hero-btn" onClick={start} data-testid="new-tour">
+                Schatzsuche starten
+              </button>
+            )}
+          </div>
+          <div className="hero-art" aria-hidden="true">
+            <Lilli size={132} mood="excited" />
+          </div>
+          {running && (
+            <div className="hero-progress" aria-hidden="true">
+              <div style={{ width: `${(100 * done) / total}%` }} />
+            </div>
+          )}
+        </section>
 
         {running && (
-          <div className="dark-card continue-dark rise">
-            <div className="ring-wrap">
-              <svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true">
-                <circle cx="29" cy="29" r="24" fill="none" stroke="rgba(30,42,74,0.1)" strokeWidth="7" />
-                <circle
-                  className="ring"
-                  cx="29"
-                  cy="29"
-                  r="24"
-                  fill="none"
-                  stroke="#EF7A2F"
-                  strokeWidth="7"
-                  strokeLinecap="round"
-                  strokeDasharray={151}
-                  transform="rotate(-90 29 29)"
-                  style={{ ['--ring-from' as string]: 151, ['--ring-to' as string]: 151 - (151 * done) / total, strokeDashoffset: 151 - (151 * done) / total }}
-                />
-              </svg>
-              <div className="ringval">
-                {done}/{total}
-              </div>
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="dark-caption">Laufende Tour · {game.points} Punkte</div>
-              <div style={{ fontSize: 18, fontWeight: 800 }}>
-                {game.team.avatar} {game.team.name}
-              </div>
-              <div className="dark-caption" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {nextStation ? nextStation.teaser : next?.kind === 'final' ? 'Nächstes Ziel: der Schatz!' : next?.kind === 'waypoint' ? 'Nächster Halt: Zwischenziel' : 'Nächster Halt: Pause'}
-              </div>
-            </div>
-            <button
-              type="button"
-              className="play-fab"
-              aria-label="Weiterspielen"
-              onClick={() => {
-                play('select');
-                void requestMotionPermission();
-                onContinue();
-              }}
-            >
-              <Icon name="play" size={18} color="#fff" />
-            </button>
+          <button type="button" className="topic-card rise" onClick={start} data-testid="new-tour">
+            <span className="topic-text">
+              <strong>Neue Tour planen</strong>
+              <small>Stadtteil, Dauer und Thema wählen</small>
+            </span>
+            <span className="topic-art" aria-hidden="true">🗺️</span>
+          </button>
+        )}
+
+        <button type="button" className="topic-card rise" onClick={onAlbum}>
+          <span className="topic-text">
+            <strong>Album</strong>
+            <small>
+              {career.collected.length} von {STATIONS.length} Karten gesammelt
+            </small>
+          </span>
+          <span className="topic-art" aria-hidden="true">🃏</span>
+        </button>
+        <button type="button" className="topic-card rise" onClick={onBadges}>
+          <span className="topic-text">
+            <strong>Abzeichen</strong>
+            <small>
+              {career.badges.length} von {BADGES.length} · {career.tours} {career.tours === 1 ? 'Tour' : 'Touren'}
+            </small>
+          </span>
+          <span className="topic-art" aria-hidden="true">🏅</span>
+        </button>
+
+        {!running && career.tours === 0 && (
+          <div className="topic-card howto rise">
+            <span className="topic-text">
+              <strong>So funktioniert's</strong>
+              <ol>
+                <li>Stadtteil, Dauer und Thema wählen, Lilli plant die Route</li>
+                <li>Rätsel lösen und den Ort finden. Die Aufgabe erscheint erst, wenn ihr per GPS wirklich da seid</li>
+                <li>Aufgaben lösen, Familien-Momente spielen, Punkte sammeln</li>
+                <li>Am Ende die Schatz-Koordinaten knacken!</li>
+              </ol>
+            </span>
           </div>
         )}
 
-        <button
-          type="button"
-          className="btn pill big primary rise"
-          onClick={() => {
-            play('select');
-            onNew();
-          }}
-          data-testid="new-tour"
-        >
-          {running ? 'Neue Tour planen' : 'Schatzsuche starten'}
-        </button>
-
         {running && (
-          <button
-            type="button"
-            className="btn ghost small rise"
-            style={{ alignSelf: 'center', color: 'var(--accent-ink)' }}
-            data-testid="home-quit"
-            onClick={() => setQuit(true)}
-          >
+          <button type="button" className="btn ghost small rise" style={{ alignSelf: 'center' }} data-testid="home-quit" onClick={() => setQuit(true)}>
             Tour abbrechen
           </button>
         )}
@@ -134,34 +158,6 @@ export function Home({
             onClose={() => setQuit(false)}
             actions={[{ label: 'Tour löschen', tone: 'danger', testId: 'home-quit-delete', onClick: () => { setQuit(false); abandonGame(); } }]}
           />
-        )}
-
-        <div className="divider-or rise">
-          <span>eure Sammlung</span>
-        </div>
-
-        <div className="dark-card collection rise">
-          <button type="button" className="btn pill outline" onClick={onAlbum}>
-            <Icon name="album" size={18} /> Album {career.collected.length}/{STATIONS.length}
-          </button>
-          <button type="button" className="btn pill outline" onClick={onBadges}>
-            <Icon name="medal" size={18} /> {career.badges.length}/{BADGES.length}
-          </button>
-          <p className="dark-caption" style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
-            Rang: {rank.title} · {career.points} Punkte · {career.tours} Touren
-          </p>
-        </div>
-
-        {!running && career.tours === 0 && (
-          <div className="dark-card howto-dark rise">
-            <strong>So funktioniert's</strong>
-            <ol>
-              <li>Stadtteil, Dauer und Thema wählen, Lilli plant die Route</li>
-              <li>Rätsel lösen und den Ort finden. Die Aufgabe erscheint erst, wenn ihr per GPS wirklich da seid</li>
-              <li>Aufgaben lösen, Familien-Momente spielen, Punkte sammeln</li>
-              <li>Am Ende die Schatz-Koordinaten knacken!</li>
-            </ol>
-          </div>
         )}
       </div>
     </div>

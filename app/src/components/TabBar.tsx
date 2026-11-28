@@ -20,13 +20,14 @@ export function TabBar({ active, onChange, dark }: { active: Tab; onChange: (t: 
             type="button"
             className={t.id === active ? 'on' : ''}
             aria-current={t.id === active ? 'page' : undefined}
+            aria-label={t.label}
             onClick={() => {
               play('tap');
               onChange(t.id);
             }}
           >
-            <Icon name={t.icon} size={26} />
-            {t.label}
+            <Icon name={t.icon} size={22} />
+            <span className="tab-label">{t.label}</span>
           </button>
         ))}
       </div>
