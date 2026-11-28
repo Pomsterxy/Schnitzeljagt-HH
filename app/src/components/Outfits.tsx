@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { loadJSON, saveJSON } from '../lib/storage';
+import { LILLI } from './lilli-colors';
 
 /** Lillis Kleiderschrank: Kostüme als Belohnung für Touren und Abzeichen */
 export type OutfitId = 'none' | 'schal' | 'kapitaen' | 'sonnenbrille' | 'blume' | 'piratentuch' | 'krone';
@@ -41,7 +42,7 @@ export function useOutfit(): OutfitId {
   );
 }
 
-const INK = '#1E2A4A';
+const INK = LILLI.ink;
 
 /** Kostüm über Lilli zeichnen (gleiches Koordinatensystem wie Lilli: 200×200) */
 export function OutfitLayer({ id }: { id: OutfitId }) {
@@ -49,9 +50,9 @@ export function OutfitLayer({ id }: { id: OutfitId }) {
     case 'schal':
       return (
         <g>
-          <path d="M50 112 Q96 134 142 112 L142 126 Q96 148 50 126 Z" fill="#E63946" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
+          <path d="M50 112 Q96 134 142 112 L142 126 Q96 148 50 126 Z" fill="#D9583B" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
           <path d="M66 119 L66 133 M86 124 L86 138 M106 124 L106 138 M126 119 L126 133" stroke="#FFFFFF" strokeWidth="6" />
-          <path d="M60 124 L50 156 L68 152 L72 128 Z" fill="#E63946" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
+          <path d="M60 124 L50 156 L68 152 L72 128 Z" fill="#D9583B" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
         </g>
       );
     case 'kapitaen':
@@ -60,7 +61,7 @@ export function OutfitLayer({ id }: { id: OutfitId }) {
           <path d="M50 46 Q96 -16 142 46 Z" fill="#FFFFFF" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
           <rect x="47" y="38" width="98" height="15" rx="7" fill={INK} />
           <path d="M80 50 Q110 47 140 56 Q112 64 82 58 Z" fill={INK} />
-          <circle cx="96" cy="30" r="7" fill="#FFC83D" stroke={INK} strokeWidth="3" />
+          <circle cx="96" cy="30" r="7" fill="#F6BC57" stroke={INK} strokeWidth="3" />
         </g>
       );
     case 'sonnenbrille':
@@ -78,24 +79,24 @@ export function OutfitLayer({ id }: { id: OutfitId }) {
           {[0, 72, 144, 216, 288].map((r) => (
             <ellipse key={r} cx="0" cy="-11" rx="7" ry="11" fill="#FFFFFF" stroke={INK} strokeWidth="3" transform={`rotate(${r})`} />
           ))}
-          <circle r="7" fill="#FFC83D" stroke={INK} strokeWidth="3" />
+          <circle r="7" fill="#F6BC57" stroke={INK} strokeWidth="3" />
         </g>
       );
     case 'piratentuch':
       return (
         <g>
-          <path d="M46 60 Q96 6 146 60 Q96 44 46 60 Z" fill="#E63946" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
+          <path d="M46 60 Q96 6 146 60 Q96 44 46 60 Z" fill="#D9583B" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
           <circle cx="78" cy="36" r="3.5" fill="#FFFFFF" />
           <circle cx="100" cy="28" r="3.5" fill="#FFFFFF" />
           <circle cx="120" cy="38" r="3.5" fill="#FFFFFF" />
-          <path d="M144 56 L164 48 L160 66 Z M144 58 L166 70 L150 74 Z" fill="#E63946" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
+          <path d="M144 56 L164 48 L160 66 Z M144 58 L166 70 L150 74 Z" fill="#D9583B" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
         </g>
       );
     case 'krone':
       return (
         <g>
-          <path d="M62 36 L68 6 L84 24 L96 2 L108 24 L124 6 L130 36 Z" fill="#FFC83D" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
-          <circle cx="96" cy="26" r="4.5" fill="#E63946" />
+          <path d="M62 36 L68 6 L84 24 L96 2 L108 24 L124 6 L130 36 Z" fill="#F6BC57" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
+          <circle cx="96" cy="26" r="4.5" fill="#D9583B" />
           <circle cx="76" cy="29" r="3.5" fill="#3B8BFF" />
           <circle cx="116" cy="29" r="3.5" fill="#12B5A8" />
         </g>

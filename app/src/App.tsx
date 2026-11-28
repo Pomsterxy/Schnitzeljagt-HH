@@ -50,7 +50,7 @@ export default function App() {
     // Dunkle Bildschirme: Seitenhintergrund und Statusleiste ebenfalls dunkel (nicht auf :has() verlassen)
     const dark = screen === 'home' || screen === 'setup';
     document.documentElement.toggleAttribute('data-dark', dark);
-    document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#fff8ee');
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#f9f1e1');
   }, [screen]);
 
   useRipple();
