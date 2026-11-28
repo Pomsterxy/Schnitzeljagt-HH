@@ -1227,3 +1227,4 @@ a { color: var(--ink); text-decoration-color: var(--sun); text-decoration-thickn
   .tabbar button.on, .tabbar.dark button.on { padding: 0 14px; }
   .hero-text h1 { font-size: 24px; }
 }
+.btn.hero-btn { white-space: nowrap; }

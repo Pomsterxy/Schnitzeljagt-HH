@@ -88,7 +88,7 @@ export function Home({
               </button>
             ) : (
               <button type="button" className="btn pill hero-btn" onClick={start} data-testid="new-tour">
-                Schatzsuche starten
+                Los geht's
               </button>
             )}
           </div>

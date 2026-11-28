@@ -82,6 +82,7 @@ Bei jeder Änderung auf `main` laufen Lint, Unit-Tests, Spieldurchläufe, Sonder
 
 - `app/src/data/`: Stationen, Stadtteile, Startpunkte, Pausenorte (OSM), Abzeichen
 - `app/src/data/open/`: offene Daten (Denkmaltafeln, Kunstwerke, Stolpersteine, Trinkbrunnen, Zusatzinfos), erzeugt mit `node app/scripts/import-open-data.mjs` (hinter einem Proxy mit `NODE_USE_ENV_PROXY=1`)
+- `app/scripts/make-icons.mjs`: erzeugt das App-Icon aus der echten Lilli der App (laufende App als Argument, z. B. `node app/scripts/make-icons.mjs http://localhost:4173/`)
 - `app/src/lib/`: Geo-Berechnung, Routengenerator, Punkteauswertung, GPS, Speicher, Vorlesen
 - `app/src/state/game.ts`: Spielstand (lokal gespeichert)
 - `app/src/screens/`: Start, Tour-Planung, Spiel, Abschluss, Album, Einstellungen
