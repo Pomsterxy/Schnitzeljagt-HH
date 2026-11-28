@@ -15,8 +15,20 @@ import { clearEffects } from './lib/effects';
 import { UndoToast } from './components/UndoToast';
 import { useRipple } from './components/Micro';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { hasViewTransitions, transition, type NavDir } from './lib/nav';
 
 type Screen = Tab | 'setup' | 'play' | 'finish' | 'compare';
+
+/** Tiefe eines Bildschirms: größer = weiter "vorne" (für die Richtung der Übergänge) */
+const DEPTH: Record<Screen, number> = { home: 0, album: 0, badges: 0, settings: 0, setup: 1, compare: 1, play: 2, finish: 3 };
+const TAB_ORDER: Screen[] = ['home', 'album', 'badges', 'settings'];
+function dirFor(from: Screen, to: Screen): NavDir {
+  if (DEPTH[to] > DEPTH[from]) return 'forward';
+  if (DEPTH[to] < DEPTH[from]) return 'back';
+  const a = TAB_ORDER.indexOf(from);
+  const b = TAB_ORDER.indexOf(to);
+  return a >= 0 && b >= 0 ? (b > a ? 'left' : 'right') : 'fade';
+}
 
 export default function App() {
   // Einladung per Link (?tour=…): direkt in die Planung mit fester Route
@@ -26,12 +38,28 @@ export default function App() {
   });
   // Ergebnis eines anderen Teams (?result=…): Rangliste und Herausforderung
   const [resultCode] = useState(() => new URLSearchParams(location.search).get('result'));
-  const [screen, setScreen] = useState<Screen>(() => {
+  const [screen, setScreenNow] = useState<Screen>(() => {
     if (resultCode) return 'compare';
     if (shared) return 'setup';
     const g = getGame();
     return g && !g.finishedAt && g.index < g.stops.length ? 'play' : 'home';
   });
+  // Richtung des letzten Wechsels (für die CSS-Animation, falls es keine View Transitions gibt)
+  const [dir, setDir] = useState<NavDir | 'vt'>('fade');
+  const setScreen = (to: Screen) => {
+    if (to === screen) return;
+    const d = dirFor(screen, to);
+    // Tab-Wechsel: die Tab-Leiste bleibt stehen, ihr Pill gleitet; der Inhalt gleitet per CSS
+    if (DEPTH[to] === 0 && DEPTH[screen] === 0) {
+      setDir(d);
+      setScreenNow(to);
+      return;
+    }
+    // Mit View Transitions übernimmt der Browser die Animation, sonst die CSS-Klasse
+    setDir(hasViewTransitions() ? 'vt' : d);
+    transition(() => setScreenNow(to), d);
+  };
+
   useEffect(() => {
     const q = new URLSearchParams(location.search);
     if (q.has('tour') || q.has('result')) history.replaceState(null, '', location.pathname);
@@ -109,7 +137,7 @@ export default function App() {
 
   return (
     <>
-      <div key={screen} className="screen-enter">
+      <div key={screen} className={`screen-enter nav-${dir}`}>
         <ErrorBoundary onHome={() => setScreen('home')}>
           <Suspense fallback={<div className="screen-loading" aria-hidden="true" />}>{content}</Suspense>
         </ErrorBoundary>

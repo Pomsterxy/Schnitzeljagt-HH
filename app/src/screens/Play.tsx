@@ -178,11 +178,14 @@ export function Play({ onFinish, onHome }: { onFinish: () => void; onHome: () =>
         </span>
       </header>
 
-      {station && !ss?.unlockedBy && <Navigate game={game} station={station} onPin={() => setPinFor('unlock')} />}
-      {station && ss?.unlockedBy && <StationView game={game} station={station} hasFinal={hasFinal} />}
-      {poi && stop.kind === 'pause' && <PauseView game={game} poi={poi} />}
-      {poi && stop.kind === 'waypoint' && <WaypointView key={key} game={game} poi={poi} />}
-      {poi && stop.kind === 'final' && <FinalView game={game} poi={poi} onPin={() => setPinFor('unlock')} />}
+      {/* Neues Ziel gleitet von rechts herein */}
+      <div key={key} className="stop-enter">
+        {station && !ss?.unlockedBy && <Navigate game={game} station={station} onPin={() => setPinFor('unlock')} />}
+        {station && ss?.unlockedBy && <StationView game={game} station={station} hasFinal={hasFinal} />}
+        {poi && stop.kind === 'pause' && <PauseView game={game} poi={poi} />}
+        {poi && stop.kind === 'waypoint' && <WaypointView game={game} poi={poi} />}
+        {poi && stop.kind === 'final' && <FinalView game={game} poi={poi} onPin={() => setPinFor('unlock')} />}
+      </div>
 
       {lowBattery !== null && !batteryDismissed && (
         <div className="battery-banner slidedown" role="status" data-testid="battery-banner">
@@ -721,12 +724,15 @@ function StationSteps({
   const firstOpen = tasks.findIndex((t) => !ss.tasks[t.id]?.done);
   const [at, setAt] = useState(firstOpen >= 0 ? firstOpen : tasks.length);
   const [reached, setReached] = useState(at);
+  // Richtung für den Übergang: weiter = von rechts, zurück = von links
+  const [slide, setSlide] = useState<'next' | 'prev'>('next');
   const step = steps[Math.min(at, steps.length - 1)];
   const isLast = at >= steps.length - 1;
   const stepDone = (st: Step) => (st.kind === 'task' ? !!ss.tasks[st.id]?.done : st.kind === 'family' ? !!familyState : steps.indexOf(st) < reached);
   const canGo = stepDone(step) || step.kind === 'info' || step.kind === 'talk';
   const go = (i: number) => {
     play('tap');
+    setSlide(i < at ? 'prev' : 'next');
     setAt(i);
     setReached((r) => Math.max(r, i));
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -751,7 +757,7 @@ function StationSteps({
         ))}
       </div>
 
-      <div key={step.id} className="step-body rise">
+      <div key={step.id} className={`step-body slide-${slide}`}>
         {step.kind === 'task' && step.task && (
           <TaskCard task={step.task} state={ss.tasks[step.task.id]} quiet={false} index={tasks.indexOf(step.task)} total={tasks.length} />
         )}

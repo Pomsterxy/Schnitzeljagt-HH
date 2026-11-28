@@ -1228,3 +1228,64 @@ a { color: var(--ink); text-decoration-color: var(--sun); text-decoration-thickn
   .hero-text h1 { font-size: 24px; }
 }
 .btn.hero-btn { white-space: nowrap; }
+
+/* =====================================================================
+   Sanfte Übergänge und Navigation
+   ===================================================================== */
+:root {
+  --glide: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring-soft: cubic-bezier(0.34, 1.28, 0.64, 1);
+  --t-nav: 0.38s;
+}
+@keyframes navInRight { from { opacity: 0; transform: translateX(34px); } to { opacity: 1; transform: none; } }
+@keyframes navInLeft { from { opacity: 0; transform: translateX(-34px); } to { opacity: 1; transform: none; } }
+@keyframes navInSoft { from { opacity: 0; transform: translateY(10px) scale(0.99); } to { opacity: 1; transform: none; } }
+
+/* Bildschirmwechsel mit View Transitions (Chrome, Safari 18+): vorwärts von rechts, zurück nach rechts hinaus */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--t-nav); animation-timing-function: var(--glide); mix-blend-mode: normal; }
+html[data-nav='forward']::view-transition-old(root) { animation-name: vtOutLeft; }
+html[data-nav='forward']::view-transition-new(root) { animation-name: vtInRight; }
+html[data-nav='back']::view-transition-old(root) { animation-name: vtOutRight; z-index: 2; }
+html[data-nav='back']::view-transition-new(root) { animation-name: vtInUnder; }
+@keyframes vtInRight { from { transform: translateX(30%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes vtOutLeft { to { transform: translateX(-12%); opacity: 0; } }
+@keyframes vtOutRight { to { transform: translateX(32%); opacity: 0; } }
+@keyframes vtInUnder { from { transform: translateX(-10%); opacity: 0.3; } to { transform: none; opacity: 1; } }
+
+/* Ohne View Transitions: dieselbe Richtung per CSS.
+   "backwards" statt "both": nach dem Ende bleibt keine Verschiebung stehen, sonst würden
+   fest positionierte Fenster (Meldungen, Menüs) im verschobenen Rahmen sitzen. */
+.screen-enter.nav-forward, .screen-enter.nav-left { animation: navInRight var(--t-nav) var(--glide) backwards; }
+.screen-enter.nav-back, .screen-enter.nav-right { animation: navInLeft var(--t-nav) var(--glide) backwards; }
+.screen-enter.nav-fade { animation: navInSoft var(--t-nav) var(--glide) backwards; }
+.screen-enter.nav-vt { animation: none; }
+
+/* Nächstes Ziel und Stationsschritte gleiten herein */
+.stop-enter { display: flex; flex-direction: column; gap: 14px; animation: navInRight 0.42s var(--glide) backwards; }
+.step-body.slide-next { animation: navInRight 0.32s var(--glide) backwards; }
+.step-body.slide-prev { animation: navInLeft 0.32s var(--glide) backwards; }
+
+/* Tab-Leiste: gleitende Pille, Beschriftung klappt weich auf */
+.tabbar-inner { position: relative; }
+.tab-pill { position: absolute; left: 0; top: 6px; bottom: 6px; border-radius: 999px; background: var(--ink); z-index: 0; transition: transform 0.42s var(--spring-soft), width 0.42s var(--spring-soft); }
+.tabbar button, .tabbar.dark button, .tabbar button.on, .tabbar.dark button.on { position: relative; z-index: 1; background: transparent; gap: 0; transition: color 0.25s, padding 0.35s var(--glide); }
+.tabbar button .tab-label { display: inline-block; max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; margin-left: 0; transition: max-width 0.35s var(--glide), opacity 0.25s, margin-left 0.35s var(--glide); }
+.tabbar button.on .tab-label { display: inline-block; max-width: 110px; opacity: 1; margin-left: 6px; }
+.tabbar button:active:not(.on) svg { transform: scale(0.88); }
+.tabbar button svg { transition: transform 0.2s var(--glide); }
+
+/* Antippen: kurz eindrücken, weich zurückfedern */
+.btn, .topic-card, .chip, .step-pill, .icon-btn, .cache-item, .people-row button {
+  transition: transform 0.28s var(--spring-soft), background-color 0.25s, color 0.25s, border-color 0.2s, opacity 0.25s;
+}
+.btn:active:not(:disabled), .topic-card:active, .chip:active, .step-pill:active:not(:disabled), .icon-btn:active, .cache-item:active, .people-row button:active:not(:disabled) {
+  transform: scale(0.96);
+  transition-duration: 0.1s;
+}
+.btn.option.picked:active { transform: scale(0.99); }
+
+/* Kleine Feinheiten */
+.segments > div { transition: background-color 0.5s var(--glide); }
+.hero-progress > div { transition: width 0.8s var(--glide); }
+.chat-progress > div, .progressbar > div { transition: width 0.5s var(--glide); }
+details > summary + * { transform-origin: top; }
