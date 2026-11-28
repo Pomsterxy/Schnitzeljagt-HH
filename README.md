@@ -24,7 +24,7 @@ ruhigen Modus ohne Punkte.
 - **Gesprächsstoff**: An jeder Station, an Zwischenzielen, in der Pause und am Ende eine Frage oder These zum gemeinsamen Diskutieren (passend zum Thema und Alter, ohne Wiederholung; an Gedenkorten nachdenkliche Fragen)
 - **Mikro-Animationen**: Welle beim Antippen, selbstzeichnendes Häkchen, rollende Punktzahl, Herz-Burst beim Abstimmen, Schimmer beim Laden der Fotos, Ladepunkte und Sterne-Bewertung am Ende
 - **Effekte**: Konfetti-Kanonen bei jeder gefundenen Station, fliegende Punkte bei richtigen Antworten, Herzen bei Familien-Momenten, Goldregen beim Schatz, großes Finale am Ende (bei „Bewegung reduzieren“ aus)
-- **Ruhig & verspielt**: ein heller, einheitlicher Look mit runder Schrift (Fredoka/Nunito), Knöpfen mit kleiner Drück-Kante und der Sticker-Möwe **Lilli**; Stationen laufen Schritt für Schritt (Rätsel, Info, Gespräch, Familie) statt als lange Liste; Töne und Vibration abschaltbar
+- **Look**: warme Farbwelt aus Creme, Sonnengelb, Laubgrün und Fast-Schwarz, runde Schrift (Fredoka/Nunito) und flache, groß gerundete Karten. Die Startseite hat eine grüne Karte mit Lilli, das Quiz eine Frage als Sprechwolke auf Gelb und Antworten als Karten (antippen, dann „Prüfen“), die Tab-Leiste schwebt als Pille. Stationen laufen Schritt für Schritt (Rätsel, Info, Gespräch, Familie); Töne und Vibration lassen sich abschalten
 - **Vorlesefunktion** für Rätsel, Fragen und Infotexte
 - **Offline**: Texte und Bilder sind in der App gespeichert; beim Start einer Tour werden die Kartenausschnitte entlang der Route vorgeladen (sparsam, Zoom 15–17)
 - **Stabilität**: Stromsparmodus und Akku-Warnung (Android), „Rückgängig“ nach Löschen oder Überspringen, automatische Sicherungskopie des Spielstands und Sicherung als Datei unter „Mehr“

@@ -38,6 +38,8 @@ export function TaskCard({
   const [feedback, setFeedback] = useState<{ msg: string; ok: boolean } | null>(null);
   const [shakeKey, setShakeKey] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  /** Zuletzt falsch gewählte Antwort (bleibt rot markiert) */
+  const [wrongPick, setWrongPick] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const cardRef = useRef<HTMLElement>(null);
@@ -48,6 +50,10 @@ export function TaskCard({
   const submit = (v: string | number) => {
     if (v === '' || v === undefined) return;
     const r = answerTask(task, v, quiet);
+    if (task.type === 'quiz' && !r.correct) {
+      setWrongPick(Number(v));
+      setPicked(null);
+    }
     if (r.final) {
       if (r.correct) {
         play(task.type === 'estimate' && r.quality < 1 ? 'coin' : 'correct');
@@ -86,7 +92,7 @@ export function TaskCard({
   };
 
   return (
-    <section ref={cardRef} className={`card task-card rise${done ? ' done' : ''}${quiet ? ' quiet' : ''}`} data-testid={`task-${task.id}`}>
+    <section ref={cardRef} className={`card task-card rise${task.type === 'quiz' ? ' quiz' : ''}${done ? ' done' : ''}${quiet ? ' quiet' : ''}`} data-testid={`task-${task.id}`}>
       <div className="task-head">
         <span>
           {TYPE_LABEL[task.type]} · {index + 1} von {total}
@@ -102,21 +108,28 @@ export function TaskCard({
 
       <div key={shakeKey} className={shakeKey ? 'shake' : ''} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {!done && task.type === 'quiz' && (
-          <div className="options">
-            {task.options.map((o, i) => (
-              <button
-                key={o}
-                type="button"
-                className={`btn option${picked === i && feedback && !feedback.ok ? ' wrong' : ''}`}
-                onClick={() => {
-                  setPicked(i);
-                  submit(i);
-                }}
-              >
-                {o}
-              </button>
-            ))}
-          </div>
+          <>
+            <div className={`options${task.options.every((o) => o.length <= 26) ? ' grid' : ''}`} role="radiogroup" aria-label="Antworten">
+              {task.options.map((o, i) => (
+                <button
+                  key={o}
+                  type="button"
+                  role="radio"
+                  aria-checked={picked === i}
+                  className={`btn option${picked === i ? ' picked' : ''}${wrongPick === i ? ' wrong' : ''}`}
+                  onClick={() => {
+                    play('tap');
+                    setPicked(i);
+                  }}
+                >
+                  {o}
+                </button>
+              ))}
+            </div>
+            <button type="button" className="btn big dark" data-testid="quiz-check" disabled={picked === null} onClick={() => picked !== null && submit(picked)}>
+              Prüfen
+            </button>
+          </>
         )}
 
         {!done && stepper && (

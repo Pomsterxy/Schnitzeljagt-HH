@@ -1089,3 +1089,141 @@ input, textarea, select { font-size: max(16px, 1em); }
 .leaderboard .pts { font-family: 'Fredoka', system-ui, sans-serif; font-weight: 700; font-size: 22px; color: var(--accent, #ef7a2f); }
 .leaderboard > p { margin: 8px 0 0; font-size: 14px; }
 .legal a[href^='mailto:'] { display: inline-block; padding: 12px 0; }
+
+/* =====================================================================
+   Look v4: Creme, Sonnengelb, Laubgrün, Fast-Schwarz – flach, rund, freundlich
+   (Farbwelt: #F9F1E1 · #F6BC57 · #5A6A42 · #131212 · #FFFFFF)
+   ===================================================================== */
+:root {
+  --ink: #131212;
+  --cream: #f9f1e1;
+  --sun: #f6bc57;
+  --sun-soft: #fde9c3;
+  --leaf: #5a6a42;
+  --leaf-soft: #e8ecdc;
+  --tangerine: #e8873a;
+  --bg: var(--cream);
+  --card: #ffffff;
+  --label: var(--ink);
+  --label2: #6f675a;
+  --sep: #ece2cd;
+  --fill: #f1e7d3;
+  --fill2: #fbf6ec;
+  --accent: var(--ink);
+  --accent-ink: #7a4f0a;
+  --accent-soft: var(--sun-soft);
+  --accent-edge: var(--ink);
+  --teal: var(--leaf);
+  --teal-soft: var(--leaf-soft);
+  --gold: var(--sun);
+  --edge: none;
+  --shadow: 0 1px 2px rgba(19, 18, 18, 0.04);
+  --r-card: 26px;
+}
+a { color: var(--ink); text-decoration-color: var(--sun); text-decoration-thickness: 2px; }
+
+/* Knöpfe: flache Pillen, Hauptknopf schwarz */
+.btn, .btn:active { box-shadow: none; }
+.btn { background: #fff; color: var(--ink); border-radius: 999px; }
+.btn.primary, .btn.pill.primary, .btn.big.dark, .btn.dark, .send-btn, .play-fab { background: var(--ink); color: #fff; box-shadow: none; }
+.btn.primary:active, .btn.pill.primary:active, .btn.big.dark:active { box-shadow: none; transform: scale(0.98); }
+.btn.big { border-radius: 999px; min-height: 58px; }
+.btn.tinted { background: var(--sun-soft); color: var(--ink); }
+.btn.danger { background: #d64545; box-shadow: none; }
+.btn.found { background: var(--leaf); box-shadow: none; }
+.btn:disabled, .btn.primary:disabled, .btn.big.dark:disabled, .step-bar .btn:disabled { background: var(--fill); color: #a79f90; opacity: 1; }
+.chip, .chat-setup .chip:not(.on) { border: 2px solid transparent; box-shadow: none; }
+.chip.on { background: var(--ink); border-color: var(--ink); box-shadow: none; }
+.icon-btn { box-shadow: none; }
+.icon-btn.plain { background: #fff; }
+
+/* Karten: flach, groß gerundet */
+.card { border-radius: var(--r-card); box-shadow: var(--shadow); }
+.people-picker, .tour-settings, .chat-route, .lilli-msg .bubble, .dark-card { box-shadow: var(--shadow); }
+.people-row button, .cache-item, .btn.option { box-shadow: none; }
+
+/* Fortschritt, Punkte, Schritte */
+.progressbar > div, .chat-progress > div, .segments > div.now { background: var(--sun); }
+.segments > div.done { background: var(--leaf); }
+.points-pill { background: #fff; box-shadow: none; font-family: var(--display); font-weight: 600; }
+.points-pill .star { color: var(--tangerine); }
+.score-big { color: var(--ink); }
+.step-pill { box-shadow: none; }
+.step-pill.on { background: var(--ink); color: #fff; box-shadow: none; }
+.step-pill.done { background: var(--leaf-soft); color: var(--leaf); }
+.check-badge .disc { box-shadow: none; }
+.me-msg .bubble { background: var(--ink); box-shadow: none; }
+.walk-game { background: var(--leaf-soft); }
+.family-card { background: var(--sun-soft); }
+.talk-card { background: #fff; }
+.talk-eyebrow, .talk-next { color: var(--leaf); }
+.talk-kind, .talk-kind.these, .talk-vote.on { background: var(--leaf); box-shadow: none; }
+.compass-hint { background: var(--sun-soft); color: var(--ink); }
+
+/* Quiz: Frage als Sprechwolke auf Sonnengelb, Antworten als Karten */
+.task-card.quiz:not(.quiet) { background: var(--sun); }
+.task-card.quiz:not(.quiet) .task-head { color: var(--ink); }
+.task-card.quiz:not(.quiet) .task-head > span:first-child { background: #fff; border-radius: 999px; padding: 4px 10px; }
+.task-card.quiz:not(.quiet) .task-head .pts { color: var(--ink); opacity: 0.75; align-self: center; }
+.task-card.quiz:not(.quiet) .task-q {
+  position: relative; background: #fff; border-radius: 36px; padding: 18px 20px; text-align: center;
+  font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.25; margin: 6px 0 10px;
+}
+.task-card.quiz:not(.quiet) .task-q::before, .task-card.quiz:not(.quiet) .task-q::after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
+.task-card.quiz:not(.quiet) .task-q::before { width: 22px; height: 22px; left: 18px; bottom: -14px; }
+.task-card.quiz:not(.quiet) .task-q::after { width: 11px; height: 11px; left: 8px; bottom: -26px; }
+.options.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.btn.option { background: #fff; color: var(--ink); border: 2.5px solid transparent; border-radius: 22px; min-height: 64px; font-family: var(--display); font-weight: 600; font-size: 17px; transition: border-color 0.15s, transform 0.15s; }
+.options.grid .btn.option { justify-content: center; text-align: center; min-height: 84px; padding: 10px 12px; }
+.btn.option.picked { border-color: var(--ink); transform: scale(1.02); }
+.btn.option.wrong { background: #fbe3df; color: #9b2c1f; border-color: transparent; }
+.btn.option.correct { background: var(--leaf-soft); color: var(--leaf); }
+.task-card.quiz:not(.quiet) .btn.big.dark:disabled { background: rgba(19, 18, 18, 0.18); color: rgba(19, 18, 18, 0.55); }
+
+/* Tab-Leiste: schwebende Pille, aktiver Reiter als schwarze Pille mit Text */
+.tabbar, .tabbar.dark { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0 16px calc(10px + env(safe-area-inset-bottom)); pointer-events: none; }
+.tabbar-inner { pointer-events: auto; display: flex; justify-content: space-between; align-items: center; gap: 4px; background: #fff; border-radius: 999px; padding: 6px; box-shadow: 0 8px 24px rgba(19, 18, 18, 0.1); max-width: 420px; }
+.tabbar button, .tabbar.dark button { flex: 0 0 auto; flex-direction: row; gap: 6px; min-height: 48px; min-width: 52px; padding: 0 14px; border-radius: 999px; color: #8b8373; font-family: var(--display); font-size: 15px; font-weight: 600; justify-content: center; }
+.tabbar button .tab-label { display: none; }
+.tabbar button.on, .tabbar.dark button.on { background: var(--ink); color: #fff; padding: 0 18px; }
+.tabbar button.on .tab-label { display: inline; }
+
+/* Startseite */
+.home-v4 { min-height: 100dvh; background: var(--bg); color: var(--ink); padding-bottom: calc(110px + env(safe-area-inset-bottom)); color-scheme: light; }
+.home-top { max-width: 560px; margin: 0 auto; display: flex; align-items: center; gap: 10px; padding: calc(14px + env(safe-area-inset-top)) 20px 8px; }
+.home-avatar { width: 52px; height: 52px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+.home-who { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.home-who strong { font-family: var(--display); font-weight: 600; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-who small { color: var(--label2); font-size: 13px; font-weight: 700; }
+.home-v4 .home-body { padding-top: 8px; gap: 12px; }
+.hero-card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6px; background: var(--leaf); color: #fff; border-radius: 30px; padding: 22px 12px 22px 22px; overflow: hidden; min-height: 210px; }
+.hero-text { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; align-self: center; }
+.hero-text h1 { font-size: 28px; line-height: 1.1; color: #fff; }
+.hero-text p { color: rgba(255, 255, 255, 0.85); font-weight: 700; font-size: 15px; line-height: 1.35; }
+.hero-text .hero-next { font-size: 14px; color: rgba(255, 255, 255, 0.75); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.btn.hero-btn { background: #fff; color: var(--ink); min-height: 48px; padding: 0 22px; font-family: var(--display); font-weight: 600; font-size: 17px; margin-top: 4px; }
+.hero-art { align-self: end; margin: 0 -8px -26px 0; animation: bob 4s ease-in-out infinite; }
+.hero-card::before { content: ''; position: absolute; right: -40px; top: -40px; width: 190px; height: 190px; border-radius: 50%; background: rgba(246, 188, 87, 0.28); }
+.hero-progress { position: absolute; left: 22px; right: 22px; bottom: 12px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.22); }
+.hero-progress > div { height: 100%; border-radius: 3px; background: var(--sun); }
+.topic-card { appearance: none; border: none; width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: #fff; color: var(--ink); border-radius: 24px; padding: 16px 18px; font: inherit; cursor: pointer; min-height: 84px; transition: transform 0.2s var(--ease); }
+.topic-card:active { transform: scale(0.98); }
+.topic-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.topic-text strong { font-family: var(--display); font-weight: 600; font-size: 19px; }
+.topic-text small { color: var(--label2); font-size: 14px; font-weight: 700; }
+.topic-art { width: 60px; height: 60px; border-radius: 20px; background: var(--fill2); display: flex; align-items: center; justify-content: center; font-size: 34px; flex-shrink: 0; }
+.topic-card.howto { cursor: default; background: var(--sun-soft); }
+.topic-card.howto ol { margin: 6px 0 0; padding-left: 20px; color: var(--ink); font-size: 14px; line-height: 1.45; font-weight: 600; }
+
+/* Spiel-Kopf und Chat auf Creme */
+.play-head { background: rgba(249, 241, 225, 0.92); }
+.chat-head { background: rgba(249, 241, 225, 0.92); }
+.composer { background: linear-gradient(to top, var(--bg) 75%, rgba(249, 241, 225, 0)); }
+.step-bar { background: linear-gradient(to top, var(--bg) 78%, rgba(249, 241, 225, 0)); }
+.cache-top { background: rgba(249, 241, 225, 0.94); }
+@media (max-width: 360px) {
+  .tabbar, .tabbar.dark { padding-left: 10px; padding-right: 10px; }
+  .tabbar button, .tabbar.dark button { min-width: 44px; padding: 0 10px; }
+  .tabbar button.on, .tabbar.dark button.on { padding: 0 14px; }
+  .hero-text h1 { font-size: 24px; }
+}

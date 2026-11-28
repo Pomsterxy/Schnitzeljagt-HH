@@ -77,3 +77,14 @@ export async function planTour(page, o = {}) {
   await page.locator('.play').waitFor();
   return { summary, legs: legInfo };
 }
+
+/** Quiz beantworten: Antwort antippen, "Prüfen"; beim zweiten Versuch die erste Antwort */
+export async function answerQuiz(page, card, idx = 0) {
+  await card.locator('.btn.option').nth(idx).click();
+  await card.getByTestId('quiz-check').click();
+  await page.waitForTimeout(150);
+  if (await card.locator('.btn.option').count()) {
+    await card.locator('.btn.option').first().click();
+    await card.getByTestId('quiz-check').click();
+  }
+}

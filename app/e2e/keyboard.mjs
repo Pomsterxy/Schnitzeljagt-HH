@@ -3,7 +3,7 @@
 // Android-Art: Seite wird kleiner (interactive-widget=resizes-content).
 // Nutzung: node e2e/keyboard.mjs [url]
 import { createRequire } from 'node:module';
-import { planTour } from './chat.mjs';
+import { answerQuiz, planTour } from './chat.mjs';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 
@@ -140,11 +140,8 @@ async function run(mode) {
       tested = true;
       break;
     }
-    const o = card.locator('.btn.option').first();
-    if (await o.count()) {
-      await o.click();
-      await page.waitForTimeout(150);
-      if (await page.locator('.task-card:not(.done) .btn.option').count()) await page.locator('.task-card:not(.done) .btn.option').first().click();
+    if (await card.locator('.btn.option').count()) {
+      await answerQuiz(page, card.first());
       continue;
     }
     if (await card.locator('.stepper').count()) {

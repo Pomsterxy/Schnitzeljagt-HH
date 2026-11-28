@@ -131,8 +131,12 @@ for (const vp of VIEWPORTS) {
   await page.getByTestId('arrived').waitFor();
   await page.waitForTimeout(2500);
   await shot('station-raetsel');
-  const o = page.locator('.task-card:not(.done) .btn.option').first();
-  if (await o.count()) await o.click();
+  const open = page.locator('.task-card:not(.done)').first();
+  if (await open.locator('.btn.option').count()) {
+    await open.locator('.btn.option').first().click();
+    await shot('station-gewaehlt');
+    await open.getByTestId('quiz-check').click();
+  }
   await shot('station-geloest');
   await page.getByLabel('Menü').click();
   await shot('menue');
