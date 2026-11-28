@@ -200,7 +200,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
     switch (q.id) {
       case 'team':
         if (shared) return `Moin! Ihr wurdet zu einer Schatzsuche eingeladen: ${shared.stops.filter((x) => x.kind === 'station').length} Stationen ab ${shared.tour.s}. Wie heißt euer Team?`;
-        return prev ? `Moin, ${prev.name}! Schön, dass ihr wieder da seid. Bleibt es bei eurem Teamnamen?` : 'Moin! Ich bin Lilli, eure Schatzsuch-Möwe. Wie heißt euer Team?';
+        return prev ? `Moin, ${prev.name}! Schön, dass ihr wieder da seid. Bleibt es bei eurem Teamnamen?` : 'Moin! Ich bin Lilli, eure Schatzsuch-Füchsin. Wie heißt euer Team?';
       case 'people':
         return `${n} – klingt nach echten Entdeckern! Wer ist dabei? Die Rätsel richten sich nach den Jüngsten.`;
       case 'districts':
@@ -468,7 +468,7 @@ export function Setup({ onStarted, onCancel, shared }: { onStarted: () => void; 
           <TextAnswer
             initial={team.name}
             placeholder="Teamname, z. B. Die Alsterpiraten"
-            chips={prev ? [prev.name] : ['Die Alsterpiraten', 'Team Möwe', 'Die Klinker-Detektive']}
+            chips={prev ? [prev.name] : ['Die Alsterpiraten', 'Team Fuchs', 'Die Klinker-Detektive']}
             onSend={(v) => {
               setTeam({ ...team, name: v });
               next();

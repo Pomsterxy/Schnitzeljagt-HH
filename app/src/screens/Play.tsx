@@ -828,7 +828,7 @@ function PauseView({ game, poi }: { game: Game; poi: Poi }) {
   const arrived = dist !== null && dist < 60;
   useEffect(() => {
     if (!arrived) return;
-    play('gull');
+    play('yip');
     celebratePause(document.querySelector('.pause-hero .emoji'));
   }, [arrived]);
   return (

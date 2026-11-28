@@ -82,7 +82,9 @@ p { margin: 0; }
 .shake { animation: shake 0.45s ease-in-out; }
 .bump { display: inline-block; animation: bump 0.6s var(--spring); }
 .bob { animation: bob 3s ease-in-out infinite; }
-.lilli .flap { transform-box: view-box; transform-origin: 140px 122px; animation: flap 1.1s ease-in-out infinite; }
+.lilli .flap { transform-box: view-box; transform-origin: 128px 138px; animation: flap 1.1s ease-in-out infinite; }
+.lilli .wag { transform-box: view-box; transform-origin: 128px 170px; animation: wag 2.6s ease-in-out infinite; }
+@keyframes wag { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-7deg); } }
 .lilli .sparkle { animation: twinkle 1.2s ease-in-out infinite; }
 .lilli .flap.fast { animation-duration: 0.45s; }
 .tap { transition: transform 0.25s var(--ease), background-color 0.25s, box-shadow 0.25s, border-color 0.25s, opacity 0.25s; }

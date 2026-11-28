@@ -1,14 +1,22 @@
-/** Farben passend zur App: Creme, Sonnengelb, Mandarine, warmes Dunkelbraun */
+/** Farben von Lilli, der Füchsin: Rotorange, Creme, dunkle Pfoten, Rucksack in Laubgrün */
 export const LILLI = {
-  ink: '#3a2e28',
+  ink: '#5a3424',
   eye: '#131212',
-  body: '#fffdf8',
-  belly: '#f9f1e1',
-  wing: '#d9cfbd',
-  wingTip: '#8e8473',
-  beak: '#f6bc57',
-  spot: '#e05a3a',
-  feet: '#e8873a',
+  fur: '#f0823a',
+  furDeep: '#dd6a27',
+  furShade: '#c95a1e',
+  cream: '#fff4e3',
+  paw: '#3b2a22',
+  earInner: '#f7c9a8',
+  nose: '#2b1b16',
   cheek: '#f4a68a',
+  pack: '#4a5836',
+  buckle: '#f6bc57',
+  map: '#f9f1e1',
+  mapX: '#d9583b',
   sparkle: '#f6bc57',
+  // gedeckt für Gedenkorte
+  quietFur: '#c79a7c',
+  quietFurDeep: '#b98a6c',
+  quietInk: '#6b5548',
 };

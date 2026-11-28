@@ -31,7 +31,7 @@ export function Settings() {
 
       <div className="field-label rise">Spiel</div>
       <div className="grouped rise">
-        <SwitchRow on={sound} onToggle={() => setSoundOn(!sound)} title="Töne & Vibration" sub="Möwenruf, Glöckchen und Schatzkiste" />
+        <SwitchRow on={sound} onToggle={() => setSoundOn(!sound)} title="Töne & Vibration" sub="Lillis Fiepen, Glöckchen und Schatzkiste" />
         <SwitchRow
           on={powerSave}
           onToggle={() => setPowerSave(!powerSave)}

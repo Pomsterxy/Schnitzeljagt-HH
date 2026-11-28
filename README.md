@@ -15,6 +15,7 @@ ruhigen Modus ohne Punkte.
 - **Familien-Momente**: an etwa jeder dritten Station ein gemeinsames Spiel (Mini-Versteckspiel, Lillis Freeze-Tanz, Grimassen-Selfie, Geräusche-Detektive, Komplimente-Runde u. a.) mit Timer, Musik oder Foto
 - **Gamification**: Punkte, Hinweise mit Abzug, Bonus ohne Hilfe, 23 Abzeichen, Ränge, Sammelalbum, Urkunde
 - **Tour teilen**: Eine geplante oder gespielte Tour als Link weitergeben; Freunde spielen genau dieselbe Route und vergleichen Punkte
+- **Lilli, die Füchsin**: Begleiterin im Bilderbuch-Stil mit Rucksack und Schatzkarte; je nach Moment fröhlich, begeistert (winkt), still an Gedenkorten oder mit Stern bei Nacht. Ihr freundliches Fiepen ertönt bei Funden und Pausen
 - **Lillis Kleiderschrank**: Halstuch, Kapitänsmütze, Sonnenbrille, Piratentuch, Krone u. a. als Belohnung für Touren und Abzeichen
 - **Erinnerungskarte**: Am Ende ein teilbares Bild mit Lilli, euren Fotos, Orten und Zahlen
 - **Für Eltern**: Schatz-Ort per Eltern-PIN ansehen, um dort vorab eine Überraschung zu verstecken

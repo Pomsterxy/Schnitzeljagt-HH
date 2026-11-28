@@ -54,7 +54,7 @@ function tone(c: AudioContext, freq: number, start: number, dur: number, type: O
   o.stop(c.currentTime + start + dur + 0.05);
 }
 
-export type Cue = 'tap' | 'select' | 'found' | 'correct' | 'wrong' | 'coin' | 'unlock' | 'treasure' | 'gull' | 'soft';
+export type Cue = 'tap' | 'select' | 'found' | 'correct' | 'wrong' | 'coin' | 'unlock' | 'treasure' | 'yip' | 'soft';
 
 const HAPTICS: Record<Cue, number | number[]> = {
   tap: 8,
@@ -65,7 +65,7 @@ const HAPTICS: Record<Cue, number | number[]> = {
   coin: 20,
   unlock: [20, 30, 20],
   treasure: [60, 80, 60, 80, 200],
-  gull: 0,
+  yip: 0,
   soft: 0,
 };
 
@@ -105,16 +105,17 @@ export function play(cue: Cue): void {
       tone(c, 233, 0.16, 0.25, 'sawtooth', 0.07);
       break;
     case 'found':
-      // Möwenruf: zwei schnelle, abfallende Schreie, dann ein Glockenakkord
-      tone(c, 1500, 0, 0.18, 'sawtooth', 0.05, 900);
-      tone(c, 1600, 0.2, 0.22, 'sawtooth', 0.05, 950);
+      // Lillis Fiepen: zwei kurze, helle, aufsteigende Laute, dann ein Glockenakkord
+      tone(c, 1300, 0, 0.09, 'sine', 0.09, 1900);
+      tone(c, 1450, 0.12, 0.11, 'sine', 0.09, 2200);
       tone(c, 784, 0.45, 0.6, 'sine', 0.16);
       tone(c, 988, 0.45, 0.6, 'sine', 0.12);
       tone(c, 1175, 0.45, 0.7, 'sine', 0.1);
       break;
-    case 'gull':
-      tone(c, 1500, 0, 0.18, 'sawtooth', 0.05, 900);
-      tone(c, 1600, 0.2, 0.22, 'sawtooth', 0.05, 950);
+    case 'yip':
+      // freundliches Fiepen einer kleinen Füchsin
+      tone(c, 1300, 0, 0.09, 'sine', 0.09, 1900);
+      tone(c, 1450, 0.12, 0.11, 'sine', 0.09, 2200);
       break;
     case 'unlock':
       tone(c, 1200, 0, 0.04, 'square', 0.05);
