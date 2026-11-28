@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/MapViewImpl-acEmhF2y.js","assets/index-Djk_g1eC.js","assets/index-VgvmpVDV.css","assets/MapViewImpl-CIGW-MKW.css"])))=>i.map(i=>d[i]);
+import{j as e,r as t,_ as i}from"./index-Djk_g1eC.js";const r=t.lazy(()=>i(()=>import("./MapViewImpl-acEmhF2y.js"),__vite__mapDeps([0,1,2,3])).then(a=>({default:a.MapView})));function l(a){return e.jsx(t.Suspense,{fallback:e.jsx("div",{className:"map-wrap map-loading",style:{height:a.height??300},"aria-hidden":"true"}),children:e.jsx(r,{...a})})}export{l as M};
